@@ -1,0 +1,39 @@
+[package]
+name = "nnj-grammar"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "nnj-grammar"
+path = "src/main.rs"
+
+[dependencies]
+# Japanese morphological analyzer.
+# Using lindera with the UniDic dictionary (same POS taxonomy as Sudachi).
+# embed-unidic bakes the dictionary into the binary at compile time.
+# The official Sudachi Rust library is not published to crates.io as a library crate.
+lindera = { version = "=3.0.7", features = ["embed-unidic"] }
+
+# Graph data structure
+petgraph = { version = "0.8", features = ["serde-1"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# TOML rule files
+toml = "0.8"
+
+# CLI argument parsing
+clap = { version = "4", features = ["derive"] }
+
+# Recursive directory walking for grammar DB
+walkdir = "2"
+
+# Ergonomic error handling
+anyhow = "1"
+
+[profile.release]
+lto = true
+strip = true
+opt-level = 3

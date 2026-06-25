@@ -1,0 +1,34 @@
+# N5 expressions that need wildcard steps (span patterns)
+# These require your wildcard matcher to be implemented before they fire.
+
+[[patterns]]
+id         = "shika-nai"
+name       = "しか〜ない"
+jlpt       = "N5"
+meaning_en = "only; nothing but"
+hint       = "The predicate must be in negative form (〜ない). Expresses that there is no more than what is mentioned."
+
+[[patterns.steps]]
+surface = "しか"
+pos1    = "助詞"
+pos2    = "副助詞"
+
+[[patterns.steps]]
+wildcard = { min = 0, max = 8 }
+
+[[patterns.steps]]
+surface = "ない"
+pos1    = "助動詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "dake"
+name       = "だけ (only/just)"
+jlpt       = "N5"
+meaning_en = "only, just, as much as — limits quantity or extent"
+
+[[patterns.steps]]
+surface = "だけ"
+pos1    = "助詞"
+pos2    = "副助詞"

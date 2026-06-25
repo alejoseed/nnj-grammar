@@ -1,0 +1,91 @@
+# N5 particles — single-token patterns
+# These are the simplest possible patterns: match one token by surface + POS.
+# The matcher only needs to handle non-wildcard steps to make these work.
+
+[[patterns]]
+id         = "wa-topic"
+name       = "は (topic)"
+jlpt       = "N5"
+meaning_en = "topic marker — introduces what the sentence is about"
+
+[[patterns.steps]]
+surface = "は"
+pos1    = "助詞"
+pos2    = "係助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "ga-subject"
+name       = "が (subject)"
+jlpt       = "N5"
+meaning_en = "subject marker — marks the grammatical subject"
+
+[[patterns.steps]]
+surface = "が"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "wo-object"
+name       = "を (object)"
+jlpt       = "N5"
+meaning_en = "object marker — marks the direct object of a verb"
+
+[[patterns.steps]]
+surface = "を"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "ni-location"
+name       = "に (location/direction)"
+jlpt       = "N5"
+meaning_en = "location or direction marker — at, in, to"
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "de-location"
+name       = "で (location of action)"
+jlpt       = "N5"
+meaning_en = "marks the place where an action occurs, or the means/method"
+
+[[patterns.steps]]
+surface = "で"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "kara-from"
+name       = "から (from)"
+jlpt       = "N5"
+meaning_en = "from (a place or time); because (as a conjunctive)"
+
+[[patterns.steps]]
+surface = "から"
+pos1    = "助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "made-until"
+name       = "まで (until/to)"
+jlpt       = "N5"
+meaning_en = "until, up to, as far as"
+
+[[patterns.steps]]
+surface = "まで"
+pos1    = "助詞"
+pos2    = "副助詞"

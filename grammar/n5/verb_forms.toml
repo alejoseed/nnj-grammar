@@ -1,0 +1,64 @@
+# N5 verb form patterns — conjugation form values are UniDic style.
+#
+# IMPORTANT: UniDic conjugation form names differ from IPADIC.
+# Run `nnj-grammar --output table "食べている"` to see the exact strings
+# that Sudachi emits, then update the conj_form values here to match.
+#
+# Common UniDic conjugation forms (verify with actual tokenizer output):
+#   連用形-一般   — general continuative / て-form base
+#   終止形-一般   — plain terminal (dictionary form in sentence-final position)
+#   連体形-一般   — attributive (modifying nouns)
+#   仮定形-一般   — conditional (〜ば form)
+#   命令形       — imperative
+#
+# The IPADIC equivalent of 連用テ接続 is approximately 連用形-一般 in UniDic,
+# but confirm this by running the table command on a real sentence.
+
+[[patterns]]
+id         = "te-iru"
+name       = "〜ている"
+jlpt       = "N5"
+meaning_en = "ongoing action or resultant state (progressive/resultant)"
+hint       = "Matches the te-form of a verb followed by いる."
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "連用形-一般"   # verify: run --output table on 食べている
+
+[[patterns.steps]]
+pos1     = "動詞"
+pos2     = "非自立可能"     # いる in て-いる construction
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "te-kara"
+name       = "〜てから"
+jlpt       = "N5"
+meaning_en = "after doing — expresses temporal sequence"
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "連用形-一般"   # verify with tokenizer output
+
+[[patterns.steps]]
+surface = "から"
+pos1    = "助詞"
+pos2    = "接続助詞"
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[patterns]]
+id         = "te-kudasai"
+name       = "〜てください"
+jlpt       = "N5"
+meaning_en = "please do — polite request"
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "連用形-一般"   # verify with tokenizer output
+
+[[patterns.steps]]
+surface   = "ください"
+pos1      = "動詞"
+pos2      = "非自立可能"
