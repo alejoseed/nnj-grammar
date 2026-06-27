@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug: token table",
+            "cargo": {
+                "args": ["build", "--bin", "nnj-grammar"],
+                "filter": { "name": "nnj-grammar", "kind": "bin" }
+            },
+            "args": ["--output", "table", "東京しか行かない"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug: JSON output",
+            "cargo": {
+                "args": ["build", "--bin", "nnj-grammar"],
+                "filter": { "name": "nnj-grammar", "kind": "bin" }
+            },
+            "args": ["--output", "json", "東京しか行かない"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug: ている",
+            "cargo": {
+                "args": ["build", "--bin", "nnj-grammar"],
+                "filter": { "name": "nnj-grammar", "kind": "bin" }
+            },
+            "args": ["--output", "table", "食べている"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

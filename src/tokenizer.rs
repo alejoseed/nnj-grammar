@@ -65,10 +65,7 @@ impl Tokenizer {
 
     pub fn tokenize(&self, text: &str) -> Result<Vec<Token>> {
         let mut raw = self.inner.tokenize(text)?;
-        let token_surfaces: Vec<&str> = raw.iter().map(|t| t.surface.as_ref()).collect();
 
-        println!("Printing token surfaces: {:?}", token_surfaces);
-        
         let tokens = raw
             .iter_mut()
             .enumerate()
@@ -113,14 +110,32 @@ impl Tokenizer {
 /// The conj_form column shows you the exact UniDic strings to put in your TOML steps.
 pub fn print_table(tokens: &[Token]) {
     println!(
-        "{:<14} {:<10} {:<14} {:<22} {:<16}",
-        "Surface", "POS1", "POS2", "ConjForm", "BaseForm"
+        "{:<14} {:<16} {:<12} {:<14} {:<22} {:<14}",
+        "Surface", "Reading ふりがな", "POS 品詞", "Sub 細分類", "ConjForm 活用形", "Base 原形"
     );
-    println!("{}", "─".repeat(78));
+    println!("{}", "─".repeat(95));
     for t in tokens {
         println!(
-            "{:<14} {:<10} {:<14} {:<22} {:<16}",
-            t.surface, t.pos1, t.pos2, t.conj_form, t.base_form
+            "{:<14} {:<16} {:<12} {:<14} {:<22} {:<14}",
+            t.surface, t.reading, t.pos1, t.pos2, t.conj_form, t.base_form
         );
     }
+
+    println!();
+    println!("POS guide — 品詞 (ひんし) = part of speech:");
+    println!("  名詞 めいし       noun");
+    println!("  動詞 どうし       verb");
+    println!("  助詞 じょし       particle");
+    println!("  助動詞 じょどうし  auxiliary verb");
+    println!("  形容詞 けいようし  i-adjective");
+    println!("  副詞 ふくし       adverb");
+    println!();
+    println!("Sub (細分類) guide:");
+    println!("  格助詞 かくじょし  case particle  (が、を、に、で、から…)");
+    println!("  係助詞 かかりじょし topic particle  (は、も)");
+    println!("  副助詞 ふくじょし  adverbial particle (しか、だけ、まで…)");
+    println!("  接続助詞 せつぞくじょし conjunctive particle (て、ば、と…)");
+    println!("  非自立可能 ひじりつかのう  can work as auxiliary (いる、くる…)");
+    println!("  固有名詞 こゆうめいし  proper noun");
+    println!("  普通名詞 ふつうめいし  common noun");
 }

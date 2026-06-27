@@ -2,7 +2,7 @@ use crate::patterns::PatternRule;
 use crate::tokenizer::Token;
 
 /// One grammar construction found in the token stream.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize)]
 pub struct PatternMatch {
     pub rule_id: String,
     pub rule_name: String,
@@ -41,7 +41,7 @@ pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
 
     for rule in rules {
         for start in 0..tokens.len() {
-            if let Some(end) = try_match(tokens, start, &rule.steps, 0) {
+            if let Some(end) = try_match(tokens, start, &rule.steps) {
                 matches.push(PatternMatch {
                     rule_id: rule.id.clone(),
                     rule_name: rule.name.clone(),
@@ -59,42 +59,47 @@ pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
     matches
 }
 
-/// Try to match `steps[step_idx..]` starting at `tokens[token_pos]`.
-///
-/// Returns `Some(last_token_index)` on success, `None` on failure.
-///
-/// This is the recursive heart of the matcher — implement it.
-fn try_match(
-    tokens: &[Token],
-    token_pos: usize,
-    steps: &[crate::patterns::Step],
-    step_idx: usize,
-) -> Option<usize> {
-    // All steps satisfied — return the index of the last consumed token.
-    // token_pos here is the next position to consume, so the last consumed
-    // token is token_pos - 1.  Handle the edge case where nothing was consumed.
-    if step_idx >= steps.len() {
-        return if token_pos > 0 { Some(token_pos - 1) } else { None };
+/// Walk through `steps` starting at `tokens[start]`.
+/// Returns the index of the last matched token on success, None on failure.
+fn try_match(tokens: &[Token], start: usize, steps: &[crate::patterns::Step]) -> Option<usize> {
+    let mut pos = start;
+    
+    for (i, step) in steps.iter().enumerate() {
+        if let Some(w) = &step.wildcard {
+            // Wildcard: try consuming k tokens (ascending, not greedy) then
+            // check if the remai ning steps fit from that position.
+            let suffix = &steps[i + 1..];
+            for k in w.min..=w.max {
+                let after = pos + k;
+                if after > tokens.len() { break; }
+                if let Some(end) = match_tail(tokens, after, suffix) {
+                    return Some(end);
+                }
+            }
+            return None;
+        }
+
+        if pos >= tokens.len() { return None; }
+        if !step.matches(&tokens[pos]) { return None; }
+        pos += 1;
     }
 
-    // Out of tokens but still have steps to satisfy.
-    if token_pos >= tokens.len() {
-        return None;
-    }
+    // All steps consumed. pos is one past the last matched token.
+    (pos > start).then_some(pos - 1)
+}
 
-    let step = &steps[step_idx];
-
-    if let Some(ref w) = step.wildcard {
-        // TODO: implement wildcard matching
-        // Try k = w.min, w.min+1, ..., w.max (ascending — NOT greedy)
-        // For each k, call try_match(tokens, token_pos + k, steps, step_idx + 1)
-        // Return the first Some result.
-        let _ = w; // suppress unused warning until you implement this
-        todo!("implement wildcard step matching")
-    } else {
-        // TODO: implement non-wildcard step matching
-        // If step.matches(&tokens[token_pos]) is true, recurse into the next step.
-        // Otherwise return None.
-        todo!("implement token step matching")
+/// Match a sequence of non-wildcard steps starting at `tokens[start]`.
+/// Called for the suffix after a wildcard — wildcards are not expected here.
+fn match_tail(tokens: &[Token], start: usize, steps: &[crate::patterns::Step]) -> Option<usize> {
+    if steps.is_empty() {
+        // Wildcard was the last step. Last consumed token is start - 1.
+        return start.checked_sub(1);
     }
+    let mut pos = start;
+    for step in steps {
+        if pos >= tokens.len() { return None; }
+        if !step.matches(&tokens[pos]) { return None; }
+        pos += 1;
+    }
+    Some(pos - 1)
 }
