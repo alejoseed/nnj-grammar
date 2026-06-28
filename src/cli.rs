@@ -28,6 +28,11 @@ pub enum OutputFormat {
     Dot,
     /// Print a human-readable token table (useful for exploring tokenizer output)
     Table,
+    /// Draw the token chain and grammar annotations as a terminal graph
+    Graph,
+    /// Dump every raw UniDic field (indices 0–28) for each token — use this to
+    /// verify what index maps to what before changing anything in tokenizer.rs
+    Raw,
 }
 
 impl Cli {

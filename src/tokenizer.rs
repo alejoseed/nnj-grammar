@@ -106,6 +106,25 @@ impl Tokenizer {
     }
 }
 
+/// Dump every raw UniDic field (indices 0–28) for each token.
+/// Use `--output raw` to call this. Read the index numbers yourself and decide
+/// which ones to use — don't rely on comments in the code.
+pub fn print_raw(tokenizer: &Tokenizer, text: &str) -> Result<()> {
+    let mut raw = tokenizer.inner.tokenize(text)?;
+    for t in raw.iter_mut() {
+        let surface = t.surface.to_string();
+        let details = t.details();
+        println!("── {} ──", surface);
+        for (i, val) in details.iter().enumerate() {
+            if *val != "*" && !val.is_empty() {
+                println!("  [{:>2}]  {}", i, val);
+            }
+        }
+        println!();
+    }
+    Ok(())
+}
+
 /// Print a token table — run this first on any sentence before writing grammar rules.
 /// The conj_form column shows you the exact UniDic strings to put in your TOML steps.
 pub fn print_table(tokens: &[Token]) {
