@@ -1,4 +1,5 @@
 mod cli;
+mod display;
 mod matcher;
 mod patterns;
 mod tokenizer;
@@ -24,6 +25,18 @@ fn main() -> Result<()> {
 
     if matches!(cli.output, OutputFormat::Table) {
         tokenizer::print_table(&tokens);
+        return Ok(());
+    }
+
+    if matches!(cli.output, OutputFormat::Raw) {
+        tokenizer::print_raw(&tokenizer, &text)?;
+        return Ok(());
+    }
+
+    if matches!(cli.output, OutputFormat::Graph) {
+        let rules = patterns::load_grammar_dir(&cli.grammar_db)?;
+        let pattern_matches = matcher::match_all(&tokens, &rules);
+        display::print_graph(&tokens, &pattern_matches);
         return Ok(());
     }
 
