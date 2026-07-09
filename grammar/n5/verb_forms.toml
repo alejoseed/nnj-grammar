@@ -1,16 +1,26 @@
-# N5 verb form patterns
-#
-# These patterns need the exact UniDic conjugation form values verified
-# against actual tokenizer output before they can be added back.
-#
-# Run: nnj-grammar --output table "食べている"
-#      nnj-grammar --output table "食べてから帰った"
-#      nnj-grammar --output table "食べてください"
-#
-# Then check the ConjForm column and rebuild each pattern step by step.
-# The table output for 食べている shows:
-#   食べ  →  動詞  一般  連用形-一般
-#   て    →  助詞  接続助詞
-#   いる  →  動詞  非自立可能  終止形-一般
-#
-# Each pattern needs all three tokens as separate steps.
+[[patterns]]
+id         = "te-iru"
+name       = "〜ている"
+jlpt       = "N5"
+meaning_en = "ongoing action or resultant state"
+hint       = "Verb te-form + いる. Indicates something is currently happening (食べている = is eating) or a state resulting from a past action (結婚している = is married)."
+
+# Step 1: any verb in te-form
+# UniDic te-form variants (all match pos1=動詞, pos2=接続助詞 on the て/で):
+#   連用形-一般        食べて, 見て, 起きて
+#   連用形-促音便      帰って, 揃って, 行って (っ + て)
+#   連用形-撥音便      飲んで, 読んで       (ん + で)
+#   連用形-ウ音便      書いて, 聞いて       (い + て)
+# We match on pos1=動詞 only — any te-form verb qualifies.
+[[patterns.steps]]
+pos1 = "動詞"
+
+# Step 2: the て/で connector particle
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
+
+# Step 3: いる (auxiliary, non-independent verb)
+[[patterns.steps]]
+pos1 = "動詞"
+pos2 = "非自立可能"

@@ -33,6 +33,11 @@ walkdir = "2"
 # Ergonomic error handling
 anyhow = "1"
 
+# Embed grammar TOML files into the binary at compile time.
+# This makes the binary self-contained — no grammar/ directory needed at runtime.
+# Used on iOS (no writable filesystem for resources) and for single-binary distribution.
+rust-embed = { version = "8", features = ["include-exclude"] }
+
 [profile.release]
 lto = true
 strip = true
