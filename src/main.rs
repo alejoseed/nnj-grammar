@@ -51,14 +51,9 @@ fn main() -> Result<()> {
             println!("{}", serde_json::to_string_pretty(&output)?);
         }
         OutputFormat::Dot => {
-            println!("digraph {{");
-            for t in &tokens {
-                println!("  {} [label=\"{}\"];", t.position, t.surface);
-            }
-            for i in 0..tokens.len().saturating_sub(1) {
-                println!("  {} -> {};", i, i + 1);
-            }
-            println!("}}");
+            let rules = patterns::load_grammar_dir(&cli.grammar_db)?;
+            let matches = matcher::match_all(&tokens, &rules);
+            display::print_dot(&tokens, &matches);
         }
     }
 
