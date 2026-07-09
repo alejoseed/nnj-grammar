@@ -93,8 +93,8 @@ impl Tokenizer {
                     pos4: g(3),
                     conj_type: g(4),
                     conj_form: g(5),
-                    base_form: g(8),   // orth_base = orthographic base form
-                    reading: g(10),    // kana_base
+                    base_form: g(7),   // 語彙素 — true dictionary/lemma form (行く not 行か, する not し)
+                    reading: katakana_to_hiragana(&g(6)), // 語彙素読み — katakana reading converted to hiragana
                     byte_start: t.byte_start,
                     byte_end: t.byte_end,
                     position,
@@ -104,6 +104,17 @@ impl Tokenizer {
 
         Ok(tokens)
     }
+}
+
+/// Convert a katakana string to hiragana for furigana display.
+/// Each katakana character (U+30A1–U+30F6) maps to hiragana by subtracting 0x60.
+fn katakana_to_hiragana(s: &str) -> String {
+    s.chars()
+        .map(|c| match c as u32 {
+            0x30A1..=0x30F6 => char::from_u32(c as u32 - 0x60).unwrap_or(c),
+            _ => c,
+        })
+        .collect()
 }
 
 /// Dump every raw UniDic field (indices 0–28) for each token.
