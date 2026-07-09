@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　私がこの会社に採用されるかどうかは、面接の結果如何だ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "如何"
+name       = "如何"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "How; what; (depending on) how/what; (according to) how/what; depend on"
+# example: 　私がこの会社に採用されるかどうかは、面接の結果如何だ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

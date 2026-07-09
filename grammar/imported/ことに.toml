@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　残念なことに、この本は絶版で、普通の本屋では手に入らない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ことに"
+name       = "ことに"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "It is ~ that; I am ~ that; we are ~ that; to my/our ~; ~ly"
+# example: 　残念なことに、この本は絶版で、普通の本屋では手に入らない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

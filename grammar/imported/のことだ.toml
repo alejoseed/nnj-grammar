@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "It was in May 1985 that I last met Mr. Yamada."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "のことだ"
+name       = "のことだ"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "It will be/was ~ when/that ~"
+# example: It was in May 1985 that I last met Mr. Yamada.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

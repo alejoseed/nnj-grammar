@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "There are people who say things like Japanese culture is unique, but I don't think so."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "などと"
+name       = "などと"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "(things) like ~; ~ or something like"
+# example: There are people who say things like Japanese culture is unique, but I don't think so.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

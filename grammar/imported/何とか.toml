@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　我々は今の日本の政治状況を何とか変えようと努力しています。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "何とか"
+name       = "何とか"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Somehow; in some way; in one way or another; manage to"
+# example: 　我々は今の日本の政治状況を何とか変えようと努力しています。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "The parents are opposed to the couple's marriage. Nevertheless, they seem intent to marrying."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "それでも"
+name       = "それでも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Nevertheless; yet; but in spite of that; even so"
+# example: The parents are opposed to the couple's marriage. Nevertheless, they seem intent to marrying.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

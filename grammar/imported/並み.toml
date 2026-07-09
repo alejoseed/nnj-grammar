@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　マイクさんのゴルフはプロ並みだ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "並み"
+name       = "並み"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "About the same level as; like; as (much ~) as; to match; to rival; on a par with; equivalent to"
+# example: 　マイクさんのゴルフはプロ並みだ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

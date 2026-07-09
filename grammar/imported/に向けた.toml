@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　報道班は次の目的地に向けて出発した。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "に向けた"
+name       = "に向けた"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Toward; to; at; aiming at; targeting; for; for the purpose of; in order to"
+# example: 　報道班は次の目的地に向けて出発した。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

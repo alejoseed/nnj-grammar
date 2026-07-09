@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "If we had another ten million yen, we could manage to buy the house we want. Having said that, we don't know how we could borrow that much money."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "と言って"
+name       = "と言って"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "However; but; having said that"
+# example: If we had another ten million yen, we could manage to buy the house we want. Having said that, we don't know how we could borrow that much money.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

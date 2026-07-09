@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　本奨学金への応募資格は、日本国籍を有すること、及び国内の四年制大学に在籍する学生であることである。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "及び"
+name       = "及び"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And"
+# example: 　本奨学金への応募資格は、日本国籍を有すること、及び国内の四年制大学に在籍する学生であることである。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

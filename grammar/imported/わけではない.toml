@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　この問題を解決するのは非常に難しい。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "わけではない"
+name       = "わけではない"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "It does not mean that ~; I don't mean that ~; it is not that ~; it is not true that ~; it is not the case that"
+# example: 　この問題を解決するのは非常に難しい。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

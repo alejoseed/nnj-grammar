@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "How long have you been here / how many years it is since you came here?"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "て"
+name       = "て"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And; since; having done something"
+# example: How long have you been here / how many years it is since you came here?
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

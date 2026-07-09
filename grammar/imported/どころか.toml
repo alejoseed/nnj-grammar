@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　私は日本語が話せるどころか、一度も勉強したことがありません。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "どころか"
+name       = "どころか"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Far from; not just; even"
+# example: 　私は日本語が話せるどころか、一度も勉強したことがありません。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　この文の意昧がどうもよく分からない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "どうも"
+name       = "どうも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "I don't know why but; I cannot manage to; just; from what I gather; seem; no matter how ~; I gather that ~; for some reason"
+# example: 　この文の意昧がどうもよく分からない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

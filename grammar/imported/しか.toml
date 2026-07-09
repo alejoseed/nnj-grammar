@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　戸田さんしか煙草を吸わない・吸いません。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "しか"
+name       = "しか"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Nothing/nobody/no ~ but; only"
+# example: 　戸田さんしか煙草を吸わない・吸いません。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

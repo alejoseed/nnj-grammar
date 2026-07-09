@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "A: Don't you read Japanese newspapers? B: I do read them, but very rarely. (literally: It isn't the case that I don't read them, but very rarely.)"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ないことも"
+name       = "ないことも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "It isn't the case that ~ not ~; it is not that ~ not ~"
+# example: A: Don't you read Japanese newspapers? B: I do read them, but very rarely. (literally: It isn't the case that I don't read them, but very rarely.)
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

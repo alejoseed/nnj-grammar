@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　彼女は頭脳明晰にして端麗な秘書である。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "にして"
+name       = "にして"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And; both ~ and ~"
+# example: 　彼女は頭脳明晰にして端麗な秘書である。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

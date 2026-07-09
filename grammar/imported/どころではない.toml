@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　自分のことで精一杯で、人のことなど考えるどころではない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "どころではない"
+name       = "どころではない"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Cannot; be simply impossible; simply don’t/doesn’t have time; be far from ~; anything but ~; no way; far from; be out of question"
+# example: 　自分のことで精一杯で、人のことなど考えるどころではない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

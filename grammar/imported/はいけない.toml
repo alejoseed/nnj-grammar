@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "You must not enter this room."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "はいけない"
+name       = "はいけない"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Cannot do something; must not do something; don’t do something; should not do something"
+# example: You must not enter this room.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

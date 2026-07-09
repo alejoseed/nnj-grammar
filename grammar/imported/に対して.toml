@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　これまで日本は外国に対して閉鎖的な政策を取ってきた。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "に対して"
+name       = "に対して"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Toward; to; in contrast to; whereas; in regard to; in; per"
+# example: 　これまで日本は外国に対して閉鎖的な政策を取ってきた。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

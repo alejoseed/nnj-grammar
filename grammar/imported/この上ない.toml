@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　生まれたばかりの赤ん坊を車に残して買い物に行くとは非常識この上ない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "この上ない"
+name       = "この上ない"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Extremely; utterly; very; so; cannot be more; extreme; utmost"
+# example: 　生まれたばかりの赤ん坊を車に残して買い物に行くとは非常識この上ない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

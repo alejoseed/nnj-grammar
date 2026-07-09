@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "I seem to feel that right now is the happiest time of my life."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ないでもない"
+name       = "ないでもない"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Seem to ~; somewhat; rather; may"
+# example: I seem to feel that right now is the happiest time of my life.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""
