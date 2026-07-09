@@ -1,17 +1,23 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "わけではない"
-name         = "わけではない"
-jlpt         = "N3"
-meaning_en   = "It does not mean that ~; I don't mean that ~; it is not that ~; it is not true that ~; it is not the case that"
-# example: <example sentence>
+id         = "わけではない"
+name       = "わけではない"
+jlpt       = "N3"
+meaning_en = "It does not mean that ~; I don't mean that ~; it is not that ~; it is not true that ~; it is not the case that"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "わけ"
+
+[[patterns.steps]]
+surface    = "で"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+

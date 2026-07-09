@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "たら"
-name         = "たら"
-jlpt         = "N1"
-meaning_en   = "If; when; after"
-# example: <example sentence>
+id         = "たら"
+name       = "たら"
+jlpt       = "N1"
+meaning_en = "If; when; after"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "たら"
+pos1       = "接続詞"
+

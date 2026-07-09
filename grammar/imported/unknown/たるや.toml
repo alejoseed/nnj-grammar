@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "種類を超える。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "たるや"
 name       = "たるや"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "When it comes to ~; speaking of"
-# example: 種類を超える。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "たり-断定"
+
+[[patterns.steps]]
+surface    = "や"
+pos1       = "助詞"
+pos2       = "終助詞"
+

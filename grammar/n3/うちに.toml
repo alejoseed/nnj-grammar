@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "うちに"
-name         = "うちに"
-jlpt         = "N3"
-meaning_en   = "While; before; during"
-# example: <example sentence>
+id         = "うちに"
+name       = "うちに"
+jlpt       = "N3"
+meaning_en = "While; before; during"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "うち"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "I love his postmodern novels. I like the way he leaves the interpretation to the reader. Incidentally, his work published last year topped the bestseller list."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "ちなみに"
 name       = "ちなみに"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Incidentally; in this connection"
-# example: I love his postmodern novels. I like the way he leaves the interpretation to the reader. Incidentally, his work published last year topped the bestseller list.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "ちなみ"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

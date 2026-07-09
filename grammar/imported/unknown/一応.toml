@@ -1,17 +1,9 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "Let's tentatively set our meeting date for next Wednesday."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "一応"
 name       = "一応"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "For the time being; for the present; for now; tentatively; for formality’s sake; nominally; kind of; sort of"
-# example: Let's tentatively set our meeting date for next Wednesday.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "一応"
+

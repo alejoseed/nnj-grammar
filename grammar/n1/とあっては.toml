@@ -1,17 +1,26 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "とあっては"
-name         = "とあっては"
-jlpt         = "N1"
-meaning_en   = "If it is true that; if it is the case that; if; because; since"
-# example: <example sentence>
+id         = "とあっては"
+name       = "とあっては"
+jlpt       = "N1"
+meaning_en = "If it is true that; if it is the case that; if; because; since"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+pos2       = "非自立可能"
+base_form  = "有る"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+

@@ -1,17 +1,9 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "I expect that Mr. Clark will go to the party."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "はず"
 name       = "はず"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "I expect that ~; it is expected that ~; ~ is expected to; I am fairly certain that ~; should; ought to; it is natural that ~; no wonder ~"
-# example: I expect that Mr. Clark will go to the party.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "はず"
+

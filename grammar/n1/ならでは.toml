@@ -1,16 +1,19 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ならでは"
-name         = "ならでは"
-jlpt         = "N1"
-# example: <example sentence>
+id         = "ならでは"
+name       = "ならでは"
+jlpt       = "N1"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "なり-断定"
+
+[[patterns.steps]]
+surface    = "で"
+pos1       = "助詞"
+pos2       = "接続助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+

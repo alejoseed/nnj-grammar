@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "べきだ"
-name         = "べきだ"
-jlpt         = "N3"
-meaning_en   = "Should; ought to"
-# example: <example sentence>
+id         = "べきだ"
+name       = "べきだ"
+jlpt       = "N3"
+meaning_en = "Should; ought to"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "べし"
+
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+

@@ -1,17 +1,20 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "私が間違っているかどちらだ・です。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "それとも"
 name       = "それとも"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Or; either ~ or ~"
-# example: 私が間違っているかどちらだ・です。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "それ"
+pos1       = "代名詞"
+
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+

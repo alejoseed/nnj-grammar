@@ -1,17 +1,20 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "とは言え"
-name         = "とは言え"
-jlpt         = "N1"
-meaning_en   = "Although (it is said that/someone says that); even though (it is said that/someone says that); admitting that; that being said; however; nevertheless"
-# example: <example sentence>
+id         = "とは言え"
+name       = "とは言え"
+jlpt       = "N1"
+meaning_en = "Although (it is said that/someone says that); even though (it is said that/someone says that); admitting that; that being said; however; nevertheless"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+

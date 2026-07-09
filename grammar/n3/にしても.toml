@@ -1,17 +1,26 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "にしても"
-name         = "にしても"
-jlpt         = "N3"
-meaning_en   = "Even if (someone decides to/it is true that); although/even though (it is true that/it is the case that/we admit that/we agree that/etc.); whatever/whoever/etc.; no matter what/who/how/etc.; whether X or Y; as for ~, too; even (so)"
-# example: <example sentence>
+id         = "にしても"
+name       = "にしても"
+jlpt       = "N3"
+meaning_en = "Even if (someone decides to/it is true that); although/even though (it is true that/it is the case that/we admit that/we agree that/etc.); whatever/whoever/etc.; no matter what/who/how/etc.; whether X or Y; as for ~, too; even (so)"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+pos2       = "非自立可能"
+base_form  = "為る"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+

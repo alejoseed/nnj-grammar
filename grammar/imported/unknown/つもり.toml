@@ -1,17 +1,9 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　私は来年結婚するつもりだ・です。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "つもり"
 name       = "つもり"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Intend to ~; be convinced that ~; believe; feel sure that ~; be going to; mean"
-# example: 　私は来年結婚するつもりだ・です。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "つもり"
+

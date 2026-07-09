@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　イラクへの攻撃はアメリカの孤立を招き、ひいてはイスラム社会全体との戦争に発展していく恐れがある。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "ひいては"
 name       = "ひいては"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Eventually (lead to) ~; even"
-# example: 　イラクへの攻撃はアメリカの孤立を招き、ひいてはイスラム社会全体との戦争に発展していく恐れがある。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "ひいては"
+pos1       = "副詞"
+

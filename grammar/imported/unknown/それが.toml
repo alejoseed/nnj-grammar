@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "A: Does it look like you can get a scholarship? B: Well, (no,) it looks difficult."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "それが"
 name       = "それが"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Well (contrary to your expectation; I'm afraid to say this, but)"
-# example: A: Does it look like you can get a scholarship? B: Well, (no,) it looks difficult.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "それ"
+pos1       = "代名詞"
+
+[[patterns.steps]]
+surface    = "が"
+pos1       = "助詞"
+pos2       = "格助詞"
+

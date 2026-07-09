@@ -1,18 +1,9 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "しいの文"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "しい"
 name       = "しい"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
-meaning_en = "[例文A] 
- 悲しい  楽しい  らしい  美味しい  苦しい  頼もしい
- Sad  enjoyable  seem  delicious  painful  dependable"
+jlpt       = ""
+meaning_en = "Adjective ending — 悲しい (sad), 楽しい (fun), 美味しい (delicious), 苦しい (painful)"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "しい"
+

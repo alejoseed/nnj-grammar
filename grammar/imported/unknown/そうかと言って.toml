@@ -1,17 +1,29 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "魚が体にいいそうですよ。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "そうかと言って"
 name       = "そうかと言って"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "But; yet; even so"
-# example: 魚が体にいいそうですよ。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "そう"
+pos1       = "副詞"
+
+[[patterns.steps]]
+surface    = "か"
+pos1       = "助詞"
+pos2       = "終助詞"
+
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

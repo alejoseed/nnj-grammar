@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "It's been threatening to rain since the morning and finally it started to rain. (literally: The rain which threatened to fall from the morning finally started to fall.)"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "とうとう"
 name       = "とうとう"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Finally; at (long) last; eventually; in the end; after all"
-# example: It's been threatening to rain since the morning and finally it started to rain. (literally: The rain which threatened to fall from the morning finally started to fall.)
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "形状詞"
+base_form  = "蕩々"
+

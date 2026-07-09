@@ -10,10 +10,12 @@ pub struct PatternRule {
     /// JLPT level: "N5", "N4", ..., "N1"
     pub jlpt: String,
     /// English meaning shown to the learner
+    #[serde(default)]
     pub meaning_en: String,
     /// Optional usage note (e.g. "predicate must be negative")
     pub hint: Option<String>,
     /// Ordered list of steps the matcher must satisfy in sequence
+    #[serde(default)]
     pub steps: Vec<Step>,
 }
 

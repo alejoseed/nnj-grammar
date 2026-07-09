@@ -1,17 +1,19 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　林田先生は厳しい教え方をする。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "方をする"
 name       = "方をする"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Do something in a ~ fashion/manner/way"
-# example: 　林田先生は厳しい教え方をする。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "方"
+
+[[patterns.steps]]
+surface    = "を"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+pos2       = "非自立可能"
+base_form  = "為る"
+

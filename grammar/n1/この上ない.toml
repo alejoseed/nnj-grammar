@@ -1,17 +1,17 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "この上ない"
-name         = "この上ない"
-jlpt         = "N1"
-meaning_en   = "Extremely; utterly; very; so; cannot be more; extreme; utmost"
-# example: <example sentence>
+id         = "この上ない"
+name       = "この上ない"
+jlpt       = "N1"
+meaning_en = "Extremely; utterly; very; so; cannot be more; extreme; utmost"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "この"
+pos1       = "連体詞"
+
+[[patterns.steps]]
+surface    = "上"
+
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+

@@ -1,17 +1,20 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　サンフランシスコと言うと、あのケーブルカーを思い出す。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "と言うと"
 name       = "と言うと"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "When ~ mention; if ~ say that ~; when ~ say that ~; when it comes to"
-# example: 　サンフランシスコと言うと、あのケーブルカーを思い出す。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

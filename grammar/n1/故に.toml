@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "故に"
-name         = "故に"
-jlpt         = "N1"
-meaning_en   = "Because; because of; due to; therefore"
-# example: <example sentence>
+id         = "故に"
+name       = "故に"
+jlpt       = "N1"
+meaning_en = "Because; because of; due to; therefore"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "故"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

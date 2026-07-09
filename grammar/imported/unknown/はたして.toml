@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　今年の冬も暖冬だと言われていたが、はたして暖冬だった。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "はたして"
 name       = "はたして"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Just as ~ though; as expected; really; in fact; sure enough; indeed; at all; lo and behold"
-# example: 　今年の冬も暖冬だと言われていたが、はたして暖冬だった。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "はたして"
+pos1       = "副詞"
+

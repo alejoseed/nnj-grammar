@@ -1,17 +1,19 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　彼は大学卒業と同時に銀行に就職した。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "と同時に"
 name       = "と同時に"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "At the same time (as); at the time; when; as; while; as well as ~"
-# example: 　彼は大学卒業と同時に銀行に就職した。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "同時"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

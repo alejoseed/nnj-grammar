@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "Compared to (the situations) in Europe and the U.S., the housing situation in Japan is extremely poor."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "に比べる"
 name       = "に比べる"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Compared with/to; when compared with/to; in comparison to"
-# example: Compared to (the situations) in Europe and the U.S., the housing situation in Japan is extremely poor.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "比べる"
+
