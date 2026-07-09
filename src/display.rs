@@ -20,41 +20,80 @@ fn dot_escape(s: &str) -> String {
     s.replace('\\', "\\\\").replace('"', "\\\"")
 }
 
-/// Emit a Graphviz DOT graph from tokens and pattern matches.
+/// Emit a Graphviz DOT tree from tokens and pattern matches.
+///
+/// Layout:
+///   - Root node = full sentence text
+///   - Tokens that belong to a pattern match → grouped under that pattern node
+///   - Tokens not in any match → direct children of root
+///   - Order follows sentence position
 ///
 /// Open the output in Graphviz, e.g.:
 ///   nnj-grammar --output dot "東京しか行かない" | dot -Tsvg -o out.svg && open out.svg
 pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
+    let font = "Hiragino Sans,Arial Unicode MS,sans-serif";
+
     println!("digraph {{");
-    println!("  rankdir=LR");
-    println!("  node [fontname=\"Hiragino Sans,Arial Unicode MS,sans-serif\" fontsize=12]");
-    println!("  edge [fontname=\"Hiragino Sans,Arial Unicode MS,sans-serif\" fontsize=10]");
+    println!("  rankdir=TB");
+    println!("  node [fontname=\"{}\" fontsize=12]", font);
+    println!("  edge [fontname=\"{}\" fontsize=10]", font);
     println!();
 
-    // ── Token nodes ──────────────────────────────────────────────────────────
+    // ── Root: full sentence ───────────────────────────────────────────────────
+    let sentence: String = tokens.iter().map(|t| t.surface.as_str()).collect();
+    println!(
+        "  root [shape=box style=filled fillcolor=\"#2C3E50\" fontcolor=white \
+         fontsize=14 label=\"{}\"]",
+        dot_escape(&sentence)
+    );
+    println!();
+
+    // ── Figure out which tokens are claimed by a pattern ─────────────────────
+    // A token can appear in multiple overlapping patterns; we use the first
+    // match that claims it (sorted by token_start, which match_all guarantees).
+    let mut token_pattern: Vec<Option<usize>> = vec![None; tokens.len()];
+    for (pi, m) in matches.iter().enumerate() {
+        for pos in m.token_start..=m.token_end {
+            if token_pattern[pos].is_none() {
+                token_pattern[pos] = Some(pi);
+            }
+        }
+    }
+
+    // ── Pattern nodes ─────────────────────────────────────────────────────────
+    for (i, m) in matches.iter().enumerate() {
+        let label = format!(
+            "{}\\n[{}]\\n{}",
+            dot_escape(&m.rule_name),
+            dot_escape(&m.jlpt),
+            dot_escape(&m.meaning_en),
+        );
+        println!(
+            "  p{} [shape=box style=\"filled,rounded\" fillcolor=\"#FFF3CD\" label=\"{}\"]",
+            i, label
+        );
+        println!("  root -> p{}", i);
+    }
+    println!();
+
+    // ── Token nodes ───────────────────────────────────────────────────────────
     for t in tokens {
-        // Show reading only when it differs from the surface form
         let reading_line = if t.reading != t.surface && !t.reading.is_empty() {
             format!("\\n{}", dot_escape(&t.reading))
         } else {
             String::new()
         };
-
-        // POS label: show pos1, and pos2 if present
         let pos_line = if t.pos2.is_empty() {
             dot_escape(&t.pos1)
         } else {
             format!("{}・{}", dot_escape(&t.pos1), dot_escape(&t.pos2))
         };
-
-        // ConjForm on its own line when present
         let conj_line = if t.conj_form.is_empty() {
             String::new()
         } else {
             format!("\\n{}", dot_escape(&t.conj_form))
         };
 
-        let color = pos_color(&t.pos1);
         let label = format!(
             "{}{}\\n{}{}",
             dot_escape(&t.surface),
@@ -62,40 +101,16 @@ pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
             pos_line,
             conj_line,
         );
-
+        let color = pos_color(&t.pos1);
         println!(
             "  t{} [shape=box style=filled fillcolor=\"{}\" label=\"{}\"]",
             t.position, color, label
         );
-    }
 
-    println!();
-
-    // ── Sequence edges ────────────────────────────────────────────────────────
-    for i in 0..tokens.len().saturating_sub(1) {
-        println!("  t{} -> t{}", i, i + 1);
-    }
-
-    // ── Pattern nodes + membership edges ─────────────────────────────────────
-    if !matches.is_empty() {
-        println!();
-        for (i, m) in matches.iter().enumerate() {
-            let label = format!(
-                "{}\\n{}\\n{}",
-                dot_escape(&m.rule_name),
-                dot_escape(&m.jlpt),
-                dot_escape(&m.meaning_en),
-            );
-            println!(
-                "  p{} [shape=box style=\"filled,rounded\" fillcolor=\"#FFF3CD\" label=\"{}\"]",
-                i, label
-            );
-            // Span edge: first token → pattern
-            println!("  t{} -> p{} [style=dashed color=\"#999999\" label=\"start\"]", m.token_start, i);
-            // End edge: last token → pattern (only when span covers multiple tokens)
-            if m.token_end != m.token_start {
-                println!("  t{} -> p{} [style=dashed color=\"#999999\" label=\"end\"]", m.token_end, i);
-            }
+        // Connect to its pattern parent, or directly to root if unclaimed
+        match token_pattern[t.position] {
+            Some(pi) => println!("  p{} -> t{}", pi, t.position),
+            None     => println!("  root -> t{}", t.position),
         }
     }
 
