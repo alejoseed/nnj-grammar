@@ -1,6 +1,107 @@
 use crate::matcher::PatternMatch;
 use crate::tokenizer::Token;
 
+/// Return a fill color for a token node based on its POS category.
+fn pos_color(pos1: &str) -> &'static str {
+    match pos1 {
+        "名詞"  => "#D6EAF8", // noun        — blue
+        "動詞"  => "#D5F5E3", // verb        — green
+        "助詞"  => "#FDEBD0", // particle    — orange
+        "助動詞" => "#FEF9E7", // auxiliary   — yellow
+        "形容詞" => "#E8DAEF", // i-adjective — purple
+        "副詞"  => "#FDEDEC", // adverb      — pink
+        "代名詞" => "#D6EAF8", // pronoun     — blue (same as noun)
+        _      => "#F2F3F4", // other       — grey
+    }
+}
+
+/// Escape a string for use inside a DOT label (double-quotes and backslashes).
+fn dot_escape(s: &str) -> String {
+    s.replace('\\', "\\\\").replace('"', "\\\"")
+}
+
+/// Emit a Graphviz DOT graph from tokens and pattern matches.
+///
+/// Open the output in Graphviz, e.g.:
+///   nnj-grammar --output dot "東京しか行かない" | dot -Tsvg -o out.svg && open out.svg
+pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
+    println!("digraph {{");
+    println!("  rankdir=LR");
+    println!("  node [fontname=\"Hiragino Sans,Arial Unicode MS,sans-serif\" fontsize=12]");
+    println!("  edge [fontname=\"Hiragino Sans,Arial Unicode MS,sans-serif\" fontsize=10]");
+    println!();
+
+    // ── Token nodes ──────────────────────────────────────────────────────────
+    for t in tokens {
+        // Show reading only when it differs from the surface form
+        let reading_line = if t.reading != t.surface && !t.reading.is_empty() {
+            format!("\\n{}", dot_escape(&t.reading))
+        } else {
+            String::new()
+        };
+
+        // POS label: show pos1, and pos2 if present
+        let pos_line = if t.pos2.is_empty() {
+            dot_escape(&t.pos1)
+        } else {
+            format!("{}・{}", dot_escape(&t.pos1), dot_escape(&t.pos2))
+        };
+
+        // ConjForm on its own line when present
+        let conj_line = if t.conj_form.is_empty() {
+            String::new()
+        } else {
+            format!("\\n{}", dot_escape(&t.conj_form))
+        };
+
+        let color = pos_color(&t.pos1);
+        let label = format!(
+            "{}{}\\n{}{}",
+            dot_escape(&t.surface),
+            reading_line,
+            pos_line,
+            conj_line,
+        );
+
+        println!(
+            "  t{} [shape=box style=filled fillcolor=\"{}\" label=\"{}\"]",
+            t.position, color, label
+        );
+    }
+
+    println!();
+
+    // ── Sequence edges ────────────────────────────────────────────────────────
+    for i in 0..tokens.len().saturating_sub(1) {
+        println!("  t{} -> t{}", i, i + 1);
+    }
+
+    // ── Pattern nodes + membership edges ─────────────────────────────────────
+    if !matches.is_empty() {
+        println!();
+        for (i, m) in matches.iter().enumerate() {
+            let label = format!(
+                "{}\\n{}\\n{}",
+                dot_escape(&m.rule_name),
+                dot_escape(&m.jlpt),
+                dot_escape(&m.meaning_en),
+            );
+            println!(
+                "  p{} [shape=box style=\"filled,rounded\" fillcolor=\"#FFF3CD\" label=\"{}\"]",
+                i, label
+            );
+            // Span edge: first token → pattern
+            println!("  t{} -> p{} [style=dashed color=\"#999999\" label=\"start\"]", m.token_start, i);
+            // End edge: last token → pattern (only when span covers multiple tokens)
+            if m.token_end != m.token_start {
+                println!("  t{} -> p{} [style=dashed color=\"#999999\" label=\"end\"]", m.token_end, i);
+            }
+        }
+    }
+
+    println!("}}");
+}
+
 /// Terminal display columns for a string.
 /// Japanese/CJK characters occupy 2 columns; everything else occupies 1.
 fn cols(s: &str) -> usize {
