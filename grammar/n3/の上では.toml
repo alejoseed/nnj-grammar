@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "<example sentence>"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id           = "の上では"
+name         = "の上では"
+jlpt         = "N3"
+meaning_en   = "As far as ~ is concerned; as far as ~ goes; from the viewpoint/standpoint of; according to; in terms of"
+# example: <example sentence>
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

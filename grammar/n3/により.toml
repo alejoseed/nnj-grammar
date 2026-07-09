@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "<example sentence>"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id           = "により"
+name         = "により"
+jlpt         = "N3"
+meaning_en   = "According to; due to; owing to; because of; depending on; from ~ to; by means of; on the basis of; with; by"
+# example: <example sentence>
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "<example sentence>"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id           = "させる"
+name         = "させる"
+jlpt         = "N4"
+meaning_en   = "Make someone/something do something; cause someone/something to do something; let someone/something do something; allow someone/something to do something; have someone/something do something; get someone/something to do something."
+# example: <example sentence>
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""
