@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　昼間遊ぶ代わりに夜勉強するつもりだ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "代わりに"
+name       = "代わりに"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Instead of; instead; but (to make up for ~); so (to make up for ~); in place of"
+# example: 　昼間遊ぶ代わりに夜勉強するつもりだ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

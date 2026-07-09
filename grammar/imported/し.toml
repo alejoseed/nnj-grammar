@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　今日はテニスもしたし、映画も見た・見ました。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "し"
+name       = "し"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And what’s more; not only ~ but also ~; so"
+# example: 　今日はテニスもしたし、映画も見た・見ました。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

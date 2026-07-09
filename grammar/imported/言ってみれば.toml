@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　彼女の家は、言ってみれば、お城のように作られている。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "言ってみれば"
+name       = "言ってみれば"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Figuratively speaking; so to speak; metaphorically speaking; in a manner of saying"
+# example: 　彼女の家は、言ってみれば、お城のように作られている。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

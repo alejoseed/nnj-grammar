@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　私達は一歩も歩けないくらい疲れていた。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "くらい"
+name       = "くらい"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "To the extent that; so ~ that ~ (almost) ~; at least; the only ~; rather than ~"
+# example: 　私達は一歩も歩けないくらい疲れていた。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

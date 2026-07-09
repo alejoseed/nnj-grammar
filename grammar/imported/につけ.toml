@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "When I see the photo of my parents I took in Naples, I remember what a great time we had on that trip."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "につけ"
+name       = "につけ"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "As; every time; whenever"
+# example: When I see the photo of my parents I took in Naples, I remember what a great time we had on that trip.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

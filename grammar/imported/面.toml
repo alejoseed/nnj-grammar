@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "He is excellent in terms of his academic performance (literally: on the side of his academic performance) but he seems to have some psychological weakness (literally: have some weakness on the side of his psychology)."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "面"
+name       = "面"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "(on) the side of; (from) the aspect of; (from) the standpoint/viewpoint of; in terms of"
+# example: He is excellent in terms of his academic performance (literally: on the side of his academic performance) but he seems to have some psychological weakness (literally: have some weakness on the side of his psychology).
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

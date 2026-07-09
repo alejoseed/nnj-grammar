@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "He has studied Japanese for 20 years, but he told me that even he still encounters grammar he doesn't understand."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "にしたところで"
+name       = "にしたところで"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Also; (even) for ~"
+# example: He has studied Japanese for 20 years, but he told me that even he still encounters grammar he doesn't understand.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

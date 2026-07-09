@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　日本式の部屋に泊まりたいと思って旅館を予約した。ところが、通された部屋は洋式だった。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ところが"
+name       = "ところが"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "However; but"
+# example: 　日本式の部屋に泊まりたいと思って旅館を予約した。ところが、通された部屋は洋式だった。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

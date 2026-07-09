@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　トムは二十年来日本語の勉強を続けている。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "来"
+name       = "来"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "For; in; since"
+# example: 　トムは二十年来日本語の勉強を続けている。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

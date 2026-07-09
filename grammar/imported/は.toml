@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　行きはしますが、何も手伝えませんよ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "は"
+name       = "は"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "[emphatic] {do/does/did} V; will V; {am/are/is/was/were} Adjective/Noun; (not) V/Adjective/Noun"
+# example: 　行きはしますが、何も手伝えませんよ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

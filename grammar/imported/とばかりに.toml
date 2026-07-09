@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　悟は「黙ってついてこい」とばかりに先に立って歩き出した。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "とばかりに"
+name       = "とばかりに"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "As if; as if to say that; as if ~ were convinced that; as if ~ believed that; as if ~ decided that"
+# example: 　悟は「黙ってついてこい」とばかりに先に立って歩き出した。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

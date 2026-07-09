@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　懸命な努力にもかかわらず、健一は大学入試に失敗した。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "にもかかわらず"
+name       = "にもかかわらず"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Although; though; in spite of; despite; notwithstanding; nevertheless"
+# example: 　懸命な努力にもかかわらず、健一は大学入試に失敗した。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

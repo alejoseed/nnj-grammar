@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　甘いのなんのって私は一口食べて全部残してしまいました。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "のなんのって"
+name       = "のなんのって"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "So (~ that); so much/well (~ that); so ~ and"
+# example: 　甘いのなんのって私は一口食べて全部残してしまいました。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

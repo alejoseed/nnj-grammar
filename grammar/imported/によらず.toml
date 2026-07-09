@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "この会社を救う方法はない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "によらず"
+name       = "によらず"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Without; without ~ing; regardless of; independently of; without reference to; whether X or Y; whether X or not; whatever/whoever/etc.; no matter what/who/how/etc."
+# example: この会社を救う方法はない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

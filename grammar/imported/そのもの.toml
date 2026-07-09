@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　マイナス思考ばかりしていると、人生そのものが駄目になる。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "そのもの"
+name       = "そのもの"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Itself; themselves; very; perfect; the definition of; the picture of; absolutely; totally; utterly; perfectly"
+# example: 　マイナス思考ばかりしていると、人生そのものが駄目になる。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　知らない単語が出てくるたびに辞書を引いているようではいつまでたっても速く読めない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ようでは"
+name       = "ようでは"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "If; if it is true that; if it is the case that"
+# example: 　知らない単語が出てくるたびに辞書を引いているようではいつまでたっても速く読めない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

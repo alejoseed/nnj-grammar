@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　その温泉は旅行雑誌によると神経痛にいいそうだ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "によると"
+name       = "によると"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "According to; based on"
+# example: 　その温泉は旅行雑誌によると神経痛にいいそうだ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

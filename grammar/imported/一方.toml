@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "、新しいエネルギーの開発に力を入れなければならない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "一方"
+name       = "一方"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "While; when; (but) at the same time; on the other hand; even though; although"
+# example: 、新しいエネルギーの開発に力を入れなければならない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

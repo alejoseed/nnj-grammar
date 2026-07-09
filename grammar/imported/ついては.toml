@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "Computer viruses are spreading across the country. Because of this, if you receive a suspicious e-mail (literally: in the event a suspicious e-mail arrives), delete the email without opening the attached ﬁle."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ついては"
+name       = "ついては"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Therefore; thus; so; because of this; for this reason; with regard to this"
+# example: Computer viruses are spreading across the country. Because of this, if you receive a suspicious e-mail (literally: in the event a suspicious e-mail arrives), delete the email without opening the attached ﬁle.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

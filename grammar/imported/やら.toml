@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　私は会議やら講習会やらでこのところ出張が続いている。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "やら"
+name       = "やら"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "X and Y; things like X and Y; X, Y and so on; whether X or Y; whether X or not"
+# example: 　私は会議やら講習会やらでこのところ出張が続いている。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

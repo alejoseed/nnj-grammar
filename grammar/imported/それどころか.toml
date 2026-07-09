@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　スミスさんは漢字が書けない。それどころか、平仮名も満足に書けない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "それどころか"
+name       = "それどころか"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "On the contrary; far from that; as a matter of fact"
+# example: 　スミスさんは漢字が書けない。それどころか、平仮名も満足に書けない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

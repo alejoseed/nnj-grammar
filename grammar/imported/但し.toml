@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　この部屋にある雑誌や本はどれを見てもいいです。但し、部屋からは持ち出さないで下さい。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "但し"
+name       = "但し"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "However; but; only; here; provided that"
+# example: 　この部屋にある雑誌や本はどれを見てもいいです。但し、部屋からは持ち出さないで下さい。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

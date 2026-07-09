@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "No matter how low we estimate the construction expense it will go beyond 500 million yen."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "たところで"
+name       = "たところで"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Even if"
+# example: No matter how low we estimate the construction expense it will go beyond 500 million yen.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

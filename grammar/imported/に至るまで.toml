@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "Mr. Smith can read Japanese widely, ranging from weekly magazines to scholastic books."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "に至るまで"
+name       = "に至るまで"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Starting with ~ ending with ~; from ~ to ~"
+# example: Mr. Smith can read Japanese widely, ranging from weekly magazines to scholastic books.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

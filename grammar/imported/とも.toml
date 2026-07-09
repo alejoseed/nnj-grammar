@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　よく勉強したから、試験にどんな問題が出ようとも大丈夫だ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "とも"
+name       = "とも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "No matter ~ may be; even if; at ~ -est"
+# example: 　よく勉強したから、試験にどんな問題が出ようとも大丈夫だ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

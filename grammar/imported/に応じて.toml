@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　組合の要求に応じて標準就業時間が短縮されることになった。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "に応じて"
+name       = "に応じて"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "In response to; according to; depending on; appropriate for; suitable for; suited to; meet"
+# example: 　組合の要求に応じて標準就業時間が短縮されることになった。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

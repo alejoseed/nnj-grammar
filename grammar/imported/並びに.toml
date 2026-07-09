@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "The prime minister and the foreign minister attended the U.N. General Assembly."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "並びに"
+name       = "並びに"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And; both ~ and ~; as well as"
+# example: The prime minister and the foreign minister attended the U.N. General Assembly.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

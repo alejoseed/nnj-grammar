@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　最近のテープレコーダーは小さくて軽く、しかも音が素晴らしくよくなった。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "しかも"
+name       = "しかも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Moreover; furthermore; besides; on top of that; what's more; what's worse; more surprisingly; at that; nevertheless; and yet; even so"
+# example: 　最近のテープレコーダーは小さくて軽く、しかも音が素晴らしくよくなった。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

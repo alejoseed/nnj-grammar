@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "My wife began to cry the moment she saw me (literally: my face)."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "なり"
+name       = "なり"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "The moment; when; as soon as; soon after; no sooner ~ than"
+# example: My wife began to cry the moment she saw me (literally: my face).
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

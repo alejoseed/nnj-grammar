@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　今年の夏は涼しいので、エアコンを使わずとも過ごせそうだ。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "ずとも"
+name       = "ずとも"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Without ~ing; even if ~ not; if ~ not"
+# example: 　今年の夏は涼しいので、エアコンを使わずとも過ごせそうだ。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

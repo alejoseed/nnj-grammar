@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "The novel sold one million copies as soon as it went on sale."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "や否や"
+name       = "や否や"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "As soon as; no sooner ~ than; the moment; soon after; immediately after"
+# example: The novel sold one million copies as soon as it went on sale.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

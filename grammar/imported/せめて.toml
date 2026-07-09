@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　百点とは言いませんが、せめて八十点ぐらいは取りたいです。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "せめて"
+name       = "せめて"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "At least"
+# example: 　百点とは言いませんが、せめて八十点ぐらいは取りたいです。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "There seems to be no problem with this plan as far as the documents are concerned."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "の上では"
+name       = "の上では"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "As far as ~ is concerned; as far as ~ goes; from the viewpoint/standpoint of; according to; in terms of"
+# example: There seems to be no problem with this plan as far as the documents are concerned.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

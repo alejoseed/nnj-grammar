@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　このような無責任な行いに対して怒りを禁じ得ない。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "を禁じ得なかった"
+name       = "を禁じ得なかった"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Cannot hold; cannot hold back; cannot keep back; cannot help ~ing; cannot keep ~ from ~ing"
+# example: 　このような無責任な行いに対して怒りを禁じ得ない。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

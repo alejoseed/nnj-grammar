@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "Arranged marriage is not limited to Japan; it is practiced in other countries, too."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "に限らず"
+name       = "に限らず"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Not limited to ~ (but also); not only ~ (but also)"
+# example: Arranged marriage is not limited to Japan; it is practiced in other countries, too.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

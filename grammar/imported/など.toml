@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "Among Japanese foods I like things like sushi and tempura."
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "など"
+name       = "など"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "And so on; and the like; for example; things like ~"
+# example: Among Japanese foods I like things like sushi and tempura.
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

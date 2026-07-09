@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　この度は本社営業部長にご栄転の由、誠におめでとう存じます。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "由"
+name       = "由"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "(I heard/It is said/etc.) that"
+# example: 　この度は本社営業部長にご栄転の由、誠におめでとう存じます。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

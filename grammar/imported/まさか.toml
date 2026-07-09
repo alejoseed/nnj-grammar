@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　まさか美智子があんな男と結婚するとは思わなかった。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "まさか"
+name       = "まさか"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Incredible; never thought; never dreamed; surely not; impossible; don't tell me that ~; not at all likely; absolutely not."
+# example: 　まさか美智子があんな男と結婚するとは思わなかった。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

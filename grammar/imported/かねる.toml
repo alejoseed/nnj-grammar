@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　そのことは私には分かりかねますから、部長にお聞きになって下さい。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "かねる"
+name       = "かねる"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "Cannot; be not in a position to; hardly possible; hard; hesitate to do"
+# example: 　そのことは私には分かりかねますから、部長にお聞きになって下さい。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

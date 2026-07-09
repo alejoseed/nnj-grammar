@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "　私の車は右から二台目です。"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id         = "目"
+name       = "目"
+jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+meaning_en = "-th; -th one"
+# example: 　私の車は右から二台目です。
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""
