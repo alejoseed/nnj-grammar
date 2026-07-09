@@ -1,17 +1,39 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "te-ageru"
+name       = "〜てあげる"
+jlpt       = "N4"
+meaning_en = "do something for someone (speaker gives benefit outward)"
+hint       = "Verb te-form + あげる. The subject does a favor for someone else."
+
+# Example: 本を読んであげる
+# 読ん  動詞 一般 連用形-撥音便
+# で    助詞 接続助詞
+# あげる 動詞 非自立可能 (base_form=上げる)
+
+[[patterns.steps]]
+pos1 = "動詞"
+
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+pos2      = "非自立可能"
+base_form = "上げる"
+
 
 [[patterns]]
-id           = "あげる"
-name         = "あげる"
-jlpt         = "N4"
-meaning_en   = "Give"
-# example: <example sentence>
+id         = "ageru-give"
+name       = "あげる (give)"
+jlpt       = "N4"
+meaning_en = "give (to someone of equal or lower status)"
+hint       = "Standalone あげる as a main verb of giving."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 花に水をあげる
+# あげる 動詞 非自立可能 終止形-一般 base_form=上げる
+
+[[patterns.steps]]
+pos1      = "動詞"
+pos2      = "非自立可能"
+base_form = "上げる"

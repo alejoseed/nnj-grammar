@@ -1,17 +1,42 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "to-naru"
+name       = "〜となる"
+jlpt       = "N4"
+meaning_en = "become; turn into; result in (formal/written style)"
+hint       = "Noun + となる. More formal variant of になる often seen in writing or news."
+
+# Example: 先生になる / となると大変だ
+# に/と  助詞 格助詞
+# なる   動詞 非自立可能 base_form=成る
+
+[[patterns.steps]]
+surface = "と"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+pos2      = "非自立可能"
+base_form = "成る"
+
 
 [[patterns]]
-id           = "となる"
-name         = "となる"
-jlpt         = "N4"
-meaning_en   = "Become"
-# example: <example sentence>
+id         = "ni-naru"
+name       = "〜になる"
+jlpt       = "N4"
+meaning_en = "become; turn into"
+hint       = "Noun/adjective + になる. Expresses a change of state."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 先生になる
+# に    助詞 格助詞
+# なる   動詞 非自立可能 base_form=成る
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+pos2      = "非自立可能"
+base_form = "成る"

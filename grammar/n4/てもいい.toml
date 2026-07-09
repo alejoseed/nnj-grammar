@@ -1,17 +1,28 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "てもいい"
-name         = "てもいい"
-jlpt         = "N4"
-meaning_en   = "May; It is all right if"
-# example: <example sentence>
+id         = "te-mo-ii"
+name       = "〜てもいい"
+jlpt       = "N4"
+meaning_en = "it is okay to do; may; you can"
+hint       = "Verb te-form + もいい. Grants permission or indicates something is acceptable."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 写真を撮ってもいい
+# 撮っ  動詞 一般 連用形-促音便
+# て    助詞 接続助詞
+# も    助詞 係助詞
+# いい  形容詞 非自立可能 終止形-一般 (base_form=良い)
+
+[[patterns.steps]]
+pos1 = "動詞"
+
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
+
+[[patterns.steps]]
+surface = "も"
+pos1    = "助詞"
+pos2    = "係助詞"
+
+[[patterns.steps]]
+pos1      = "形容詞"
+base_form = "良い"

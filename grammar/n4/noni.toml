@@ -1,0 +1,24 @@
+[[patterns]]
+id         = "noni-concessive"
+name       = "〜のに"
+jlpt       = "N4"
+meaning_en = "even though; despite; although (expresses disappointment or contrast)"
+hint       = "Plain predicate + のに. Speaker's expectation is unmet; often carries emotional nuance."
+
+# Example: 仕事があるのに遊んでいる
+# ある  動詞 非自立可能 連体形-一般 base_form=有る
+# の    助詞 準体助詞
+# に    助詞 格助詞
+
+[[patterns.steps]]
+pos1 = "動詞"
+
+[[patterns.steps]]
+surface = "の"
+pos1    = "助詞"
+pos2    = "準体助詞"
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"

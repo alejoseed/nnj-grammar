@@ -1,0 +1,34 @@
+[[patterns]]
+id         = "aida-ni"
+name       = "〜あいだに"
+jlpt       = "N4"
+meaning_en = "while; during (a change or event takes place in the interval)"
+hint       = "Verb te-iru / Noun の + 間に. A separate event occurs during the interval."
+
+# Example: 勉強している間に電話が鳴った
+# いる  動詞 非自立可能 連体形-一般 base_form=居る
+# 間    名詞 普通名詞 base_form=間
+# に    助詞 格助詞
+
+[[patterns.steps]]
+surface   = "間"
+base_form = "間"
+pos1      = "名詞"
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+
+[[patterns]]
+id         = "aida"
+name       = "〜あいだ"
+jlpt       = "N4"
+meaning_en = "while; during; throughout the time (continuous state)"
+hint       = "Verb te-iru / Noun の + 間. Describes a continuous state or ongoing action throughout an interval."
+
+[[patterns.steps]]
+surface   = "間"
+base_form = "間"
+pos1      = "名詞"

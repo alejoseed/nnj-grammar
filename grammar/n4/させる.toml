@@ -1,17 +1,38 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "causative-seru-saseru"
+name       = "〜させる／〜せる (causative)"
+jlpt       = "N4"
+meaning_en = "make someone do; let someone do; cause someone to do"
+hint       = "Verb negative stem (未然形) + せる/させる. Use せる for godan verbs, させる for ichidan/irregular."
+
+# Example: 先生は学生に本を読ませる
+# 読ま  動詞 一般 未然形-一般
+# せる  助動詞 終止形-一般 base_form=せる
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "未然形-一般"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "せる"
+
 
 [[patterns]]
-id           = "させる"
-name         = "させる"
-jlpt         = "N4"
-meaning_en   = "Make someone/something do something; cause someone/something to do something; let someone/something do something; allow someone/something to do something; have someone/something do something; get someone/something to do something."
-# example: <example sentence>
+id         = "causative-saseru"
+name       = "〜させる (causative — ichidan)"
+jlpt       = "N4"
+meaning_en = "make someone do; let someone do (ichidan/suru verbs)"
+hint       = "Verb negative stem + させる for ichidan and suru verbs."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# 行か  動詞 未然形-一般
+# させ  助動詞 連用形-一般 base_form=させる
+# (or させる as final form)
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "未然形-一般"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "させる"

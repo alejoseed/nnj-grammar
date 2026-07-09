@@ -1,0 +1,40 @@
+[[patterns]]
+id         = "sou-da-hearsay"
+name       = "〜そうだ (hearsay)"
+jlpt       = "N4"
+meaning_en = "I heard that; they say that (reporting information heard from others)"
+hint       = "Plain predicate + そうだ. Hearsay そうだ attaches to complete sentence forms. そう is pos1=名詞, sub=助動詞語幹."
+
+# Example: 雨が降るそうだ
+# 降る  動詞 一般 連体形-一般
+# そう  名詞 助動詞語幹 base_form=そう-伝聞
+# だ    助動詞 終止形-一般
+
+[[patterns.steps]]
+surface   = "そう"
+pos1      = "名詞"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "だ"
+
+
+[[patterns]]
+id         = "sou-da-appearance"
+name       = "〜そうだ (appearance)"
+jlpt       = "N4"
+meaning_en = "looks like; seems like; it appears that (based on direct observation)"
+hint       = "Verb masu-stem or adj stem + そうだ. Speaker makes a judgment from what they see directly. そう is pos1=形状詞."
+
+# Example: 空が暗くなりそうだ
+# なり  動詞 非自立可能 連用形-一般
+# そう  形状詞 助動詞語幹 base_form=そう-様態
+# だ    助動詞 終止形-一般
+
+[[patterns.steps]]
+surface = "そう"
+pos1    = "形状詞"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "だ"

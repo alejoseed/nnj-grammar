@@ -1,0 +1,36 @@
+[[patterns]]
+id         = "no-da"
+name       = "〜のだ／〜んだ"
+jlpt       = "N4"
+meaning_en = "it is that; the thing is; you see; (explanation or emphasis)"
+hint       = "Plain predicate + のだ (written) or んだ (spoken). Provides explanation or seeks/gives clarification."
+
+# Example: 彼は学生なんだ
+# な    助動詞 連体形-一般 base_form=だ  (before ん)
+# ん    助詞 準体助詞 base_form=の
+# だ    助動詞 終止形-一般 base_form=だ
+
+[[patterns.steps]]
+surface = "ん"
+pos1    = "助詞"
+pos2    = "準体助詞"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "だ"
+
+
+[[patterns]]
+id         = "no-da-plain"
+name       = "〜のだ (explanation)"
+jlpt       = "N4"
+meaning_en = "it is because; the fact is; (explanatory particle)"
+
+[[patterns.steps]]
+surface = "の"
+pos1    = "助詞"
+pos2    = "準体助詞"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "だ"

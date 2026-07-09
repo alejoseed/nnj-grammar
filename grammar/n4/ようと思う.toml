@@ -1,16 +1,23 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ようと思う"
-name         = "ようと思う"
-jlpt         = "N4"
-# example: <example sentence>
+id         = "you-to-omou"
+name       = "〜ようと思う"
+jlpt       = "N4"
+meaning_en = "I think I will; I am thinking of doing; I intend to"
+hint       = "Verb volitional form + と思う. Expresses the speaker's intention or plan."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 先生になろうと思う
+# なろう 動詞 非自立可能 意志推量形  (volitional)
+# と    助詞 格助詞
+# 思う  動詞 一般 終止形-一般
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "意志推量形"
+
+[[patterns.steps]]
+surface = "と"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+base_form = "思う"

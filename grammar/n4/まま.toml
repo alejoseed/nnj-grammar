@@ -1,17 +1,33 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "mama"
+name       = "〜まま"
+jlpt       = "N4"
+meaning_en = "as it is; leaving (something) unchanged; with ~ still in place"
+hint       = "Verb ta-form / noun の + まま. Indicates a state remains unchanged while a secondary action takes place."
+
+# Example: 窓を開けたまま寝た
+# た    助動詞 連体形-一般 base_form=た
+# まま  名詞 普通名詞 base_form=侭
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "た"
+
+[[patterns.steps]]
+surface = "まま"
+pos1    = "名詞"
+
 
 [[patterns]]
-id           = "まま"
-name         = "まま"
-jlpt         = "N4"
-meaning_en   = "As it is; unchanged; undisturbed; leave as is; remain"
-# example: <example sentence>
+id         = "mama-verb"
+name       = "〜たまま (unchanged state)"
+jlpt       = "N4"
+meaning_en = "with ~ still done; leaving it in that state"
+hint       = "Verb ta-form + まま + subsequent action. The original state continues unchanged."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "た"
+
+[[patterns.steps]]
+base_form = "侭"

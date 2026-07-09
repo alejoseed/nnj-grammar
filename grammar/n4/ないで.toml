@@ -1,17 +1,24 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ないで"
-name         = "ないで"
-jlpt         = "N4"
-meaning_en   = "Do not do something and; without doing ~"
-# example: <example sentence>
+id         = "nai-de"
+name       = "〜ないで"
+jlpt       = "N4"
+meaning_en = "without doing; do not do ~ and (instead do something else)"
+hint       = "Verb negative form ない + で (conjunctive). Connects clauses: the first action is not done."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 食べないでおく
+# 食べ  動詞 一般 未然形-一般
+# ない  助動詞 終止形-一般 base_form=ない
+# で    助詞 接続助詞
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "未然形-一般"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "ない"
+conj_form = "終止形-一般"
+
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
