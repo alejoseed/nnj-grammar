@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "<example sentence>"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id           = "に対して"
+name         = "に対して"
+jlpt         = "N4"
+meaning_en   = "Toward; to; in contrast to; whereas; in regard to; in; per"
+# example: <example sentence>
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

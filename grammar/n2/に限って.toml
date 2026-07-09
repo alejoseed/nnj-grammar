@@ -1,0 +1,17 @@
+# Generated from Dictionary of Japanese Grammar
+# Run: nnj-grammar --output table "<example sentence>"
+# Then fill in the [[patterns.steps]] below based on the table output.
+
+[[patterns]]
+id           = "に限って"
+name         = "に限って"
+jlpt         = "N2"
+meaning_en   = "(X) of all (X's); only"
+# example: <example sentence>
+
+# TODO: add steps after running --output table on an example sentence
+# [[patterns.steps]]
+# surface = ""
+# pos1    = ""
+# pos2    = ""
+# conj_form = ""

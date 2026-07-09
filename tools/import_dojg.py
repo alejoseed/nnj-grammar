@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
+# /// script
+# dependencies = [
+#     "toml>=0.10.2",
+# ]
+# ///
 """
 Import grammar patterns from the aiko-tanaka/Grammar-Dictionaries DoJG source
 and generate TOML stub files ready for step sequences to be added.
 
 Usage:
-    python3 tools/import_dojg.py ~/Grammar-Dictionaries/dojg grammar/imported/
+    uv run tools/import_dojg.py ~/Grammar-Dictionaries/dojg grammar/imported/
 
 Each generated file contains name, meaning, and example sentences.
 The 'steps' array is intentionally empty — fill it in after running:
-    ./target/release/nnj-grammar --output table "<example sentence>"
+    uv run -m nnj-grammar --output table "<example sentence>"
 """
 
 import json
