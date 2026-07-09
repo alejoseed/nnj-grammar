@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "、または小切手でお払い下さい。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "または"
 name       = "または"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Or; either ~ or ~"
-# example: 、または小切手でお払い下さい。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "また"
+pos1       = "接続詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+

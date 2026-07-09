@@ -1,17 +1,13 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "は千円単位でお金を引き出すことができる。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "単位で"
 name       = "単位で"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "By the; in sets/groups/lots/etc. of; in multiples of; each; every"
-# example: は千円単位でお金を引き出すことができる。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "単位"
+
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+

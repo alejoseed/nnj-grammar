@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ものを"
-name         = "ものを"
-jlpt         = "N1"
-meaning_en   = "Although; but"
-# example: <example sentence>
+id         = "ものを"
+name       = "ものを"
+jlpt       = "N1"
+meaning_en = "Although; but"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "もの"
+
+[[patterns.steps]]
+surface    = "を"
+pos1       = "助詞"
+pos2       = "格助詞"
+

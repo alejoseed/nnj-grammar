@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　受けても、どうせ、駄目だから、文部省の留学生試験を受けないことにしました。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "どうせ"
 name       = "どうせ"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "In any case; anyway; at all events; after all; at all"
-# example: 　受けても、どうせ、駄目だから、文部省の留学生試験を受けないことにしました。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "どうせ"
+pos1       = "副詞"
+

@@ -1,17 +1,18 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "Mr. Hall has gone to Tokyo on a business-related matter."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "の関係で"
 name       = "の関係で"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Because of"
-# example: Mr. Hall has gone to Tokyo on a business-related matter.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "の"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "関係"
+
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+

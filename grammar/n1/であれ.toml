@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "であれ"
-name         = "であれ"
-jlpt         = "N1"
-meaning_en   = "Whether X or Y; be it X or Y; or"
-# example: <example sentence>
+id         = "であれ"
+name       = "であれ"
+jlpt       = "N1"
+meaning_en = "Whether X or Y; be it X or Y; or"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "で"
+pos1       = "接続詞"
+
+[[patterns.steps]]
+surface    = "あれ"
+pos1       = "代名詞"
+

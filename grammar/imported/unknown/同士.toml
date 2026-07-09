@@ -1,17 +1,9 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "同士は反発する。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "同士"
 name       = "同士"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Each other; between/among (things/people of the same kind, group, etc.); together; with"
-# example: 同士は反発する。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "同士"
+

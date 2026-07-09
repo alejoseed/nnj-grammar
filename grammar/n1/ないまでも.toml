@@ -1,17 +1,23 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ないまでも"
-name         = "ないまでも"
-jlpt         = "N1"
-meaning_en   = "May not ~ but; even though ~ not; although ~ not"
-# example: <example sentence>
+id         = "ないまでも"
+name       = "ないまでも"
+jlpt       = "N1"
+meaning_en = "May not ~ but; even though ~ not; although ~ not"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+
+[[patterns.steps]]
+surface    = "いま"
+
+[[patterns.steps]]
+surface    = "で"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+

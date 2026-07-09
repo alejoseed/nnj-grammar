@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "家を買うなんて夢物語だ。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "ましてや"
 name       = "ましてや"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "To say nothing of; not to speak of; let alone; still more; much less; all the more reason why"
-# example: 家を買うなんて夢物語だ。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "まして"
+pos1       = "副詞"
+
+[[patterns.steps]]
+surface    = "や"
+pos1       = "助詞"
+pos2       = "副助詞"
+

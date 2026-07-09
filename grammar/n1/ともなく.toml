@@ -1,17 +1,13 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ともなく"
-name         = "ともなく"
-jlpt         = "N1"
-meaning_en   = "Without intending to; without paying much attention; unconsciously; mindlessly; don’t know (exactly) who/where/etc. (but); cannot tell (exactly) who/where/etc. (but); (to/from) no particular (person, etc.)"
-# example: <example sentence>
+id         = "ともなく"
+name       = "ともなく"
+jlpt       = "N1"
+meaning_en = "Without intending to; without paying much attention; unconsciously; mindlessly; don’t know (exactly) who/where/etc. (but); cannot tell (exactly) who/where/etc. (but); (to/from) no particular (person, etc.)"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "とも"
+
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+

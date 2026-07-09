@@ -1,17 +1,29 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　チェンさんは日本語が苦手だ。テストではいつも半分も出来ない。だからと言って、頭が悪いわけではない。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "だからと言って"
 name       = "だからと言って"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "However, it doesn't follow from this that ~; but it doesn't mean that ~; because of that"
-# example: 　チェンさんは日本語が苦手だ。テストではいつも半分も出来ない。だからと言って、頭が悪いわけではない。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+
+[[patterns.steps]]
+surface    = "から"
+pos1       = "助詞"
+pos2       = "接続助詞"
+
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

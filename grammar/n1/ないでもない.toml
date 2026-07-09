@@ -1,17 +1,23 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ないでもない"
-name         = "ないでもない"
-jlpt         = "N1"
-meaning_en   = "Seem to ~; somewhat; rather; may"
-# example: <example sentence>
+id         = "ないでもない"
+name       = "ないでもない"
+jlpt       = "N1"
+meaning_en = "Seem to ~; somewhat; rather; may"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+

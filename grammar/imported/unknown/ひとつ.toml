@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　ひとつ日本の小説の英訳をやってみょう。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "ひとつ"
 name       = "ひとつ"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Give something a try"
-# example: 　ひとつ日本の小説の英訳をやってみょう。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "ひと"
+pos2       = "数詞"
+
+[[patterns.steps]]
+surface    = "つ"
+pos1       = "接尾辞"
+

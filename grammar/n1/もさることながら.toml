@@ -1,17 +1,23 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "もさることながら"
-name         = "もさることながら"
-jlpt         = "N1"
-meaning_en   = "~ is one thing, but; it is true that ~, but; it is the case that ~, but; but more importantly"
-# example: <example sentence>
+id         = "もさることながら"
+name       = "もさることながら"
+jlpt       = "N1"
+meaning_en = "~ is one thing, but; it is true that ~, but; it is the case that ~, but; but more importantly"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+
+[[patterns.steps]]
+surface    = "さる"
+pos1       = "連体詞"
+
+[[patterns.steps]]
+surface    = "こと"
+
+[[patterns.steps]]
+surface    = "ながら"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

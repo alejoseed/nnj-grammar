@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "I couldn't get up at seven and was late for work (at my company)."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "なくて"
 name       = "なくて"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Do not do something and ~; is not ~ and ~; because ~ do not do something"
-# example: I couldn't get up at seven and was late for work (at my company).
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

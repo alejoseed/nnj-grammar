@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　スミス氏は流暢な日本語を話し、且つ日本の歴史や文化にも明るい。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "且つ"
 name       = "且つ"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "And; and also; yet; but; and ~ as well; as well as; moreover"
-# example: 　スミス氏は流暢な日本語を話し、且つ日本の歴史や文化にも明るい。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "且つ"
+pos1       = "接続詞"
+

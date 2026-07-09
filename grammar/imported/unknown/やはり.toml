@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "As expected, Mr. Bailey hasn't come, has he?"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "やはり"
 name       = "やはり"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Still; also; after all; as expected; you know"
-# example: As expected, Mr. Bailey hasn't come, has he?
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "やはり"
+pos1       = "副詞"
+

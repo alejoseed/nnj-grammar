@@ -1,17 +1,11 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "さえ"
-name         = "さえ"
-jlpt         = "N3"
-meaning_en   = "Even; if ~ only; if ~ just; as long as; the only thing ~ need is"
-# example: <example sentence>
+id         = "さえ"
+name       = "さえ"
+jlpt       = "N3"
+meaning_en = "Even; if ~ only; if ~ just; as long as; the only thing ~ need is"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "さえ"
+pos1       = "助詞"
+pos2       = "副助詞"
+

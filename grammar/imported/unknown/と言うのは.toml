@@ -1,17 +1,25 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　来月の旅行は取りやめます。と言うのは、同じ頃に大事なお客が来ることになったんです。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "と言うのは"
 name       = "と言うのは"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "(I’m saying this) because; the reason (why I’m saying this) is that; by ~ I mean that; what I mean is that"
-# example: 　来月の旅行は取りやめます。と言うのは、同じ頃に大事なお客が来ることになったんです。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+
+[[patterns.steps]]
+surface    = "の"
+pos1       = "助詞"
+pos2       = "準体助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+

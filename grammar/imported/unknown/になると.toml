@@ -1,17 +1,21 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　夏になると、摂氏三十度を越す日が多いです。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "になると"
 name       = "になると"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "When it becomes; when it comes to; when; if"
-# example: 　夏になると、摂氏三十度を越す日が多いです。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+pos2       = "非自立可能"
+base_form  = "成る"
+
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

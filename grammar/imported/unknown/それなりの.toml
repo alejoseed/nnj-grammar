@@ -1,17 +1,19 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　天才と言われる人にはそれなりの苦しみがあると思う。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "それなりの"
 name       = "それなりの"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "In one’s own way; accompanying; proportionate; suitable; expected; agreeable; reasonable; one’s own; proper to"
-# example: 　天才と言われる人にはそれなりの苦しみがあると思う。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "それ"
+pos1       = "代名詞"
+
+[[patterns.steps]]
+surface    = "なり"
+pos1       = "接尾辞"
+
+[[patterns.steps]]
+surface    = "の"
+pos1       = "助詞"
+pos2       = "格助詞"
+

@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　いかに日本語が難しいかは学習者の母語による。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "いかに"
 name       = "いかに"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "How; how much; how hard"
-# example: 　いかに日本語が難しいかは学習者の母語による。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "いかに"
+pos1       = "副詞"
+

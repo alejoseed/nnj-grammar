@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "なりに"
-name         = "なりに"
-jlpt         = "N1"
-meaning_en   = "In one's own way; in one's own style"
-# example: <example sentence>
+id         = "なりに"
+name       = "なりに"
+jlpt       = "N1"
+meaning_en = "In one's own way; in one's own style"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "なり"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

@@ -1,17 +1,29 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "If you want to learn Japanese in a short period of time, there is no other school (that you should consider) but this one."
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "をおいてほかに"
 name       = "をおいてほかに"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "(there is) no ~ but X; X is the only one; nothing else is ~ but X; no other ~ are/do something as ~ as X"
-# example: If you want to learn Japanese in a short period of time, there is no other school (that you should consider) but this one.
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "を"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+pos2       = "非自立可能"
+base_form  = "置く"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+
+[[patterns.steps]]
+surface    = "ほか"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

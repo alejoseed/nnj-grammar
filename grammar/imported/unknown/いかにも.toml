@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　アメリカ人の目から見ると、日本の社会はいかにも閉鎖的だ。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "いかにも"
 name       = "いかにも"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Really; truly; indeed"
-# example: 　アメリカ人の目から見ると、日本の社会はいかにも閉鎖的だ。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "いかに"
+pos1       = "副詞"
+
+[[patterns.steps]]
+surface    = "も"
+pos1       = "助詞"
+pos2       = "係助詞"
+

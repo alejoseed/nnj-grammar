@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　犬は噛みつかんばかりに僕に向かってほえた。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "んばかり"
 name       = "んばかり"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "As if ~ were about to ~; almost"
-# example: 　犬は噛みつかんばかりに僕に向かってほえた。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "ん"
+pos1       = "感動詞"
+
+[[patterns.steps]]
+surface    = "ばかり"
+pos1       = "助詞"
+pos2       = "副助詞"
+

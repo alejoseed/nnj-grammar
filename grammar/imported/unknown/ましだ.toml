@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "なら辞めた方がましだ。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "ましだ"
 name       = "ましだ"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "Better; less objectionable; preferable; might as well ~"
-# example: なら辞めた方がましだ。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "形状詞"
+base_form  = "増し"
+
+[[patterns.steps]]
+pos1       = "助動詞"
+base_form  = "だ"
+

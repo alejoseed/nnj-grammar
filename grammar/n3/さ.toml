@@ -1,17 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "さ"
-name         = "さ"
-jlpt         = "N3"
-meaning_en   = "You know; sure; I tell you"
-# example: <example sentence>
+id         = "さ"
+name       = "さ"
+jlpt       = "N3"
+meaning_en = "You know; sure; I tell you"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "さ"
+pos1       = "接尾辞"
+

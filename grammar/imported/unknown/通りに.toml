@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "やったが、うまくいかなかった。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "通りに"
 name       = "通りに"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "(in) the same way as; (in) the way; as"
-# example: やったが、うまくいかなかった。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "通り"
+
+[[patterns.steps]]
+surface    = "に"
+pos1       = "助詞"
+pos2       = "格助詞"
+

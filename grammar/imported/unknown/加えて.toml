@@ -1,17 +1,15 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "　この冬のアメリカ東部は雪、雨、加えて強風の被害が大きかった。"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
 id         = "加えて"
 name       = "加えて"
-jlpt       = ""  # fill in: N5 / N4 / N3 / N2 / N1
+jlpt       = ""
 meaning_en = "In addition; and additionally; what’s more"
-# example: 　この冬のアメリカ東部は雪、雨、加えて強風の被害が大きかった。
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "加える"
+
+[[patterns.steps]]
+surface    = "て"
+pos1       = "助詞"
+pos2       = "接続助詞"
+

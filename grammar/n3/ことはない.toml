@@ -1,17 +1,18 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ことはない"
-name         = "ことはない"
-jlpt         = "N3"
-meaning_en   = "There is no need to; not necessary; there is no possibility that; there is no chance to"
-# example: <example sentence>
+id         = "ことはない"
+name       = "ことはない"
+jlpt       = "N3"
+meaning_en = "There is no need to; not necessary; there is no possibility that; there is no chance to"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "こと"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+
+[[patterns.steps]]
+pos1       = "形容詞"
+base_form  = "無い"
+

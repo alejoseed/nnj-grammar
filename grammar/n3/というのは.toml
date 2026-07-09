@@ -1,17 +1,25 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "というのは"
-name         = "というのは"
-jlpt         = "N3"
-meaning_en   = "Mean; the meaning of ~ is; what ~ means is"
-# example: <example sentence>
+id         = "というのは"
+name       = "というのは"
+jlpt       = "N3"
+meaning_en = "Mean; the meaning of ~ is; what ~ means is"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface    = "と"
+pos1       = "助詞"
+pos2       = "格助詞"
+
+[[patterns.steps]]
+pos1       = "動詞"
+base_form  = "言う"
+
+[[patterns.steps]]
+surface    = "の"
+pos1       = "助詞"
+pos2       = "準体助詞"
+
+[[patterns.steps]]
+surface    = "は"
+pos1       = "助詞"
+pos2       = "係助詞"
+
