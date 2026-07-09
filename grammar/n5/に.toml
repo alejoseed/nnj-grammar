@@ -1,16 +1,10 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "に"
-name         = "に"
-jlpt         = "N5"
-# example: <example sentence>
+id         = "ni-location"
+name       = "に (location/direction)"
+jlpt       = "N5"
+meaning_en = "at, in, to — marks location of existence or destination of movement"
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"

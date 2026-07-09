@@ -1,0 +1,53 @@
+[[patterns]]
+id         = "sasete-kudasai"
+name       = "〜させてください"
+jlpt       = "N4"
+meaning_en = "please let me do; allow me to do"
+hint       = "Verb negative stem + させて + ください. Politely requests permission to do something."
+
+# Example: 一緒に行かせてください
+# 行か  動詞 非自立可能 未然形-一般
+# せ    助動詞 連用形-一般 base_form=せる
+# て    助詞 接続助詞
+# ください 動詞 非自立可能 命令形 base_form=下さる
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "未然形-一般"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+conj_form = "連用形-一般"
+
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
+
+[[patterns.steps]]
+surface   = "ください"
+base_form = "下さる"
+
+
+[[patterns]]
+id         = "sasete-kudasai-ichidan"
+name       = "〜させてください (ichidan)"
+jlpt       = "N4"
+meaning_en = "please let me do (ichidan/suru verb)"
+hint       = "Verb negative stem + させて + ください for ichidan verbs."
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "未然形-一般"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "させる"
+conj_form = "連用形-一般"
+
+[[patterns.steps]]
+pos1 = "助詞"
+pos2 = "接続助詞"
+
+[[patterns.steps]]
+surface   = "ください"
+base_form = "下さる"

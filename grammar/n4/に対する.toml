@@ -1,17 +1,19 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "に対する"
-name         = "に対する"
-jlpt         = "N4"
-meaning_en   = "Toward; to; in contrast to; whereas; in regard to; in; per"
-# example: <example sentence>
+id         = "ni-taisuru"
+name       = "〜に対する"
+jlpt       = "N4"
+meaning_en = "toward; regarding; directed at (attributive form modifying a noun)"
+hint       = "Noun + に対する + Noun. Attributive form of に対して."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 犬に対する態度
+# に      助詞 格助詞
+# 対する  動詞 一般 連体形-一般 base_form=対する
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+surface   = "対する"
+base_form = "対する"

@@ -1,17 +1,14 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "ほど"
-name         = "ほど"
-jlpt         = "N4"
-meaning_en   = "The ~, the ~; as; to the extent"
-# example: <example sentence>
+id         = "hodo"
+name       = "〜ほど"
+jlpt       = "N4"
+meaning_en = "to the extent that; so ~ that; about; approximately; the more ~ the more"
+hint       = "Noun/verb + ほど. Expresses degree or extent."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 死ぬほど疲れた
+# ほど  助詞 副助詞
+
+[[patterns.steps]]
+surface = "ほど"
+pos1    = "助詞"
+pos2    = "副助詞"

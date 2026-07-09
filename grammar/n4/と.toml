@@ -1,17 +1,64 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "to-omou"
+name       = "〜と思う"
+jlpt       = "N4"
+meaning_en = "I think that; I believe that"
+hint       = "Plain predicate + と思う. Expresses the speaker's opinion or belief."
+
+# Example: 彼が来ると思う
+# 来る  動詞 終止形-一般
+# と    助詞 格助詞
+# 思う  動詞 一般 終止形-一般
+
+[[patterns.steps]]
+pos1 = "動詞"
+
+[[patterns.steps]]
+surface = "と"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+base_form = "思う"
+
 
 [[patterns]]
-id           = "と"
-name         = "と"
-jlpt         = "N4"
-meaning_en   = "(thinking/saying) that ~; because; like; in such a way that ~"
-# example: <example sentence>
+id         = "to-iu"
+name       = "〜という"
+jlpt       = "N4"
+meaning_en = "called; named; that says; known as"
+hint       = "Noun/clause + という + noun. Defines or names something."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: 鈴木という人
+# と    助詞 格助詞
+# いう  動詞 一般 連体形-一般 base_form=言う
+
+[[patterns.steps]]
+surface = "と"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+base_form = "言う"
+
+
+[[patterns]]
+id         = "to-iu-verb"
+name       = "〜と言う"
+jlpt       = "N4"
+meaning_en = "say that; tell that"
+hint       = "Clause + と言う. Quotes or reports speech."
+
+# Example: 先生だと言う
+# と    助詞 格助詞
+# 言う  動詞 終止形-一般
+
+[[patterns.steps]]
+surface = "と"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+base_form = "言う"

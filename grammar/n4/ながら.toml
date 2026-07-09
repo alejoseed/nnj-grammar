@@ -1,17 +1,32 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
+[[patterns]]
+id         = "nagara-while"
+name       = "〜ながら (while doing)"
+jlpt       = "N4"
+meaning_en = "while doing; at the same time as"
+hint       = "Verb masu-stem + ながら. Both actions happen simultaneously by the same subject."
+
+# Example: 音楽を聴きながら勉強する
+# 聴き  動詞 一般 連用形-一般
+# ながら 助詞 接続助詞
+
+[[patterns.steps]]
+pos1      = "動詞"
+conj_form = "連用形-一般"
+
+[[patterns.steps]]
+surface = "ながら"
+pos1    = "助詞"
+pos2    = "接続助詞"
+
 
 [[patterns]]
-id           = "ながら"
-name         = "ながら"
-jlpt         = "N4"
-meaning_en   = "Although; even though; nevertheless"
-# example: <example sentence>
+id         = "nagara-although"
+name       = "〜ながら (although)"
+jlpt       = "N4"
+meaning_en = "although; even though; despite"
+hint       = "Noun/adj-stem + ながら expresses a concessive contrast."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+[[patterns.steps]]
+surface = "ながら"
+pos1    = "助詞"
+pos2    = "接続助詞"

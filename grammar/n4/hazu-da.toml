@@ -1,0 +1,20 @@
+[[patterns]]
+id         = "hazu-da"
+name       = "〜はずだ"
+jlpt       = "N4"
+meaning_en = "should be; ought to be; is expected to; I'm sure that"
+hint       = "Plain predicate + はずだ. Based on logical expectation or prior knowledge."
+
+# Example: 明日雨が降るはずだ
+# 降る  動詞 一般 連体形-一般
+# はず  名詞 普通名詞 base_form=筈
+# だ    助動詞 終止形-一般 base_form=だ
+
+[[patterns.steps]]
+surface   = "はず"
+pos1      = "名詞"
+base_form = "筈"
+
+[[patterns.steps]]
+pos1      = "助動詞"
+base_form = "だ"

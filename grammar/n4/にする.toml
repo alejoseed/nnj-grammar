@@ -1,17 +1,20 @@
-# Generated from Dictionary of Japanese Grammar
-# Run: nnj-grammar --output table "<example sentence>"
-# Then fill in the [[patterns.steps]] below based on the table output.
-
 [[patterns]]
-id           = "にする"
-name         = "にする"
-jlpt         = "N4"
-meaning_en   = "Decide on ~; make it ~"
-# example: <example sentence>
+id         = "ni-suru"
+name       = "〜にする"
+jlpt       = "N4"
+meaning_en = "decide on; make it; choose (something)"
+hint       = "Noun + にする. Used when deciding or choosing between options."
 
-# TODO: add steps after running --output table on an example sentence
-# [[patterns.steps]]
-# surface = ""
-# pos1    = ""
-# pos2    = ""
-# conj_form = ""
+# Example: コーヒーにする
+# に    助詞 格助詞
+# する  動詞 非自立可能 base_form=為る
+
+[[patterns.steps]]
+surface = "に"
+pos1    = "助詞"
+pos2    = "格助詞"
+
+[[patterns.steps]]
+pos1      = "動詞"
+pos2      = "非自立可能"
+base_form = "為る"
