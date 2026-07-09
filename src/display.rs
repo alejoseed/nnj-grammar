@@ -34,7 +34,7 @@ pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
     let font = "Hiragino Sans,Arial Unicode MS,sans-serif";
 
     println!("digraph {{");
-    println!("  rankdir=TB");
+    println!("  rankdir=LR");
     println!("  node [fontname=\"{}\" fontsize=12]", font);
     println!("  edge [fontname=\"{}\" fontsize=10]", font);
     println!();
