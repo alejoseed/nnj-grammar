@@ -56,7 +56,28 @@ pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
     }
 
     matches.sort_by_key(|m| m.token_start);
+    suppress_subsumed(&mut matches);
     matches
+}
+
+/// Remove matches whose token span is a strict subset of another match's span.
+///
+/// Example: `に` [3..3] is suppressed when `によって` [3..5] also matched,
+/// because [3..3] ⊂ [3..5]. Partially overlapping spans (e.g. [3..5] vs
+/// [4..7]) are kept — neither is a subset of the other.
+fn suppress_subsumed(matches: &mut Vec<PatternMatch>) {
+    let spans: Vec<(usize, usize)> = matches
+        .iter()
+        .map(|m| (m.token_start, m.token_end))
+        .collect();
+
+    matches.retain(|m| {
+        !spans.iter().any(|&(s, e)| {
+            s <= m.token_start
+                && e >= m.token_end
+                && (s < m.token_start || e > m.token_end)
+        })
+    });
 }
 
 /// Walk through `steps` starting at `tokens[start]`.
