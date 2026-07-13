@@ -1,70 +1,202 @@
 use serde::{Deserialize, Serialize};
 
-/// A single grammar pattern rule loaded from a TOML file.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// A grammar sense. Legacy/generated rules use `steps`; hand-authored rules may
+/// use explicit `variants` when the same sense has more than one realization.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PatternRule {
-    /// Stable identifier, e.g. "shika-nai"
+    /// Stable rule identifier, e.g. "shika-nai".
     pub id: String,
-    /// Human-readable name shown in graph output, e.g. "しか〜ない"
+    /// Human-readable name shown in graph output.
     pub name: String,
-    /// JLPT level: "N5", "N4", ..., "N1"
+    /// JLPT level: "N5", "N4", ..., "N1".
     pub jlpt: String,
-    /// English meaning shown to the learner
     #[serde(default)]
     pub meaning_en: String,
-    /// Optional usage note (e.g. "predicate must be negative")
+    #[serde(default)]
     pub hint: Option<String>,
-    /// Ordered list of steps the matcher must satisfy in sequence
+
+    /// Legacy implicit variant. This keeps generated `[[patterns.steps]]`
+    /// files source-compatible.
     #[serde(default)]
     pub steps: Vec<Step>,
+    /// Explicit alternate realizations of this grammar sense.
+    #[serde(default)]
+    pub variants: Vec<PatternVariant>,
+
+    #[serde(default)]
+    pub priority: i32,
+    #[serde(default)]
+    pub sense_id: Option<String>,
+    #[serde(default)]
+    pub ambiguity_group: Option<String>,
+    #[serde(default)]
+    pub fallback: bool,
 }
 
-/// One matching step in a pattern rule.
-///
-/// A step with `wildcard` set matches 0..=max arbitrary tokens and ignores
-/// all other fields. A step without `wildcard` matches exactly one token
-/// where every specified field equals the token's value (unspecified fields
-/// match anything).
-///
-/// Field values must be UniDic strings — run `nnj-grammar --output table`
-/// on a test sentence to see the exact values the tokenizer emits.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// One deterministic realization of a rule.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct PatternVariant {
+    /// Stable within the containing rule.
+    pub id: String,
+    /// Tokens included in the annotation span.
+    #[serde(default, alias = "steps", alias = "core_steps")]
+    pub core: Vec<Step>,
+    /// Adjacent tokens required before the core, but excluded from its span.
+    #[serde(default, alias = "left")]
+    pub left_context: Vec<Step>,
+    /// Adjacent tokens required after the core, but excluded from its span.
+    #[serde(default, alias = "right")]
+    pub right_context: Vec<Step>,
+    /// Assert a clause/sentence boundary immediately before the core.
+    #[serde(default, alias = "start_boundary")]
+    pub left_boundary: Option<Boundary>,
+    /// Assert a clause/sentence boundary immediately after the core.
+    #[serde(default, alias = "end_boundary")]
+    pub right_boundary: Option<Boundary>,
+
+    /// Variant values override their rule-level counterparts when present.
+    #[serde(default)]
+    pub priority: Option<i32>,
+    #[serde(default)]
+    pub sense_id: Option<String>,
+    #[serde(default)]
+    pub ambiguity_group: Option<String>,
+    #[serde(default)]
+    pub fallback: Option<bool>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Boundary {
+    Clause,
+    Sentence,
+}
+
+/// One sequence step. It is either a bounded wildcard or a token predicate.
+/// Token predicates may be optional and may provide `one_of` alternatives.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Step {
-    /// Match this exact surface form (e.g. "しか", "ない")
     pub surface: Option<String>,
-    /// Match POS1 / major POS (品詞): 名詞, 動詞, 助詞, 助動詞, …
     pub pos1: Option<String>,
-    /// Match POS2 / subcategory (品詞細分類1): 格助詞, 副助詞, 係助詞, …
     pub pos2: Option<String>,
-    /// Match conjugation form (活用形): 連用形-一般, 終止形-一般, …
     pub conj_form: Option<String>,
-    /// Match base/dictionary form
     pub base_form: Option<String>,
-    /// When set, this step is a wildcard that consumes 0..=max tokens
+    /// When set, consumes `min..=max` arbitrary tokens without crossing a
+    /// clause boundary. All token predicate fields are ignored.
     pub wildcard: Option<WildcardStep>,
+    #[serde(default)]
+    pub optional: bool,
+    /// Alternatives are ORed, then ANDed with fields directly on this step.
+    #[serde(default)]
+    pub one_of: Vec<TokenAlternative>,
+    /// Store the consumed token range under this name in `PatternMatch`.
+    #[serde(default)]
+    pub capture: Option<String>,
 }
 
 impl Step {
-    /// Returns true if this step is a wildcard (consumes a span of tokens).
-    pub fn is_wildcard(&self) -> bool {
-        self.wildcard.is_some()
+    /// Returns true when the token satisfies the direct predicate and at least
+    /// one `one_of` alternative (if alternatives were supplied).
+    pub fn matches(&self, token: &crate::tokenizer::Token) -> bool {
+        self.direct_matches(token)
+            && (self.one_of.is_empty()
+                || self
+                    .one_of
+                    .iter()
+                    .any(|alternative| alternative.matches(token)))
     }
 
-    /// Returns true if this step matches `token` (non-wildcard steps only).
-    pub fn matches(&self, token: &crate::tokenizer::Token) -> bool {
-        let check = |opt: &Option<String>, val: &str| -> bool {
-            opt.as_deref().map_or(true, |s| s == val)
-        };
+    fn direct_matches(&self, token: &crate::tokenizer::Token) -> bool {
+        matches_field(&self.surface, &token.surface)
+            && matches_field(&self.pos1, &token.pos1)
+            && matches_field(&self.pos2, &token.pos2)
+            && matches_field(&self.conj_form, &token.conj_form)
+            && matches_field(&self.base_form, &token.base_form)
+    }
 
-        check(&self.surface, &token.surface)
-            && check(&self.pos1, &token.pos1)
-            && check(&self.pos2, &token.pos2)
-            && check(&self.conj_form, &token.conj_form)
-            && check(&self.base_form, &token.base_form)
+    pub(crate) fn specificity(&self) -> usize {
+        let direct = [
+            &self.surface,
+            &self.pos1,
+            &self.pos2,
+            &self.conj_form,
+            &self.base_form,
+        ]
+        .into_iter()
+        .filter(|field| field.is_some())
+        .count();
+        let alternative = self
+            .one_of
+            .iter()
+            .map(TokenAlternative::specificity)
+            .max()
+            .unwrap_or(0);
+        direct + alternative
     }
 }
 
-/// Wildcard: matches between `min` and `max` arbitrary tokens.
+/// A `one_of` member can be a surface string or a full token predicate.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum TokenAlternative {
+    Surface(String),
+    Token(TokenPredicate),
+}
+
+impl TokenAlternative {
+    fn matches(&self, token: &crate::tokenizer::Token) -> bool {
+        match self {
+            Self::Surface(surface) => token.surface == *surface,
+            Self::Token(predicate) => predicate.matches(token),
+        }
+    }
+
+    fn specificity(&self) -> usize {
+        match self {
+            Self::Surface(_) => 1,
+            Self::Token(predicate) => predicate.specificity(),
+        }
+    }
+}
+
+/// Token fields available inside a `one_of` table.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TokenPredicate {
+    pub surface: Option<String>,
+    pub pos1: Option<String>,
+    pub pos2: Option<String>,
+    pub conj_form: Option<String>,
+    pub base_form: Option<String>,
+}
+
+impl TokenPredicate {
+    fn matches(&self, token: &crate::tokenizer::Token) -> bool {
+        matches_field(&self.surface, &token.surface)
+            && matches_field(&self.pos1, &token.pos1)
+            && matches_field(&self.pos2, &token.pos2)
+            && matches_field(&self.conj_form, &token.conj_form)
+            && matches_field(&self.base_form, &token.base_form)
+    }
+
+    fn specificity(&self) -> usize {
+        [
+            &self.surface,
+            &self.pos1,
+            &self.pos2,
+            &self.conj_form,
+            &self.base_form,
+        ]
+        .into_iter()
+        .filter(|field| field.is_some())
+        .count()
+    }
+}
+
+fn matches_field(expected: &Option<String>, actual: &str) -> bool {
+    expected.as_deref().is_none_or(|value| value == actual)
+}
+
+/// Bounded gap. Gaps are always clause-scoped by the matcher.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WildcardStep {
     pub min: usize,
@@ -72,7 +204,6 @@ pub struct WildcardStep {
 }
 
 /// Top-level structure of a grammar TOML file.
-/// Each file contains a `patterns` array.
 #[derive(Debug, Deserialize)]
 pub struct GrammarFile {
     pub patterns: Vec<PatternRule>,

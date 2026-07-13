@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "hosts": [
+    {
+      "name": "noun_or_pronoun",
+      "aliases": [
+        "noun",
+        "nouns",
+        "pronoun",
+        "person",
+        "people",
+        "thing",
+        "object",
+        "item",
+        "word",
+        "subject",
+        "topic",
+        "giver",
+        "receiver",
+        "place",
+        "time expression",
+        "time",
+        "event",
+        "feeling",
+        "emotion",
+        "intention",
+        "characteristic",
+        "feature",
+        "quantity",
+        "price",
+        "starting point",
+        "ending point",
+        "timeframe",
+        "demonstrative"
+      ],
+      "predicates": [
+        { "pos1": "名詞" },
+        { "pos1": "代名詞" },
+        { "pos1": "形状詞" }
+      ]
+    },
+    {
+      "name": "verb_or_auxiliary",
+      "aliases": [
+        "verb",
+        "verbs",
+        "negative verb",
+        "auxiliary",
+        "auxiliary verb"
+      ],
+      "predicates": [
+        { "pos1": "動詞" },
+        { "pos1": "助動詞" }
+      ]
+    },
+    {
+      "name": "i_adjective",
+      "aliases": [
+        "i-adjective",
+        "i adjective",
+        "い-adjective",
+        "い adjective"
+      ],
+      "predicates": [
+        { "pos1": "形容詞" },
+        { "pos1": "助動詞" }
+      ]
+    },
+    {
+      "name": "na_adjective",
+      "aliases": [
+        "na-adjective",
+        "na adjective",
+        "な-adjective",
+        "な adjective",
+        "adjectival verb"
+      ],
+      "predicates": [
+        { "pos1": "形状詞" },
+        { "pos1": "助動詞" }
+      ]
+    },
+    {
+      "name": "adjective",
+      "aliases": [
+        "adjective",
+        "adjectives",
+        "adjectival",
+        "negative adjective"
+      ],
+      "predicates": [
+        { "pos1": "形容詞" },
+        { "pos1": "形状詞" },
+        { "pos1": "助動詞" }
+      ]
+    },
+    {
+      "name": "number",
+      "aliases": [
+        "number",
+        "amount",
+        "percentage",
+        "decade",
+        "decade of age"
+      ],
+      "predicates": [
+        { "pos1": "名詞", "pos2": "数詞" }
+      ]
+    },
+    {
+      "name": "counter",
+      "aliases": [
+        "counter"
+      ],
+      "predicates": [
+        { "pos1": "接尾辞", "pos2": "名詞的" }
+      ]
+    },
+    {
+      "name": "particle",
+      "aliases": [
+        "particle",
+        "appropriate particle",
+        "question particle"
+      ],
+      "predicates": [
+        { "pos1": "助詞" }
+      ]
+    },
+    {
+      "name": "clause_or_phrase",
+      "aliases": [
+        "clause",
+        "sentence",
+        "statement",
+        "phrase",
+        "expression",
+        "word/phrase",
+        "sentence/phrase",
+        "phrase/sentence",
+        "situation",
+        "action",
+        "condition",
+        "result",
+        "reason",
+        "comment",
+        "description",
+        "explanation",
+        "definition",
+        "question",
+        "exception",
+        "predicate",
+        "restatement",
+        "quote",
+        "option",
+        "continuation",
+        "etc",
+        "A",
+        "B",
+        "~",
+        "～",
+        "〜",
+        "…",
+        "__PLACEHOLDER__"
+      ],
+      "wildcard": { "min": 0, "max": 24 }
+    }
+  ]
+}

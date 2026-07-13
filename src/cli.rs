@@ -32,7 +32,7 @@ EXAMPLES:
   nnj-grammar --output graph --file sentence.txt
 
   # Use a custom grammar rule directory
-  nnj-grammar --output graph --grammar-db ./my-rules \"コーヒーを飲む\"",
+  nnj-grammar --output graph --grammar-db ./my-rules \"コーヒーを飲む\""
 )]
 pub struct Cli {
     /// Japanese text to analyze
@@ -61,6 +61,8 @@ pub enum OutputFormat {
     Table,
     /// Raw UniDic fields — all 29 indices numbered, for verifying what each index means
     Raw,
+    /// Token array as JSON, without loading or matching grammar rules
+    Tokens,
     /// DOT format — for Graphviz rendering
     Dot,
 }

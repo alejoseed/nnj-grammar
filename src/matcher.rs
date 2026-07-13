@@ -1,126 +1,717 @@
-use crate::patterns::PatternRule;
+use std::cmp::Ordering;
+
+use crate::patterns::{Boundary, PatternRule, PatternVariant, Step};
 use crate::tokenizer::Token;
+
+/// One named token range captured while matching a rule.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct PatternCapture {
+    pub name: String,
+    pub token_start: usize,
+    pub token_end: usize,
+}
 
 /// One grammar construction found in the token stream.
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct PatternMatch {
     pub rule_id: String,
+    pub variant_id: String,
     pub rule_name: String,
     pub jlpt: String,
     pub meaning_en: String,
     pub hint: Option<String>,
-    /// Index of the first token that belongs to this match.
+    pub sense_id: Option<String>,
+    pub ambiguity_group: Option<String>,
+    pub captures: Vec<PatternCapture>,
+    /// Inclusive core span. Context tokens never extend this range.
     pub token_start: usize,
-    /// Index of the last token that belongs to this match (inclusive).
     pub token_end: usize,
 }
 
-/// Find all grammar construction matches in `tokens` against `rules`.
-///
-/// Returns all overlapping matches sorted by `token_start`.
-///
-/// ## Your job
-///
-/// Implement the sliding-window POS-sequence matching algorithm here.
-///
-/// For each rule:
-///   1. Try starting a match at every token position i.
-///   2. Walk through `rule.steps` in order.
-///   3. For a non-wildcard step: call `step.matches(&tokens[j])` — if it
-///      matches, advance j by 1; if not, the attempt at position i fails.
-///   4. For a wildcard step (step.wildcard is Some(w)): try consuming k tokens
-///      for k from w.min to w.max **in ascending order** (NOT greedy / not max-
-///      first). For each k, recursively try to satisfy the remaining steps
-///      starting at j+k. Return success on the first k that works.
-///      (Greedy / max-first breaks span patterns like しか〜ない.)
-///   5. If all steps are satisfied, record a PatternMatch.
-///
-/// After collecting all matches, sort by token_start and return.
+#[derive(Clone)]
+struct SequenceMatch {
+    end: usize,
+    captures: Vec<PatternCapture>,
+    specificity: usize,
+}
+
+struct Candidate {
+    matched: PatternMatch,
+    fallback: bool,
+    core_specificity: usize,
+    context_specificity: usize,
+    priority: i32,
+}
+
+struct EffectiveVariant<'a> {
+    id: &'a str,
+    core: &'a [Step],
+    left_context: &'a [Step],
+    right_context: &'a [Step],
+    left_boundary: Option<Boundary>,
+    right_boundary: Option<Boundary>,
+    priority: i32,
+    sense_id: Option<&'a str>,
+    ambiguity_group: Option<&'a str>,
+    fallback: bool,
+}
+
+/// Find all grammar construction matches, retaining unrelated overlapping and
+/// nested spans. Duplicate senses and ambiguity groups are resolved only when
+/// they annotate the same core span.
 pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
-    let mut matches: Vec<PatternMatch> = Vec::new();
+    let mut candidates = Vec::new();
 
     for rule in rules {
-        for start in 0..tokens.len() {
-            if let Some(end) = try_match(tokens, start, &rule.steps) {
-                matches.push(PatternMatch {
+        if !rule.steps.is_empty() {
+            let variant = EffectiveVariant {
+                id: "default",
+                core: &rule.steps,
+                left_context: &[],
+                right_context: &[],
+                left_boundary: None,
+                right_boundary: None,
+                priority: rule.priority,
+                sense_id: rule.sense_id.as_deref(),
+                ambiguity_group: rule.ambiguity_group.as_deref(),
+                fallback: rule.fallback,
+            };
+            collect_variant_matches(tokens, rule, &variant, &mut candidates);
+        }
+
+        for explicit in &rule.variants {
+            let variant = effective_variant(rule, explicit);
+            collect_variant_matches(tokens, rule, &variant, &mut candidates);
+        }
+    }
+
+    resolve_candidates(candidates)
+}
+
+fn effective_variant<'a>(
+    rule: &'a PatternRule,
+    variant: &'a PatternVariant,
+) -> EffectiveVariant<'a> {
+    EffectiveVariant {
+        id: &variant.id,
+        core: &variant.core,
+        left_context: &variant.left_context,
+        right_context: &variant.right_context,
+        left_boundary: variant.left_boundary,
+        right_boundary: variant.right_boundary,
+        priority: variant.priority.unwrap_or(rule.priority),
+        sense_id: variant.sense_id.as_deref().or(rule.sense_id.as_deref()),
+        ambiguity_group: variant
+            .ambiguity_group
+            .as_deref()
+            .or(rule.ambiguity_group.as_deref()),
+        fallback: variant.fallback.unwrap_or(rule.fallback),
+    }
+}
+
+fn collect_variant_matches(
+    tokens: &[Token],
+    rule: &PatternRule,
+    variant: &EffectiveVariant<'_>,
+    candidates: &mut Vec<Candidate>,
+) {
+    for start in 0..tokens.len() {
+        if !has_boundary(tokens, start, variant.left_boundary, true) {
+            continue;
+        }
+        let Some(left) = match_left_context(tokens, start, variant.left_context) else {
+            continue;
+        };
+
+        for core in match_sequence(tokens, start, variant.core) {
+            if core.end <= start || !has_boundary(tokens, core.end, variant.right_boundary, false) {
+                continue;
+            }
+            let Some(right) = match_right_context(tokens, core.end, variant.right_context) else {
+                continue;
+            };
+
+            let mut captures = left.captures.clone();
+            captures.extend(core.captures);
+            captures.extend(right.captures);
+            candidates.push(Candidate {
+                matched: PatternMatch {
                     rule_id: rule.id.clone(),
+                    variant_id: variant.id.to_string(),
                     rule_name: rule.name.clone(),
                     jlpt: rule.jlpt.clone(),
                     meaning_en: rule.meaning_en.clone(),
                     hint: rule.hint.clone(),
+                    sense_id: variant.sense_id.map(str::to_owned),
+                    ambiguity_group: variant.ambiguity_group.map(str::to_owned),
+                    captures,
                     token_start: start,
-                    token_end: end,
-                });
+                    token_end: core.end - 1,
+                },
+                fallback: variant.fallback,
+                core_specificity: core.specificity,
+                context_specificity: left.specificity
+                    + right.specificity
+                    + usize::from(variant.left_boundary.is_some())
+                    + usize::from(variant.right_boundary.is_some()),
+                priority: variant.priority,
+            });
+
+            // Choices are generated shortest-first. Once one complete path for
+            // this variant/start succeeds, later paths are alternate parses of
+            // the same occurrence rather than additional annotations.
+            break;
+        }
+    }
+}
+
+fn match_left_context(
+    tokens: &[Token],
+    core_start: usize,
+    steps: &[Step],
+) -> Option<SequenceMatch> {
+    if steps.is_empty() {
+        return Some(SequenceMatch {
+            end: core_start,
+            captures: Vec::new(),
+            specificity: 0,
+        });
+    }
+
+    // Prefer stronger evidence, then the nearest viable start. The sequence
+    // must end adjacent to core and never changes the annotation span.
+    let mut best: Option<(usize, SequenceMatch)> = None;
+    for context_start in 0..=core_start {
+        for matched in match_sequence(tokens, context_start, steps) {
+            if matched.end != core_start {
+                continue;
+            }
+            let replace = best.as_ref().is_none_or(|(best_start, current)| {
+                (matched.specificity, context_start) > (current.specificity, *best_start)
+            });
+            if replace {
+                best = Some((context_start, matched));
             }
         }
     }
+    best.map(|(_, matched)| matched)
+}
 
-    matches.sort_by_key(|m| m.token_start);
-    suppress_subsumed(&mut matches);
+fn match_right_context(tokens: &[Token], core_end: usize, steps: &[Step]) -> Option<SequenceMatch> {
+    if steps.is_empty() {
+        return Some(SequenceMatch {
+            end: core_end,
+            captures: Vec::new(),
+            specificity: 0,
+        });
+    }
+    match_sequence(tokens, core_end, steps)
+        .into_iter()
+        .max_by_key(|matched| (matched.specificity, matched.end))
+}
+
+/// Enumerate every successful end position in deterministic, non-greedy order.
+fn match_sequence(tokens: &[Token], start: usize, steps: &[Step]) -> Vec<SequenceMatch> {
+    let mut matches = Vec::new();
+    let mut captures = Vec::new();
+    match_steps(tokens, start, steps, 0, &mut captures, &mut matches);
     matches
 }
 
-/// Remove matches whose token span is a strict subset of another match's span.
-///
-/// Example: `に` [3..3] is suppressed when `によって` [3..5] also matched,
-/// because [3..3] ⊂ [3..5]. Partially overlapping spans (e.g. [3..5] vs
-/// [4..7]) are kept — neither is a subset of the other.
-fn suppress_subsumed(matches: &mut Vec<PatternMatch>) {
-    let spans: Vec<(usize, usize)> = matches
-        .iter()
-        .map(|m| (m.token_start, m.token_end))
-        .collect();
+fn match_steps(
+    tokens: &[Token],
+    position: usize,
+    steps: &[Step],
+    specificity: usize,
+    captures: &mut Vec<PatternCapture>,
+    matches: &mut Vec<SequenceMatch>,
+) {
+    let Some((step, remaining)) = steps.split_first() else {
+        matches.push(SequenceMatch {
+            end: position,
+            captures: captures.clone(),
+            specificity,
+        });
+        return;
+    };
 
-    matches.retain(|m| {
-        !spans.iter().any(|&(s, e)| {
-            s <= m.token_start
-                && e >= m.token_end
-                && (s < m.token_start || e > m.token_end)
-        })
-    });
-}
-
-/// Walk through `steps` starting at `tokens[start]`.
-/// Returns the index of the last matched token on success, None on failure.
-fn try_match(tokens: &[Token], start: usize, steps: &[crate::patterns::Step]) -> Option<usize> {
-    let mut pos = start;
-    
-    for (i, step) in steps.iter().enumerate() {
-        if let Some(w) = &step.wildcard {
-            // Wildcard: try consuming k tokens (ascending, not greedy) then
-            // check if the remai ning steps fit from that position.
-            let suffix = &steps[i + 1..];
-            for k in w.min..=w.max {
-                let after = pos + k;
-                if after > tokens.len() { break; }
-                if let Some(end) = match_tail(tokens, after, suffix) {
-                    return Some(end);
-                }
+    if let Some(wildcard) = &step.wildcard {
+        for count in wildcard.min..=wildcard.max {
+            let Some(after) = position.checked_add(count) else {
+                break;
+            };
+            if after > tokens.len() {
+                break;
             }
-            return None;
+            if tokens[position..after].iter().any(is_clause_boundary) {
+                break;
+            }
+            let capture_len = captures.len();
+            if count > 0 {
+                push_capture(captures, step, position, after);
+            }
+            match_steps(tokens, after, remaining, specificity, captures, matches);
+            captures.truncate(capture_len);
         }
-
-        if pos >= tokens.len() { return None; }
-        if !step.matches(&tokens[pos]) { return None; }
-        pos += 1;
+        return;
     }
 
-    // All steps consumed. pos is one past the last matched token.
-    (pos > start).then_some(pos - 1)
+    if position < tokens.len() && step.matches(&tokens[position]) {
+        let capture_len = captures.len();
+        push_capture(captures, step, position, position + 1);
+        match_steps(
+            tokens,
+            position + 1,
+            remaining,
+            specificity + step.specificity(),
+            captures,
+            matches,
+        );
+        captures.truncate(capture_len);
+    }
+    if step.optional {
+        match_steps(tokens, position, remaining, specificity, captures, matches);
+    }
 }
 
-/// Match a sequence of non-wildcard steps starting at `tokens[start]`.
-/// Called for the suffix after a wildcard — wildcards are not expected here.
-fn match_tail(tokens: &[Token], start: usize, steps: &[crate::patterns::Step]) -> Option<usize> {
-    if steps.is_empty() {
-        // Wildcard was the last step. Last consumed token is start - 1.
-        return start.checked_sub(1);
+fn push_capture(captures: &mut Vec<PatternCapture>, step: &Step, start: usize, end: usize) {
+    if let Some(name) = &step.capture {
+        captures.push(PatternCapture {
+            name: name.clone(),
+            token_start: start,
+            token_end: end - 1,
+        });
     }
-    let mut pos = start;
-    for step in steps {
-        if pos >= tokens.len() { return None; }
-        if !step.matches(&tokens[pos]) { return None; }
-        pos += 1;
+}
+
+fn has_boundary(tokens: &[Token], position: usize, boundary: Option<Boundary>, left: bool) -> bool {
+    let Some(boundary) = boundary else {
+        return true;
+    };
+    let neighboring = if left {
+        position.checked_sub(1).and_then(|index| tokens.get(index))
+    } else {
+        tokens.get(position)
+    };
+    neighboring.is_none_or(|token| match boundary {
+        Boundary::Clause => is_clause_boundary(token),
+        Boundary::Sentence => is_sentence_boundary(token),
+    })
+}
+
+fn is_clause_boundary(token: &Token) -> bool {
+    matches!(
+        token.surface.as_str(),
+        "、" | "," | "，" | "；" | ";" | "。" | "." | "！" | "!" | "？" | "?"
+    )
+}
+
+fn is_sentence_boundary(token: &Token) -> bool {
+    matches!(token.surface.as_str(), "。" | "." | "！" | "!" | "？" | "?")
+}
+
+fn resolve_candidates(mut candidates: Vec<Candidate>) -> Vec<PatternMatch> {
+    candidates.sort_by(candidate_identity_order);
+
+    let mut semantic = Vec::<Candidate>::new();
+    for candidate in candidates {
+        if let Some(index) = semantic.iter().position(|existing| {
+            same_span(existing, &candidate) && same_sense_or_rule(existing, &candidate)
+        }) {
+            if better_candidate(&candidate, &semantic[index]) {
+                semantic[index] = candidate;
+            }
+        } else {
+            semantic.push(candidate);
+        }
     }
-    Some(pos - 1)
+
+    let mut resolved = Vec::<Candidate>::new();
+    for candidate in semantic {
+        if let Some(index) = resolved.iter().position(|existing| {
+            same_span(existing, &candidate)
+                && existing.matched.ambiguity_group.is_some()
+                && existing.matched.ambiguity_group == candidate.matched.ambiguity_group
+        }) {
+            if better_candidate(&candidate, &resolved[index]) {
+                resolved[index] = candidate;
+            }
+        } else {
+            resolved.push(candidate);
+        }
+    }
+
+    resolved.sort_by(candidate_identity_order);
+    resolved
+        .into_iter()
+        .map(|candidate| candidate.matched)
+        .collect()
+}
+
+fn same_span(left: &Candidate, right: &Candidate) -> bool {
+    left.matched.token_start == right.matched.token_start
+        && left.matched.token_end == right.matched.token_end
+}
+
+fn same_sense_or_rule(left: &Candidate, right: &Candidate) -> bool {
+    left.matched.rule_id == right.matched.rule_id
+        || (left.matched.sense_id.is_some() && left.matched.sense_id == right.matched.sense_id)
+}
+
+fn better_candidate(left: &Candidate, right: &Candidate) -> bool {
+    match left.fallback.cmp(&right.fallback).reverse() {
+        Ordering::Greater => return true,
+        Ordering::Less => return false,
+        Ordering::Equal => {}
+    }
+    match (
+        left.core_specificity,
+        left.context_specificity,
+        left.priority,
+        left.matched.token_end - left.matched.token_start,
+    )
+        .cmp(&(
+            right.core_specificity,
+            right.context_specificity,
+            right.priority,
+            right.matched.token_end - right.matched.token_start,
+        )) {
+        Ordering::Greater => true,
+        Ordering::Less => false,
+        Ordering::Equal => {
+            (&left.matched.rule_id, &left.matched.variant_id)
+                < (&right.matched.rule_id, &right.matched.variant_id)
+        }
+    }
+}
+
+fn candidate_identity_order(left: &Candidate, right: &Candidate) -> Ordering {
+    (
+        left.matched.token_start,
+        left.matched.token_end,
+        &left.matched.rule_id,
+        &left.matched.variant_id,
+    )
+        .cmp(&(
+            right.matched.token_start,
+            right.matched.token_end,
+            &right.matched.rule_id,
+            &right.matched.variant_id,
+        ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::match_all;
+    use crate::patterns::rule::{Boundary, PatternVariant, TokenAlternative, WildcardStep};
+    use crate::patterns::{PatternRule, Step};
+    use crate::tokenizer::Token;
+
+    fn token(surface: &str, pos1: &str, position: usize) -> Token {
+        Token {
+            surface: surface.to_string(),
+            pos1: pos1.to_string(),
+            pos2: String::new(),
+            pos3: String::new(),
+            pos4: String::new(),
+            conj_type: String::new(),
+            conj_form: String::new(),
+            base_form: surface.to_string(),
+            reading: String::new(),
+            byte_start: position,
+            byte_end: position + 1,
+            position,
+        }
+    }
+
+    fn tokens(values: &[(&str, &str)]) -> Vec<Token> {
+        values
+            .iter()
+            .enumerate()
+            .map(|(position, (surface, pos1))| token(surface, pos1, position))
+            .collect()
+    }
+
+    fn surface(value: &str) -> Step {
+        Step {
+            surface: Some(value.to_string()),
+            ..Step::default()
+        }
+    }
+
+    fn pos1(value: &str) -> Step {
+        Step {
+            pos1: Some(value.to_string()),
+            ..Step::default()
+        }
+    }
+
+    fn wildcard(min: usize, max: usize) -> Step {
+        Step {
+            wildcard: Some(WildcardStep { min, max }),
+            ..Step::default()
+        }
+    }
+
+    fn rule(id: &str, steps: Vec<Step>) -> PatternRule {
+        PatternRule {
+            id: id.to_string(),
+            name: id.to_string(),
+            jlpt: "N5".to_string(),
+            steps,
+            ..PatternRule::default()
+        }
+    }
+
+    #[test]
+    fn context_disambiguates_subject_ga_from_contrastive_ga() {
+        let mut subject = rule("subject-ga", vec![surface("が")]);
+        subject.ambiguity_group = Some("ga".to_string());
+        subject.fallback = true;
+
+        let contrast = PatternRule {
+            id: "contrast-ga".to_string(),
+            name: "contrast-ga".to_string(),
+            jlpt: "N5".to_string(),
+            ambiguity_group: Some("ga".to_string()),
+            variants: vec![PatternVariant {
+                id: "after-predicate".to_string(),
+                core: vec![surface("が")],
+                left_context: vec![pos1("動詞")],
+                ..PatternVariant::default()
+            }],
+            ..PatternRule::default()
+        };
+
+        let noun_matches = match_all(
+            &tokens(&[("雨", "名詞"), ("が", "助詞")]),
+            &[subject.clone(), contrast.clone()],
+        );
+        assert_eq!(noun_matches.len(), 1);
+        assert_eq!(noun_matches[0].rule_id, "subject-ga");
+
+        let predicate_matches = match_all(
+            &tokens(&[("降る", "動詞"), ("が", "助詞")]),
+            &[subject, contrast],
+        );
+        assert_eq!(predicate_matches.len(), 1);
+        assert_eq!(predicate_matches[0].rule_id, "contrast-ga");
+        assert_eq!(
+            (
+                predicate_matches[0].token_start,
+                predicate_matches[0].token_end
+            ),
+            (1, 1)
+        );
+    }
+
+    #[test]
+    fn sentence_final_mon_context_does_not_expand_core_span() {
+        let final_mon = PatternRule {
+            id: "final-mon".to_string(),
+            name: "final-mon".to_string(),
+            jlpt: "N3".to_string(),
+            variants: vec![PatternVariant {
+                id: "sentence-final".to_string(),
+                core: vec![surface("もん")],
+                left_context: vec![pos1("動詞")],
+                right_context: vec![surface("。")],
+                right_boundary: Some(Boundary::Sentence),
+                ..PatternVariant::default()
+            }],
+            ..PatternRule::default()
+        };
+        let found = match_all(
+            &tokens(&[("する", "動詞"), ("もん", "名詞"), ("。", "補助記号")]),
+            &[final_mon],
+        );
+
+        assert_eq!(found.len(), 1);
+        assert_eq!((found[0].token_start, found[0].token_end), (1, 1));
+    }
+
+    #[test]
+    fn fully_backtracks_across_multiple_bounded_gaps() {
+        let pattern = rule(
+            "gaps",
+            vec![
+                surface("a"),
+                wildcard(0, 2),
+                surface("b"),
+                wildcard(0, 2),
+                surface("c"),
+                surface("d"),
+            ],
+        );
+        let found = match_all(
+            &tokens(&[
+                ("a", ""),
+                ("x", ""),
+                ("b", ""),
+                ("y", ""),
+                ("c", ""),
+                ("d", ""),
+            ]),
+            &[pattern],
+        );
+
+        assert_eq!(found.len(), 1);
+        assert_eq!((found[0].token_start, found[0].token_end), (0, 5));
+    }
+
+    #[test]
+    fn gaps_do_not_cross_clause_boundaries() {
+        let pattern = rule(
+            "clause-gap",
+            vec![surface("a"), wildcard(0, 4), surface("b")],
+        );
+        let found = match_all(
+            &tokens(&[("a", ""), ("、", "補助記号"), ("b", "")]),
+            &[pattern],
+        );
+        assert!(found.is_empty());
+    }
+
+    #[test]
+    fn optional_and_one_of_steps_match_and_capture() {
+        let pattern = rule(
+            "optional-one-of",
+            vec![
+                Step {
+                    surface: Some("お".to_string()),
+                    optional: true,
+                    ..Step::default()
+                },
+                Step {
+                    one_of: vec![
+                        TokenAlternative::Surface("茶".to_string()),
+                        TokenAlternative::Surface("水".to_string()),
+                    ],
+                    capture: Some("drink".to_string()),
+                    ..Step::default()
+                },
+            ],
+        );
+
+        let with_optional = match_all(
+            &tokens(&[("お", ""), ("茶", "")]),
+            std::slice::from_ref(&pattern),
+        );
+        let without_optional = match_all(&tokens(&[("水", "")]), &[pattern]);
+        assert_eq!(
+            (with_optional[0].token_start, with_optional[0].token_end),
+            (0, 1)
+        );
+        assert_eq!(
+            (
+                without_optional[0].token_start,
+                without_optional[0].token_end
+            ),
+            (0, 0)
+        );
+        assert_eq!(with_optional[0].captures[0].name, "drink");
+        assert_eq!(
+            (
+                with_optional[0].captures[0].token_start,
+                with_optional[0].captures[0].token_end
+            ),
+            (1, 1)
+        );
+    }
+
+    #[test]
+    fn unrelated_nested_matches_are_retained() {
+        let found = match_all(
+            &tokens(&[("a", ""), ("b", "")]),
+            &[
+                rule("outer", vec![surface("a"), surface("b")]),
+                rule("inner", vec![surface("b")]),
+            ],
+        );
+
+        assert_eq!(found.len(), 2);
+        assert!(found.iter().any(|matched| matched.rule_id == "outer"));
+        assert!(found.iter().any(|matched| matched.rule_id == "inner"));
+    }
+
+    #[test]
+    fn same_sense_nested_matches_are_retained() {
+        let mut outer = rule("outer", vec![surface("a"), surface("b")]);
+        outer.sense_id = Some("shared".to_string());
+        let mut inner = rule("inner", vec![surface("b")]);
+        inner.sense_id = Some("shared".to_string());
+
+        let found = match_all(&tokens(&[("a", ""), ("b", "")]), &[outer, inner]);
+
+        assert_eq!(found.len(), 2);
+        assert!(found.iter().any(|matched| matched.rule_id == "outer"));
+        assert!(found.iter().any(|matched| matched.rule_id == "inner"));
+    }
+
+    #[test]
+    fn equal_span_dedupes_senses_and_resolves_ambiguity_deterministically() {
+        let mut broad = rule("broad", vec![surface("が")]);
+        broad.sense_id = Some("subject".to_string());
+        broad.priority = 100;
+
+        let mut specific = rule(
+            "specific",
+            vec![Step {
+                surface: Some("が".to_string()),
+                pos1: Some("助詞".to_string()),
+                ..Step::default()
+            }],
+        );
+        specific.sense_id = Some("subject".to_string());
+
+        let mut fallback = rule("fallback", vec![surface("が")]);
+        fallback.ambiguity_group = Some("ga".to_string());
+        fallback.fallback = true;
+
+        specific.ambiguity_group = Some("ga".to_string());
+        let found = match_all(&tokens(&[("が", "助詞")]), &[fallback, broad, specific]);
+
+        assert_eq!(found.len(), 1);
+        assert_eq!(found[0].rule_id, "specific");
+    }
+
+    #[test]
+    fn clause_and_sentence_boundary_assertions_are_distinct() {
+        let clause = PatternRule {
+            id: "clause".to_string(),
+            name: "clause".to_string(),
+            jlpt: "N5".to_string(),
+            variants: vec![PatternVariant {
+                id: "after-comma".to_string(),
+                core: vec![surface("x")],
+                left_boundary: Some(Boundary::Clause),
+                ..PatternVariant::default()
+            }],
+            ..PatternRule::default()
+        };
+        let sentence = PatternRule {
+            id: "sentence".to_string(),
+            name: "sentence".to_string(),
+            jlpt: "N5".to_string(),
+            variants: vec![PatternVariant {
+                id: "after-period".to_string(),
+                core: vec![surface("x")],
+                left_boundary: Some(Boundary::Sentence),
+                ..PatternVariant::default()
+            }],
+            ..PatternRule::default()
+        };
+        let after_comma = match_all(
+            &tokens(&[("、", "補助記号"), ("x", "")]),
+            &[clause.clone(), sentence.clone()],
+        );
+        let after_period = match_all(
+            &tokens(&[("。", "補助記号"), ("x", "")]),
+            &[clause, sentence],
+        );
+
+        assert_eq!(after_comma.len(), 1);
+        assert_eq!(after_comma[0].rule_id, "clause");
+        assert_eq!(after_period.len(), 2);
+    }
 }
