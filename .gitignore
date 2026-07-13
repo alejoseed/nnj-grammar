@@ -1,2 +1,6 @@
 /target
 Cargo.lock
+/grammar/local/
+*.bunpro-local.json
+tools/__pycache__/
+/.superpowers/

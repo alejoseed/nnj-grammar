@@ -4,6 +4,9 @@ mod matcher;
 mod patterns;
 mod tokenizer;
 
+#[cfg(test)]
+mod hanabira_regression;
+
 use anyhow::Result;
 use clap::Parser;
 use cli::{Cli, OutputFormat};
@@ -33,6 +36,10 @@ fn main() -> Result<()> {
             tokenizer::print_raw(&tokenizer, &text)?;
             return Ok(());
         }
+        OutputFormat::Tokens => {
+            println!("{}", serde_json::to_string(&tokens)?);
+            return Ok(());
+        }
 
         output_fmt => {
             // Load rules: embedded by default, filesystem if --grammar-db was set
@@ -47,18 +54,22 @@ fn main() -> Result<()> {
 
             match output_fmt {
                 OutputFormat::Graph => display::print_graph(&tokens, &matches),
-                OutputFormat::Dot   => display::print_dot(&tokens, &matches),
-                OutputFormat::Json  => {
+                OutputFormat::Dot => display::print_dot(&tokens, &matches),
+                OutputFormat::Json => {
                     #[derive(serde::Serialize)]
                     struct Output<'a> {
                         input: &'a str,
                         tokens: &'a [tokenizer::Token],
                         matches: &'a [matcher::PatternMatch],
                     }
-                    let output = Output { input: &text, tokens: &tokens, matches: &matches };
+                    let output = Output {
+                        input: &text,
+                        tokens: &tokens,
+                        matches: &matches,
+                    };
                     println!("{}", serde_json::to_string_pretty(&output)?);
                 }
-                OutputFormat::Table | OutputFormat::Raw => unreachable!(),
+                OutputFormat::Table | OutputFormat::Raw | OutputFormat::Tokens => unreachable!(),
             }
         }
     }

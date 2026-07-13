@@ -53,9 +53,13 @@ pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
     // match that claims it (sorted by token_start, which match_all guarantees).
     let mut token_pattern: Vec<Option<usize>> = vec![None; tokens.len()];
     for (pi, m) in matches.iter().enumerate() {
-        for pos in m.token_start..=m.token_end {
-            if token_pattern[pos].is_none() {
-                token_pattern[pos] = Some(pi);
+        for owner in token_pattern
+            .iter_mut()
+            .take(m.token_end + 1)
+            .skip(m.token_start)
+        {
+            if owner.is_none() {
+                *owner = Some(pi);
             }
         }
     }
