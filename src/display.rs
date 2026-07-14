@@ -1,5 +1,5 @@
-use crate::matcher::PatternMatch;
-use crate::tokenizer::Token;
+use nnj_grammar::matcher::PatternMatch;
+use nnj_grammar::tokenizer::Token;
 
 /// Return a fill color for a token node based on its POS category.
 fn pos_color(pos1: &str) -> &'static str {

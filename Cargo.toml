@@ -2,6 +2,11 @@
 name = "nnj-grammar"
 version = "0.1.0"
 edition = "2021"
+default-run = "nnj-grammar"
+
+[lib]
+name = "nnj_grammar"
+path = "src/lib.rs"
 
 [[bin]]
 name = "nnj-grammar"
@@ -37,6 +42,9 @@ anyhow = "1"
 # This makes the binary self-contained — no grammar/ directory needed at runtime.
 # Used on iOS (no writable filesystem for resources) and for single-binary distribution.
 rust-embed = { version = "8", features = ["include-exclude"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"
 
 [profile.release]
 lto = true
