@@ -3,7 +3,7 @@ use rust_embed::RustEmbed;
 use std::path::Path;
 use walkdir::WalkDir;
 
-use super::rule::{GrammarFile, PatternRule, Step};
+use super::rule::{CatalogSource, GrammarFile, PatternRule, Step};
 
 /// Generated Hanabira TOML files are compiled into the binary.
 /// This means the binary is self-contained — no grammar directory needed at runtime.
@@ -27,7 +27,11 @@ pub fn load_embedded() -> Result<Vec<PatternRule>> {
         let src = std::str::from_utf8(file.data.as_ref())
             .with_context(|| format!("embedded file is not valid UTF-8: {}", filename))?;
 
-        let mut file_rules = parse_toml(src, &filename)?;
+        let mut file_rules = parse_toml_with_source(
+            src,
+            &filename,
+            &CatalogSource::new("hanabira", "Hanabira"),
+        )?;
         rules.append(&mut file_rules);
     }
 
@@ -38,6 +42,13 @@ pub fn load_embedded() -> Result<Vec<PatternRule>> {
 /// Load grammar rules from a directory on the filesystem.
 /// Used when --grammar-db is passed explicitly (development, custom rule sets).
 pub fn load_grammar_dir(dir: &Path) -> Result<Vec<PatternRule>> {
+    load_grammar_dir_with_source(dir, &CatalogSource::new("filesystem", "Filesystem"))
+}
+
+fn load_grammar_dir_with_source(
+    dir: &Path,
+    source: &CatalogSource,
+) -> Result<Vec<PatternRule>> {
     anyhow::ensure!(
         dir.exists(),
         "grammar directory not found: {}",
@@ -57,11 +68,24 @@ pub fn load_grammar_dir(dir: &Path) -> Result<Vec<PatternRule>> {
         let src = std::fs::read_to_string(path)
             .with_context(|| format!("could not read {}", path.display()))?;
 
-        let mut file_rules = parse_toml(&src, &path.display().to_string())?;
+        let mut file_rules = parse_toml_with_source(&src, &path.display().to_string(), source)?;
         rules.append(&mut file_rules);
     }
 
     validate_unique_rule_ids(&rules, &dir.display().to_string())?;
+    Ok(rules)
+}
+
+/// Load embedded Hanabira together with an optional personal local catalog.
+pub fn load_combined(local_dir: Option<&Path>) -> Result<Vec<PatternRule>> {
+    let mut rules = load_embedded()?;
+    if let Some(dir) = local_dir.filter(|dir| dir.exists()) {
+        rules.extend(load_grammar_dir_with_source(
+            dir,
+            &CatalogSource::new("bunpro-local", "Bunpro local"),
+        )?);
+    }
+    validate_unique_rule_ids(&rules, "combined grammar catalog")?;
     Ok(rules)
 }
 
@@ -78,11 +102,24 @@ fn validate_unique_rule_ids(rules: &[PatternRule], name: &str) -> Result<()> {
     Ok(())
 }
 
+#[cfg(test)]
 fn parse_toml(src: &str, name: &str) -> Result<Vec<PatternRule>> {
+    parse_toml_with_source(src, name, &CatalogSource::default())
+}
+
+fn parse_toml_with_source(
+    src: &str,
+    name: &str,
+    source: &CatalogSource,
+) -> Result<Vec<PatternRule>> {
     let file: GrammarFile =
         toml::from_str(src).with_context(|| format!("invalid TOML in {}", name))?;
-    validate_rules(&file.patterns, name)?;
-    Ok(file.patterns)
+    let mut rules = file.patterns;
+    validate_rules(&rules, name)?;
+    for rule in &mut rules {
+        rule.source = source.clone();
+    }
+    Ok(rules)
 }
 
 fn validate_rules(rules: &[PatternRule], name: &str) -> Result<()> {
@@ -171,8 +208,10 @@ fn validate_steps(steps: &[Step], rule_id: &str, name: &str) -> Result<()> {
 
 #[cfg(test)]
 mod tests {
-    use super::{load_embedded, parse_toml};
+    use super::{load_combined, load_embedded, parse_toml};
     use std::collections::HashSet;
+    use std::fs;
+    use tempfile::tempdir;
 
     #[test]
     fn embedded_hanabira_catalog_is_complete_and_valid() {
@@ -238,5 +277,60 @@ mod tests {
         .expect_err("invalid bounds must fail the file");
 
         assert!(error.to_string().contains("min greater than max"));
+    }
+
+    #[test]
+    fn combined_catalog_adds_local_rules_with_provenance() {
+        let local = tempdir().expect("temporary local catalog");
+        fs::write(
+            local.path().join("bunpro-local.toml"),
+            r#"
+                [[patterns]]
+                id = "bunpro-local-test"
+                name = "test"
+                jlpt = "N5"
+                [[patterns.steps]]
+                surface = "てすと"
+            "#,
+        )
+        .expect("write local fixture");
+
+        let rules = load_combined(Some(local.path())).expect("combined catalog should load");
+
+        assert_eq!(
+            rules
+                .iter()
+                .filter(|rule| rule.source.id == "hanabira")
+                .count(),
+            828
+        );
+        assert!(rules.iter().any(|rule| {
+            rule.id == "bunpro-local-test" && rule.source.id == "bunpro-local"
+        }));
+    }
+
+    #[test]
+    fn combined_catalog_rejects_duplicate_ids_across_sources() {
+        let embedded = load_embedded().expect("embedded rules");
+        let duplicate_id = &embedded[0].id;
+        let local = tempdir().expect("temporary local catalog");
+        fs::write(
+            local.path().join("bunpro-local.toml"),
+            format!(
+                r#"
+                    [[patterns]]
+                    id = "{duplicate_id}"
+                    name = "duplicate"
+                    jlpt = "N5"
+                    [[patterns.steps]]
+                    surface = "重複"
+                "#
+            ),
+        )
+        .expect("write duplicate fixture");
+
+        let error = load_combined(Some(local.path())).expect_err("duplicate IDs must fail");
+
+        assert!(error.to_string().contains("duplicate pattern id"));
     }
 }

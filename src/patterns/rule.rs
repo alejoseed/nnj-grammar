@@ -1,5 +1,21 @@
 use serde::{Deserialize, Serialize};
 
+/// Catalog metadata assigned by the loader rather than grammar TOML.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+pub struct CatalogSource {
+    pub id: String,
+    pub label: String,
+}
+
+impl CatalogSource {
+    pub fn new(id: impl Into<String>, label: impl Into<String>) -> Self {
+        Self {
+            id: id.into(),
+            label: label.into(),
+        }
+    }
+}
+
 /// A grammar sense. Legacy/generated rules use `steps`; hand-authored rules may
 /// use explicit `variants` when the same sense has more than one realization.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -31,6 +47,8 @@ pub struct PatternRule {
     pub ambiguity_group: Option<String>,
     #[serde(default)]
     pub fallback: bool,
+    #[serde(skip)]
+    pub source: CatalogSource,
 }
 
 /// One deterministic realization of a rule.

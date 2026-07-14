@@ -1,15 +1,10 @@
 mod cli;
 mod display;
-mod matcher;
-mod patterns;
-mod tokenizer;
-
-#[cfg(test)]
-mod hanabira_regression;
 
 use anyhow::Result;
 use clap::Parser;
 use cli::{Cli, OutputFormat};
+use nnj_grammar::{matcher, patterns, tokenizer};
 
 fn main() -> Result<()> {
     let cli = Cli::parse();

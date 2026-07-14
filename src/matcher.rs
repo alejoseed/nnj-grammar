@@ -1,10 +1,11 @@
 use std::cmp::Ordering;
+use std::collections::{HashMap, HashSet};
 
-use crate::patterns::{Boundary, PatternRule, PatternVariant, Step};
+use crate::patterns::{Boundary, CatalogSource, PatternRule, PatternVariant, Step};
 use crate::tokenizer::Token;
 
 /// One named token range captured while matching a rule.
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize)]
 pub struct PatternCapture {
     pub name: String,
     pub token_start: usize,
@@ -22,6 +23,8 @@ pub struct PatternMatch {
     pub hint: Option<String>,
     pub sense_id: Option<String>,
     pub ambiguity_group: Option<String>,
+    #[serde(skip_serializing)]
+    pub source: CatalogSource,
     pub captures: Vec<PatternCapture>,
     /// Inclusive core span. Context tokens never extend this range.
     pub token_start: usize,
@@ -35,12 +38,32 @@ struct SequenceMatch {
     specificity: usize,
 }
 
-struct Candidate {
-    matched: PatternMatch,
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct MatchCandidate {
+    pub matched: PatternMatch,
+    pub fallback: bool,
+    pub core_specificity: usize,
+    pub context_specificity: usize,
+    pub priority: i32,
+    pub wildcard_steps: usize,
+    pub optional_steps: usize,
+    #[serde(skip)]
+    pub discovery_order: usize,
+}
+
+#[derive(Debug, PartialEq, Eq, Hash)]
+struct CandidateKey {
+    rule_id: String,
+    variant_id: String,
+    token_start: usize,
+    token_end: usize,
+    captures: Vec<PatternCapture>,
     fallback: bool,
     core_specificity: usize,
     context_specificity: usize,
     priority: i32,
+    wildcard_steps: usize,
+    optional_steps: usize,
 }
 
 struct EffectiveVariant<'a> {
@@ -60,6 +83,28 @@ struct EffectiveVariant<'a> {
 /// nested spans. Duplicate senses and ambiguity groups are resolved only when
 /// they annotate the same core span.
 pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
+    let mut first_by_occurrence: HashMap<(String, String, usize), MatchCandidate> =
+        HashMap::new();
+    for candidate in match_candidates(tokens, rules) {
+        let key = (
+            candidate.matched.rule_id.clone(),
+            candidate.matched.variant_id.clone(),
+            candidate.matched.token_start,
+        );
+        let replace = first_by_occurrence
+            .get(&key)
+            .is_none_or(|current| candidate.discovery_order < current.discovery_order);
+        if replace {
+            first_by_occurrence.insert(key, candidate);
+        }
+    }
+    let mut candidates: Vec<_> = first_by_occurrence.into_values().collect();
+    candidates.sort_by_key(|candidate| candidate.discovery_order);
+    resolve_candidates(candidates)
+}
+
+/// Return every distinct successful parse together with ranking evidence.
+pub fn match_candidates(tokens: &[Token], rules: &[PatternRule]) -> Vec<MatchCandidate> {
     let mut candidates = Vec::new();
 
     for rule in rules {
@@ -85,7 +130,26 @@ pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
         }
     }
 
-    resolve_candidates(candidates)
+    let mut seen = HashSet::new();
+    candidates.retain(|candidate| seen.insert(candidate_key(candidate)));
+    candidates.sort_by(candidate_identity_order);
+    candidates
+}
+
+fn candidate_key(candidate: &MatchCandidate) -> CandidateKey {
+    CandidateKey {
+        rule_id: candidate.matched.rule_id.clone(),
+        variant_id: candidate.matched.variant_id.clone(),
+        token_start: candidate.matched.token_start,
+        token_end: candidate.matched.token_end,
+        captures: candidate.matched.captures.clone(),
+        fallback: candidate.fallback,
+        core_specificity: candidate.core_specificity,
+        context_specificity: candidate.context_specificity,
+        priority: candidate.priority,
+        wildcard_steps: candidate.wildcard_steps,
+        optional_steps: candidate.optional_steps,
+    }
 }
 
 fn effective_variant<'a>(
@@ -113,8 +177,16 @@ fn collect_variant_matches(
     tokens: &[Token],
     rule: &PatternRule,
     variant: &EffectiveVariant<'_>,
-    candidates: &mut Vec<Candidate>,
+    candidates: &mut Vec<MatchCandidate>,
 ) {
+    let steps = variant
+        .left_context
+        .iter()
+        .chain(variant.core)
+        .chain(variant.right_context);
+    let wildcard_steps = steps.clone().filter(|step| step.wildcard.is_some()).count();
+    let optional_steps = steps.filter(|step| step.optional).count();
+
     for start in 0..tokens.len() {
         if !has_boundary(tokens, start, variant.left_boundary, true) {
             continue;
@@ -134,7 +206,7 @@ fn collect_variant_matches(
             let mut captures = left.captures.clone();
             captures.extend(core.captures);
             captures.extend(right.captures);
-            candidates.push(Candidate {
+            candidates.push(MatchCandidate {
                 matched: PatternMatch {
                     rule_id: rule.id.clone(),
                     variant_id: variant.id.to_string(),
@@ -144,6 +216,7 @@ fn collect_variant_matches(
                     hint: rule.hint.clone(),
                     sense_id: variant.sense_id.map(str::to_owned),
                     ambiguity_group: variant.ambiguity_group.map(str::to_owned),
+                    source: rule.source.clone(),
                     captures,
                     token_start: start,
                     token_end: core.end - 1,
@@ -155,12 +228,10 @@ fn collect_variant_matches(
                     + usize::from(variant.left_boundary.is_some())
                     + usize::from(variant.right_boundary.is_some()),
                 priority: variant.priority,
+                wildcard_steps,
+                optional_steps,
+                discovery_order: candidates.len(),
             });
-
-            // Choices are generated shortest-first. Once one complete path for
-            // this variant/start succeeds, later paths are alternate parses of
-            // the same occurrence rather than additional annotations.
-            break;
         }
     }
 }
@@ -310,10 +381,10 @@ fn is_sentence_boundary(token: &Token) -> bool {
     matches!(token.surface.as_str(), "。" | "." | "！" | "!" | "？" | "?")
 }
 
-fn resolve_candidates(mut candidates: Vec<Candidate>) -> Vec<PatternMatch> {
+fn resolve_candidates(mut candidates: Vec<MatchCandidate>) -> Vec<PatternMatch> {
     candidates.sort_by(candidate_identity_order);
 
-    let mut semantic = Vec::<Candidate>::new();
+    let mut semantic = Vec::<MatchCandidate>::new();
     for candidate in candidates {
         if let Some(index) = semantic.iter().position(|existing| {
             same_span(existing, &candidate) && same_sense_or_rule(existing, &candidate)
@@ -326,7 +397,7 @@ fn resolve_candidates(mut candidates: Vec<Candidate>) -> Vec<PatternMatch> {
         }
     }
 
-    let mut resolved = Vec::<Candidate>::new();
+    let mut resolved = Vec::<MatchCandidate>::new();
     for candidate in semantic {
         if let Some(index) = resolved.iter().position(|existing| {
             same_span(existing, &candidate)
@@ -348,17 +419,17 @@ fn resolve_candidates(mut candidates: Vec<Candidate>) -> Vec<PatternMatch> {
         .collect()
 }
 
-fn same_span(left: &Candidate, right: &Candidate) -> bool {
+fn same_span(left: &MatchCandidate, right: &MatchCandidate) -> bool {
     left.matched.token_start == right.matched.token_start
         && left.matched.token_end == right.matched.token_end
 }
 
-fn same_sense_or_rule(left: &Candidate, right: &Candidate) -> bool {
+fn same_sense_or_rule(left: &MatchCandidate, right: &MatchCandidate) -> bool {
     left.matched.rule_id == right.matched.rule_id
         || (left.matched.sense_id.is_some() && left.matched.sense_id == right.matched.sense_id)
 }
 
-fn better_candidate(left: &Candidate, right: &Candidate) -> bool {
+fn better_candidate(left: &MatchCandidate, right: &MatchCandidate) -> bool {
     match left.fallback.cmp(&right.fallback).reverse() {
         Ordering::Greater => return true,
         Ordering::Less => return false,
@@ -385,24 +456,34 @@ fn better_candidate(left: &Candidate, right: &Candidate) -> bool {
     }
 }
 
-fn candidate_identity_order(left: &Candidate, right: &Candidate) -> Ordering {
+fn candidate_identity_order(left: &MatchCandidate, right: &MatchCandidate) -> Ordering {
     (
         left.matched.token_start,
         left.matched.token_end,
         &left.matched.rule_id,
         &left.matched.variant_id,
+        left.core_specificity,
+        left.context_specificity,
+        left.wildcard_steps,
+        left.optional_steps,
+        left.discovery_order,
     )
         .cmp(&(
             right.matched.token_start,
             right.matched.token_end,
             &right.matched.rule_id,
             &right.matched.variant_id,
+            right.core_specificity,
+            right.context_specificity,
+            right.wildcard_steps,
+            right.optional_steps,
+            right.discovery_order,
         ))
 }
 
 #[cfg(test)]
 mod tests {
-    use super::match_all;
+    use super::{match_all, match_candidates};
     use crate::patterns::rule::{Boundary, PatternVariant, TokenAlternative, WildcardStep};
     use crate::patterns::{PatternRule, Step};
     use crate::tokenizer::Token;
@@ -713,5 +794,49 @@ mod tests {
         assert_eq!(after_comma.len(), 1);
         assert_eq!(after_comma[0].rule_id, "clause");
         assert_eq!(after_period.len(), 2);
+    }
+
+    #[test]
+    fn raw_candidates_keep_optional_paths_while_match_all_keeps_first_path() {
+        let pattern = rule(
+            "optional-paths",
+            vec![
+                surface("a"),
+                Step {
+                    surface: Some("b".to_string()),
+                    optional: true,
+                    ..Step::default()
+                },
+            ],
+        );
+        let input = tokens(&[("a", ""), ("b", "")]);
+
+        let candidates = match_candidates(&input, std::slice::from_ref(&pattern));
+        let resolved = match_all(&input, &[pattern]);
+
+        assert_eq!(candidates.len(), 2);
+        assert!(candidates.iter().any(|candidate| {
+            (candidate.matched.token_start, candidate.matched.token_end) == (0, 0)
+        }));
+        assert!(candidates.iter().any(|candidate| {
+            (candidate.matched.token_start, candidate.matched.token_end) == (0, 1)
+        }));
+        assert_eq!((resolved[0].token_start, resolved[0].token_end), (0, 1));
+    }
+
+    #[test]
+    fn raw_candidates_keep_wildcard_paths_while_match_all_keeps_min_first_path() {
+        let pattern = rule(
+            "wildcard-paths",
+            vec![surface("a"), wildcard(0, 1), surface("b")],
+        );
+        let input = tokens(&[("a", ""), ("b", ""), ("b", "")]);
+
+        let candidates = match_candidates(&input, std::slice::from_ref(&pattern));
+        let resolved = match_all(&input, &[pattern]);
+
+        assert_eq!(candidates.len(), 2);
+        assert_eq!(candidates[0].wildcard_steps, 1);
+        assert_eq!((resolved[0].token_start, resolved[0].token_end), (0, 1));
     }
 }
