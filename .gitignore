@@ -4,3 +4,4 @@ Cargo.lock
 *.bunpro-local.json
 tools/__pycache__/
 /.superpowers/
+/sessions.json

@@ -83,8 +83,7 @@ struct EffectiveVariant<'a> {
 /// nested spans. Duplicate senses and ambiguity groups are resolved only when
 /// they annotate the same core span.
 pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
-    let mut first_by_occurrence: HashMap<(String, String, usize), MatchCandidate> =
-        HashMap::new();
+    let mut first_by_occurrence: HashMap<(String, String, usize), MatchCandidate> = HashMap::new();
     for candidate in match_candidates(tokens, rules) {
         let key = (
             candidate.matched.rule_id.clone(),

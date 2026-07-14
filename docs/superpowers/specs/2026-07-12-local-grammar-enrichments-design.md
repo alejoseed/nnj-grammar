@@ -75,4 +75,4 @@ this grammar-only milestone.
 - The local catalog is regenerated and the exact target sentence is inspected
   in graph and JSON output.
 - `cargo test --all-targets`, `cargo check`, Clippy with warnings denied, the
-  Python suite, and `git diff --check` provide final verification.
+  Python suite, `jj status`, and `jj diff --summary` provide final verification.

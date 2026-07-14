@@ -1,5 +1,8 @@
 # Reading Graph Alpha Stage A Implementation Plan
 
+> Execution status is tracked in `PROJECT_STATUS.md`. This file preserves the
+> detailed implementation design and its original task numbering.
+
 **Goal:** Build the offline desktop reading assistant described in
 `docs/superpowers/specs/2026-07-12-reading-graph-alpha-design.md`: one Rust
 analysis API combining Hanabira, personal Bunpro, local enrichments, ranked
@@ -929,7 +932,8 @@ npm --prefix web run test:browser
 npm --prefix web run build
 npm --prefix web run check:dist
 cargo build --release --bin nnj-grammar-server
-git diff --check
+jj status
+jj diff --summary
 ```
 
 Expected: all commands exit successfully with no warnings denied by Clippy.
@@ -952,8 +956,8 @@ the long sentence returns a valid graph without a server error.
 
 Confirm:
 
-- `git status --ignored` shows Bunpro and JMdict under ignored
-  `grammar/local/`.
+- `grammar/local/` remains listed in `.gitignore` and absent from
+  `jj diff --summary`.
 - The server listens only on `127.0.0.1:7878`.
 - Passage text does not appear in server logs.
 - `cargo run --quiet -- --output graph "そして"` still works.

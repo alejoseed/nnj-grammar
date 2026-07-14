@@ -3,6 +3,16 @@
 Offline Japanese grammar detection using Lindera, embedded UniDic, and a
 deterministic grammar-rule database.
 
+## Project Documentation
+
+- [`PROJECT_STATUS.md`](PROJECT_STATUS.md): canonical progress checklist and
+  current next action.
+- [`docs/CODE_TOUR.md`](docs/CODE_TOUR.md): beginner-oriented architecture and
+  recommended code reading order.
+- [`HANDOFF.md`](HANDOFF.md): compact session context for continuing work.
+- [`docs/superpowers/plans/2026-07-12-reading-graph-alpha-stage-a.md`](docs/superpowers/plans/2026-07-12-reading-graph-alpha-stage-a.md):
+  detailed Stage A implementation plan.
+
 The runtime is source-neutral: the matcher implements token predicates,
 variants, bounded slots, and context matching, but contains no catalog-specific
 Japanese grammar rules. Source host labels such as `Noun` and `Verb` map to

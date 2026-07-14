@@ -1,5 +1,9 @@
 # nnj-grammar Handoff
 
+For the canonical progress checklist and exact next action, read
+`PROJECT_STATUS.md`. For a guided explanation of the current code, read
+`docs/CODE_TOUR.md`.
+
 ## Compacted Session Context
 
 The product goal is an offline personal reading assistant for Japanese novels.
@@ -42,10 +46,10 @@ desktop implementation plan is
 
 ## Current Checkpoint
 
-Stage A analysis-core implementation is complete through combined catalog
-ranking. The CLI still behaves as before, while the Rust library can now load
-embedded Hanabira plus a local Bunpro catalog and classify raw matches as
-primary or secondary.
+Stage A analysis-core implementation is complete through the public
+`Analyzer`. The CLI still behaves as before, while the Rust library can now run
+the combined tokenization, catalog, matching, ranking, enrichment-placeholder,
+and hierarchy pipeline into one versioned `AnalysisDocument`.
 
 Implemented:
 
@@ -54,6 +58,18 @@ Implemented:
 - Raw `matcher::match_candidates` with ranking evidence.
 - Legacy-compatible `matcher::match_all` behavior.
 - Deterministic `ranking::rank_candidates`.
+- Schema version 1 records in `src/analysis.rs`.
+- Sentence -> grammar/segment -> token hierarchy in `src/hierarchy.rs`.
+- Stable secondary-candidate IDs and tree attachment references.
+- Nullable root spans for empty analysis documents.
+- Public `AnalyzerConfig`, `Analyzer::new`, and `Analyzer::analyze` in
+  `src/analyzer.rs`.
+- Explicit errors for missing configured local grammar directories and the
+  not-yet-supported dictionary path.
+- Stable `Token` -> `AnalyzedToken` conversion with empty glosses until JMdict.
+- End-to-end reading regressions in `tests/reading_analysis.rs` using
+  `tests/fixtures/local-reading.toml`.
+- Byte-stable schema regression in `tests/fixtures/analysis-soshite.json`.
 - Acceptance coverage for `そしてなによりも`:
   - Primary: `そして`
   - Primary: `何より`, spanning `なによりも`
@@ -65,13 +81,11 @@ The full Stage A plan is:
 
 ## Next Step
 
-Continue with Task 4 from the plan:
+Continue with the shortest path to the first D3 visualization:
 
-1. Create `src/analysis.rs` with schema version 1 records.
-2. Create `src/hierarchy.rs` for sentence -> grammar/segment -> token nodes.
-3. Add hierarchy tests before implementation.
-4. Add `Analyzer` orchestration and inspectable combined JSON.
-5. Prioritize the first D3 visualization before JMdict enrichment.
+1. Add the loopback analysis endpoint around `Analyzer`.
+2. Build the first faithful D3 visualization before JMdict enrichment.
+3. Return to offline JMdict after the graph path is visible end-to-end.
 
 Do not start SwiftUI, Xcode, UniFFI, or other iOS work yet.
 
@@ -93,7 +107,8 @@ cargo test --all-targets
 cargo check --all-targets
 cargo clippy --all-targets -- -D warnings
 python3 -m unittest discover -s tools -p 'test_*.py'
-git diff --check
+jj status
+jj diff --summary
 ```
 
 Focused checkpoint tests:
@@ -101,6 +116,8 @@ Focused checkpoint tests:
 ```bash
 cargo test --test analysis_core
 cargo test --test ranking
+cargo test --test hierarchy
+cargo test --test reading_analysis
 ```
 
 Web work requires Node.js 26.x. No Node or D3 files have been created yet.
