@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "input": "そしてなによりも",
+  "tokens": [
+    {
+      "id": "token-0",
+      "surface": "そして",
+      "pos1": "接続詞",
+      "pos2": "",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "そして",
+      "reading": "そして",
+      "byte_start": 0,
+      "byte_end": 9,
+      "position": 0,
+      "glosses": []
+    },
+    {
+      "id": "token-1",
+      "surface": "なに",
+      "pos1": "代名詞",
+      "pos2": "",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "何",
+      "reading": "なに",
+      "byte_start": 9,
+      "byte_end": 15,
+      "position": 1,
+      "glosses": []
+    },
+    {
+      "id": "token-2",
+      "surface": "より",
+      "pos1": "助詞",
+      "pos2": "格助詞",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "より",
+      "reading": "より",
+      "byte_start": 15,
+      "byte_end": 21,
+      "position": 2,
+      "glosses": []
+    },
+    {
+      "id": "token-3",
+      "surface": "も",
+      "pos1": "助詞",
+      "pos2": "係助詞",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "も",
+      "reading": "も",
+      "byte_start": 21,
+      "byte_end": 24,
+      "position": 3,
+      "glosses": []
+    }
+  ],
+  "primary_matches": [
+    {
+      "id": "match-0-0",
+      "rule_name": "そして、～",
+      "jlpt": "N5",
+      "meaning_en": "Used to connect two sentences; 'and then', 'and'.",
+      "hint": "Formation: Sentence 1 + そして + Sentence 2",
+      "sense_id": "hanabira-n5-083",
+      "ambiguity_group": null,
+      "captures": [],
+      "token_start": 0,
+      "token_end": 0,
+      "score": {
+        "fallback": false,
+        "priority": 0,
+        "span_length": 1,
+        "core_specificity": 1,
+        "context_specificity": 0,
+        "wildcard_steps": 2,
+        "optional_steps": 0
+      },
+      "provenance": [
+        {
+          "source": {
+            "id": "hanabira",
+            "label": "Hanabira"
+          },
+          "rule_id": "hanabira-n5-083",
+          "variant_id": "formation-01"
+        }
+      ]
+    },
+    {
+      "id": "match-1-3",
+      "rule_name": "何より",
+      "jlpt": "N2",
+      "meaning_en": "Above all else, more than anything",
+      "hint": null,
+      "sense_id": "test-local-nani-yori",
+      "ambiguity_group": null,
+      "captures": [],
+      "token_start": 1,
+      "token_end": 3,
+      "score": {
+        "fallback": false,
+        "priority": 0,
+        "span_length": 3,
+        "core_specificity": 3,
+        "context_specificity": 0,
+        "wildcard_steps": 0,
+        "optional_steps": 1
+      },
+      "provenance": [
+        {
+          "source": {
+            "id": "bunpro-local",
+            "label": "Bunpro local"
+          },
+          "rule_id": "test-local-nani-yori",
+          "variant_id": "kana"
+        }
+      ]
+    }
+  ],
+  "secondary_matches": [
+    {
+      "id": "secondary-1-2-0",
+      "matched": {
+        "id": "match-1-2",
+        "rule_name": "何より",
+        "jlpt": "N2",
+        "meaning_en": "Above all else, more than anything",
+        "hint": null,
+        "sense_id": "test-local-nani-yori",
+        "ambiguity_group": null,
+        "captures": [],
+        "token_start": 1,
+        "token_end": 2,
+        "score": {
+          "fallback": false,
+          "priority": 0,
+          "span_length": 2,
+          "core_specificity": 2,
+          "context_specificity": 0,
+          "wildcard_steps": 0,
+          "optional_steps": 1
+        },
+        "provenance": [
+          {
+            "source": {
+              "id": "bunpro-local",
+              "label": "Bunpro local"
+            },
+            "rule_id": "test-local-nani-yori",
+            "variant_id": "kana"
+          }
+        ]
+      },
+      "reason": "contained_by_stronger_match",
+      "blocked_by": "match-1-3"
+    },
+    {
+      "id": "secondary-3-3-0",
+      "matched": {
+        "id": "match-3-3",
+        "rule_name": "誰か・どこか・誰も・どこも",
+        "jlpt": "N5",
+        "meaning_en": "Someone, somewhere, not anyone, not anywhere",
+        "hint": null,
+        "sense_id": "test-local-broad-mo",
+        "ambiguity_group": null,
+        "captures": [],
+        "token_start": 3,
+        "token_end": 3,
+        "score": {
+          "fallback": false,
+          "priority": 0,
+          "span_length": 1,
+          "core_specificity": 1,
+          "context_specificity": 2,
+          "wildcard_steps": 0,
+          "optional_steps": 0
+        },
+        "provenance": [
+          {
+            "source": {
+              "id": "bunpro-local",
+              "label": "Bunpro local"
+            },
+            "rule_id": "test-local-broad-mo",
+            "variant_id": "particle-mo"
+          }
+        ]
+      },
+      "reason": "contained_by_stronger_match",
+      "blocked_by": "match-1-3"
+    }
+  ],
+  "tree": {
+    "root_id": "sentence-0",
+    "nodes": [
+      {
+        "id": "sentence-0",
+        "kind": "sentence",
+        "token_start": 0,
+        "token_end": 3,
+        "token_id": null,
+        "match_id": null,
+        "secondary_match_ids": []
+      },
+      {
+        "id": "match-0-0",
+        "kind": "grammar",
+        "token_start": 0,
+        "token_end": 0,
+        "token_id": null,
+        "match_id": "match-0-0",
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-0",
+        "kind": "token",
+        "token_start": 0,
+        "token_end": 0,
+        "token_id": "token-0",
+        "match_id": null,
+        "secondary_match_ids": []
+      },
+      {
+        "id": "match-1-3",
+        "kind": "grammar",
+        "token_start": 1,
+        "token_end": 3,
+        "token_id": null,
+        "match_id": "match-1-3",
+        "secondary_match_ids": [
+          "secondary-1-2-0",
+          "secondary-3-3-0"
+        ]
+      },
+      {
+        "id": "token-1",
+        "kind": "token",
+        "token_start": 1,
+        "token_end": 1,
+        "token_id": "token-1",
+        "match_id": null,
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-2",
+        "kind": "token",
+        "token_start": 2,
+        "token_end": 2,
+        "token_id": "token-2",
+        "match_id": null,
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-3",
+        "kind": "token",
+        "token_start": 3,
+        "token_end": 3,
+        "token_id": "token-3",
+        "match_id": null,
+        "secondary_match_ids": []
+      }
+    ],
+    "edges": [
+      {
+        "parent_id": "sentence-0",
+        "child_id": "match-0-0",
+        "order": 0
+      },
+      {
+        "parent_id": "match-0-0",
+        "child_id": "token-0",
+        "order": 0
+      },
+      {
+        "parent_id": "sentence-0",
+        "child_id": "match-1-3",
+        "order": 1
+      },
+      {
+        "parent_id": "match-1-3",
+        "child_id": "token-1",
+        "order": 0
+      },
+      {
+        "parent_id": "match-1-3",
+        "child_id": "token-2",
+        "order": 1
+      },
+      {
+        "parent_id": "match-1-3",
+        "child_id": "token-3",
+        "order": 2
+      }
+    ]
+  }
+}

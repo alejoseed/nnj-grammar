@@ -1,0 +1,115 @@
+[[patterns]]
+id         = "test-local-negative"
+name       = "う-Verb (Negative)"
+jlpt       = "N5"
+meaning_en = "Will/does/do not"
+sense_id   = "test-local-negative"
+
+[[patterns.variants]]
+id = "plain"
+
+[[patterns.variants.left_context]]
+pos1 = "動詞"
+
+[[patterns.variants.core]]
+surface = "ない"
+
+[[patterns]]
+id         = "test-local-contrastive-ga"
+name       = "が"
+jlpt       = "N5"
+meaning_en = "But, however"
+sense_id   = "test-local-contrastive-ga"
+
+[[patterns.variants]]
+id = "after-auxiliary"
+
+[[patterns.variants.left_context]]
+pos1 = "助動詞"
+
+[[patterns.variants.core]]
+surface = "が"
+
+[[patterns]]
+id         = "test-local-topic-wa"
+name       = "は"
+jlpt       = "N5"
+meaning_en = "Topic marker"
+sense_id   = "test-local-topic-wa"
+
+[[patterns.variants]]
+id = "after-pronoun"
+
+[[patterns.variants.left_context]]
+pos1 = "代名詞"
+
+[[patterns.variants.core]]
+surface = "は"
+
+[[patterns]]
+id         = "test-local-question-ka"
+name       = "か"
+jlpt       = "N5"
+meaning_en = "Question marker"
+sense_id   = "test-local-question-ka"
+
+[[patterns.variants]]
+id = "plain"
+
+[[patterns.variants.core]]
+surface = "か"
+
+[[patterns]]
+id         = "test-local-kamo"
+name       = "かもしれない"
+jlpt       = "N4"
+meaning_en = "Might, maybe, probably"
+sense_id   = "test-local-kamo"
+
+[[patterns.variants]]
+id = "casual-short"
+
+[[patterns.variants.core]]
+surface = "か"
+
+[[patterns.variants.core]]
+surface = "も"
+
+[[patterns]]
+id         = "test-local-nani-yori"
+name       = "何より"
+jlpt       = "N2"
+meaning_en = "Above all else, more than anything"
+sense_id   = "test-local-nani-yori"
+
+[[patterns.variants]]
+id = "kana"
+
+[[patterns.variants.core]]
+surface = "なに"
+
+[[patterns.variants.core]]
+surface = "より"
+
+[[patterns.variants.core]]
+surface  = "も"
+optional = true
+
+[[patterns]]
+id         = "test-local-broad-mo"
+name       = "誰か・どこか・誰も・どこも"
+jlpt       = "N5"
+meaning_en = "Someone, somewhere, not anyone, not anywhere"
+sense_id   = "test-local-broad-mo"
+
+[[patterns.variants]]
+id = "particle-mo"
+
+[[patterns.variants.left_context]]
+pos1 = "代名詞"
+
+[[patterns.variants.left_context]]
+pos1 = "助詞"
+
+[[patterns.variants.core]]
+surface = "も"

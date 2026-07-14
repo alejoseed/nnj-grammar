@@ -27,11 +27,8 @@ pub fn load_embedded() -> Result<Vec<PatternRule>> {
         let src = std::str::from_utf8(file.data.as_ref())
             .with_context(|| format!("embedded file is not valid UTF-8: {}", filename))?;
 
-        let mut file_rules = parse_toml_with_source(
-            src,
-            &filename,
-            &CatalogSource::new("hanabira", "Hanabira"),
-        )?;
+        let mut file_rules =
+            parse_toml_with_source(src, &filename, &CatalogSource::new("hanabira", "Hanabira"))?;
         rules.append(&mut file_rules);
     }
 
@@ -45,10 +42,7 @@ pub fn load_grammar_dir(dir: &Path) -> Result<Vec<PatternRule>> {
     load_grammar_dir_with_source(dir, &CatalogSource::new("filesystem", "Filesystem"))
 }
 
-fn load_grammar_dir_with_source(
-    dir: &Path,
-    source: &CatalogSource,
-) -> Result<Vec<PatternRule>> {
+fn load_grammar_dir_with_source(dir: &Path, source: &CatalogSource) -> Result<Vec<PatternRule>> {
     anyhow::ensure!(
         dir.exists(),
         "grammar directory not found: {}",
@@ -304,9 +298,9 @@ mod tests {
                 .count(),
             828
         );
-        assert!(rules.iter().any(|rule| {
-            rule.id == "bunpro-local-test" && rule.source.id == "bunpro-local"
-        }));
+        assert!(rules
+            .iter()
+            .any(|rule| { rule.id == "bunpro-local-test" && rule.source.id == "bunpro-local" }));
     }
 
     #[test]

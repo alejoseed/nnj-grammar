@@ -166,14 +166,7 @@ fn different_meanings_on_the_same_span_remain_distinct() {
                 ..Evidence::default()
             },
         ),
-        candidate(
-            "weak",
-            "local",
-            "か",
-            "or",
-            (1, 1),
-            Evidence::default(),
-        ),
+        candidate("weak", "local", "か", "or", (1, 1), Evidence::default()),
     ]);
 
     assert_eq!(ranked.primary[0].meaning_en, "question");
@@ -183,14 +176,7 @@ fn different_meanings_on_the_same_span_remain_distinct() {
 #[test]
 fn ranking_is_independent_of_candidate_input_order() {
     let forward = vec![
-        candidate(
-            "short",
-            "local",
-            "も",
-            "also",
-            (3, 3),
-            Evidence::default(),
-        ),
+        candidate("short", "local", "も", "also", (3, 3), Evidence::default()),
         candidate(
             "long",
             "local",

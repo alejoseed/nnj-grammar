@@ -1,8 +1,6 @@
 use anyhow::Result;
 use lindera::{
-    dictionary::load_dictionary,
-    mode::Mode,
-    segmenter::Segmenter,
+    dictionary::load_dictionary, mode::Mode, segmenter::Segmenter,
     tokenizer::Tokenizer as LinderaTokenizer,
 };
 use serde::{Deserialize, Serialize};
@@ -31,18 +29,18 @@ pub struct Token {
     pub surface: String,
 
     // UniDic POS hierarchy
-    pub pos1: String,      // major POS
-    pub pos2: String,      // subcategory 1
-    pub pos3: String,      // subcategory 2
-    pub pos4: String,      // subcategory 3
+    pub pos1: String, // major POS
+    pub pos2: String, // subcategory 1
+    pub pos3: String, // subcategory 2
+    pub pos4: String, // subcategory 3
 
     // Conjugation
     pub conj_type: String, // 活用型
     pub conj_form: String, // 活用形
 
     // Forms
-    pub base_form: String,      // orthographic base (書字形基本形, index 8)
-    pub reading: String,        // kana base (index 10)
+    pub base_form: String, // orthographic base (書字形基本形, index 8)
+    pub reading: String,   // kana base (index 10)
 
     // Position in the original text
     pub byte_start: usize,
@@ -93,7 +91,7 @@ impl Tokenizer {
                     pos4: g(3),
                     conj_type: g(4),
                     conj_form: g(5),
-                    base_form: g(7),   // 語彙素 — true dictionary/lemma form (行く not 行か, する not し)
+                    base_form: g(7), // 語彙素 — true dictionary/lemma form (行く not 行か, する not し)
                     reading: katakana_to_hiragana(&g(6)), // 語彙素読み — katakana reading converted to hiragana
                     byte_start: t.byte_start,
                     byte_end: t.byte_end,

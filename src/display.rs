@@ -4,14 +4,14 @@ use nnj_grammar::tokenizer::Token;
 /// Return a fill color for a token node based on its POS category.
 fn pos_color(pos1: &str) -> &'static str {
     match pos1 {
-        "名詞"  => "#D6EAF8", // noun        — blue
-        "動詞"  => "#D5F5E3", // verb        — green
-        "助詞"  => "#FDEBD0", // particle    — orange
+        "名詞" => "#D6EAF8",   // noun        — blue
+        "動詞" => "#D5F5E3",   // verb        — green
+        "助詞" => "#FDEBD0",   // particle    — orange
         "助動詞" => "#FEF9E7", // auxiliary   — yellow
         "形容詞" => "#E8DAEF", // i-adjective — purple
-        "副詞"  => "#FDEDEC", // adverb      — pink
+        "副詞" => "#FDEDEC",   // adverb      — pink
         "代名詞" => "#D6EAF8", // pronoun     — blue (same as noun)
-        _      => "#F2F3F4", // other       — grey
+        _ => "#F2F3F4",        // other       — grey
     }
 }
 
@@ -114,7 +114,7 @@ pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
         // Connect to its pattern parent, or directly to root if unclaimed
         match token_pattern[t.position] {
             Some(pi) => println!("  p{} -> t{}", pi, t.position),
-            None     => println!("  root -> t{}", t.position),
+            None => println!("  root -> t{}", t.position),
         }
     }
 

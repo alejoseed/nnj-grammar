@@ -1,3 +1,6 @@
+pub mod analysis;
+pub mod analyzer;
+pub mod hierarchy;
 pub mod matcher;
 pub mod patterns;
 pub mod ranking;

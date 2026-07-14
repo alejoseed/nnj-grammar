@@ -15,7 +15,8 @@
 - Preserve basic matches, including standalone `それ` and `か`.
 - Do not add vocabulary glossing for `そう`.
 - Do not make network requests.
-- Do not create a git commit unless the user explicitly requests one.
+- Do not run `jj commit` or `jj describe` unless the user explicitly requests
+  it.
 
 ---
 
@@ -319,7 +320,8 @@ python3 -m unittest discover -s tools -p 'test_*.py'
 cargo test --all-targets
 cargo check
 cargo clippy --all-targets -- -D warnings
-git diff --check
+jj status
+jj diff --summary
 ```
 
 Expected: every command exits successfully, Python reports all tests passing, and Rust reports 13 tests passing.

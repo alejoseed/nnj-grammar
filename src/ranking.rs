@@ -49,6 +49,7 @@ pub enum SecondaryReason {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SecondaryMatch {
+    pub id: String,
     pub matched: DisplayMatch,
     pub reason: SecondaryReason,
     pub blocked_by: Option<String>,
@@ -75,6 +76,7 @@ pub fn rank_candidates(mut candidates: Vec<MatchCandidate>) -> RankedMatches {
                 SecondaryReason::OverlapsStrongerMatch
             };
             secondary.push(SecondaryMatch {
+                id: String::new(),
                 matched,
                 reason,
                 blocked_by: Some(blocker.id.clone()),
@@ -86,7 +88,23 @@ pub fn rank_candidates(mut candidates: Vec<MatchCandidate>) -> RankedMatches {
 
     primary.sort_by(display_source_order);
     secondary.sort_by(|left, right| display_source_order(&left.matched, &right.matched));
+    assign_secondary_ids(&mut secondary);
     RankedMatches { primary, secondary }
+}
+
+fn assign_secondary_ids(matches: &mut [SecondaryMatch]) {
+    let mut span_counts = HashMap::<(usize, usize), usize>::new();
+    for secondary in matches {
+        let matched = &secondary.matched;
+        let index = span_counts
+            .entry((matched.token_start, matched.token_end))
+            .or_default();
+        secondary.id = format!(
+            "secondary-{}-{}-{index}",
+            matched.token_start, matched.token_end
+        );
+        *index += 1;
+    }
 }
 
 fn candidate_rank_order(left: &MatchCandidate, right: &MatchCandidate) -> Ordering {
@@ -169,14 +187,21 @@ fn assign_stable_ids(matches: &mut [DisplayMatch]) {
         matched.id = if *index == 0 {
             format!("match-{}-{}", matched.token_start, matched.token_end)
         } else {
-            format!("match-{}-{}-{index}", matched.token_start, matched.token_end)
+            format!(
+                "match-{}-{}-{index}",
+                matched.token_start, matched.token_end
+            )
         };
         *index += 1;
     }
 }
 
 fn normalize(value: &str) -> String {
-    value.split_whitespace().collect::<Vec<_>>().join(" ").to_lowercase()
+    value
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_lowercase()
 }
 
 fn provenance_order(left: &MatchProvenance, right: &MatchProvenance) -> Ordering {
