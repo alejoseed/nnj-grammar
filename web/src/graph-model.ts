@@ -1,8 +1,22 @@
-import type { AnalysisTree, AnalysisTreeNode } from "./types";
+import type {
+  AnalysisDocument,
+  AnalysisTree,
+  AnalysisTreeNode,
+  AnalyzedToken,
+  TreeNodeKind,
+} from "./types";
 
 export interface OrderedTreeNode {
   node: AnalysisTreeNode;
   children: OrderedTreeNode[];
+}
+
+export interface GraphNode {
+  id: string;
+  kind: TreeNodeKind;
+  primaryLabel: string;
+  secondaryLabel: string;
+  children: GraphNode[];
 }
 
 export function buildOrderedTree(tree: AnalysisTree): OrderedTreeNode {
@@ -71,4 +85,125 @@ export function buildOrderedTree(tree: AnalysisTree): OrderedTreeNode {
     }
   }
   return root;
+}
+
+function uniqueMap<T>(
+  items: T[],
+  idOf: (item: T) => string,
+  label: string,
+): Map<string, T> {
+  const result = new Map<string, T>();
+  for (const item of items) {
+    const id = idOf(item);
+    if (result.has(id)) {
+      throw new Error(`duplicate ${label}: ${id}`);
+    }
+    result.set(id, item);
+  }
+  return result;
+}
+
+function spanTokens(
+  node: AnalysisTreeNode,
+  tokensByPosition: Map<number, AnalyzedToken>,
+): AnalyzedToken[] {
+  if (
+    node.token_start === null ||
+    node.token_end === null ||
+    node.token_end < node.token_start
+  ) {
+    throw new Error(
+      `invalid token span: ${String(node.token_start)}..${String(node.token_end)}`,
+    );
+  }
+  const tokens: AnalyzedToken[] = [];
+  for (let position = node.token_start; position <= node.token_end; position += 1) {
+    const token = tokensByPosition.get(position);
+    if (!token) {
+      throw new Error(`invalid token span: ${node.token_start}..${node.token_end}`);
+    }
+    tokens.push(token);
+  }
+  return tokens;
+}
+
+export function buildGraphModel(document: AnalysisDocument): GraphNode {
+  const ordered = buildOrderedTree(document.tree);
+  if (ordered.node.kind !== "sentence") {
+    throw new Error("tree root must be a sentence");
+  }
+  const tokensById = uniqueMap(
+    document.tokens,
+    (token) => token.id,
+    "analyzed token",
+  );
+  const tokensByPosition = new Map(
+    document.tokens.map((token) => [token.position, token]),
+  );
+  if (tokensByPosition.size !== document.tokens.length) {
+    throw new Error("duplicate token position");
+  }
+  const matchesById = uniqueMap(
+    document.primary_matches,
+    (matched) => matched.id,
+    "primary match",
+  );
+  const secondaryById = uniqueMap(
+    document.secondary_matches,
+    (matched) => matched.id,
+    "secondary match",
+  );
+
+  const convert = ({ node, children }: OrderedTreeNode): GraphNode => {
+    for (const secondaryId of node.secondary_match_ids) {
+      if (!secondaryById.has(secondaryId)) {
+        throw new Error(`missing secondary match: ${secondaryId}`);
+      }
+    }
+
+    let primaryLabel = "";
+    let secondaryLabel = "";
+    if (node.kind === "grammar") {
+      const matched = matchesById.get(node.match_id ?? "");
+      if (!matched) {
+        throw new Error(`missing primary match: ${String(node.match_id)}`);
+      }
+      if (
+        matched.token_start !== node.token_start ||
+        matched.token_end !== node.token_end
+      ) {
+        throw new Error(`tree and match spans differ: ${matched.id}`);
+      }
+      primaryLabel = spanTokens(node, tokensByPosition)
+        .map((token) => token.surface)
+        .join("");
+      secondaryLabel = matched.meaning_en.trim();
+    } else if (node.kind === "segment") {
+      primaryLabel = spanTokens(node, tokensByPosition)
+        .map((token) => token.surface)
+        .join("");
+    } else if (node.kind === "token") {
+      const token = tokensById.get(node.token_id ?? "");
+      if (!token) {
+        throw new Error(`missing analyzed token: ${String(node.token_id)}`);
+      }
+      if (node.token_start !== token.position || node.token_end !== token.position) {
+        throw new Error(`tree and token positions differ: ${token.id}`);
+      }
+      primaryLabel = token.surface;
+      secondaryLabel =
+        token.glosses.find((gloss) => gloss.gloss.trim())?.gloss.trim() ??
+        (token.reading !== token.surface ? token.reading : "");
+    }
+
+    return {
+      id: node.id,
+      kind: node.kind,
+      primaryLabel,
+      secondaryLabel,
+      children: children.map(convert),
+    };
+  };
+
+  return convert(ordered);
 }
