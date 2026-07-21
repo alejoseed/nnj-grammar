@@ -13,12 +13,14 @@ ordinary-word glosses, and a faithful interactive graph.
 
 ## Current Checkpoint
 
-Stage A is complete through the public `Analyzer`. The analyzer now connects
-tokenization, combined catalogs, matching, ranking, token records, and hierarchy
-into one deterministic `AnalysisDocument`.
+Stage A is complete through the public `Analyzer`, and the first fixture-driven
+D3 consumer is complete. The analyzer produces one deterministic
+`AnalysisDocument`; the browser validates that contract and renders a faithful
+Hanabira-style hierarchy with keyboard focus, pan, and zoom.
 
-The existing CLI still uses the legacy direct path. No server, D3 client,
-JMdict integration, or iOS implementation exists yet.
+The existing CLI still uses the legacy direct path. The browser currently loads
+the committed fixture because no server, JMdict integration, or iOS
+implementation exists yet.
 
 ## Progress Legend
 
@@ -72,12 +74,14 @@ Current next action: write failing loopback API tests against the public
 
 Web tooling requires Node.js 26.x.
 
-- [ ] Create Vite, TypeScript, and D3 project under `web/`.
-- [ ] Mirror `AnalysisDocument` schema in TypeScript.
+- [x] Create Vite, TypeScript, Tailwind, and D3 project under `web/`.
+- [x] Mirror and validate `AnalysisDocument` schema in TypeScript.
+- [x] Load the deterministic schema-v1 fixture through Vite.
 - [ ] Add paste and Analyze workflow.
-- [ ] Render faithful left-to-right hierarchy.
-- [ ] Add curved links and sentence/grammar/token node styles.
-- [ ] Add pan, zoom, reset, and fit-to-content.
+- [x] Render faithful left-to-right hierarchy.
+- [x] Add curved links and sentence/grammar/token node styles.
+- [x] Add pan and zoom with a stable plot-margin transform.
+- [ ] Add reset and fit-to-content.
 - [ ] Open layered reading card on node selection.
 - [ ] Show secondary candidates in a collapsed disclosure.
 - [ ] Add keyboard-accessible node selection.
@@ -139,6 +143,10 @@ cargo test --all-targets
 cargo check --all-targets
 cargo clippy --all-targets -- -D warnings
 python3 -m unittest discover -s tools -p 'test_*.py'
+mise exec node@26 -- npm --prefix web test
+mise exec node@26 -- npm --prefix web run typecheck
+mise exec node@26 -- npm --prefix web run build
+mise exec node@26 -- npm --prefix web run test:browser
 jj status
 jj diff --summary
 ```

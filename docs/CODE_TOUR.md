@@ -14,7 +14,8 @@ Japanese text
   -> grammar candidates
   -> ranked primary and secondary matches
   -> sentence/grammar/token hierarchy
-  -> JSON for the future D3 reader
+  -> schema-v1 JSON
+  -> validated D3 reading graph
 ```
 
 There are currently two paths through the code:
@@ -26,11 +27,16 @@ Current CLI path
 New reading-app path
   text -> tokenize -> combined catalogs -> match_candidates -> rank_candidates
        -> build_tree -> AnalysisDocument
+
+Current fixture UI path
+  committed AnalysisDocument -> validate schema -> validate ordered tree
+                             -> derive labels -> render D3 graph
 ```
 
-The new path is now connected by the public `Analyzer`, but the existing CLI
-does not call it yet. The CLI intentionally continues using its older output
-path until the loopback API and D3 consumer are ready.
+The new analysis path is connected by the public `Analyzer`, and the first D3
+consumer renders its committed deterministic fixture. The existing CLI does not
+call the analyzer yet, and the web page does not call Rust until the loopback API
+is implemented.
 
 ## Start Here
 
@@ -51,6 +57,9 @@ Read these files in this order:
 13. `tests/analysis_core.rs`, `tests/ranking.rs`, `tests/hierarchy.rs`, and
     `tests/reading_analysis.rs` for
     executable examples of the intended behavior.
+14. `web/src/types.ts` and `web/src/graph-model.ts` for the browser boundary.
+15. `web/src/graph.ts`, `web/src/app.ts`, and `web/src/main.ts` for rendering.
+16. `web/tests/reading-graph.spec.ts` for the real-browser interaction contract.
 
 Do not start by reading all of `matcher.rs`. First understand `PatternRule`,
 `Step`, `MatchCandidate`, and the tests that create them.
@@ -87,7 +96,7 @@ Important: the CLI does not yet call `load_combined`, `rank_candidates`,
 ### 3. Legacy display: `src/display.rs`
 
 This file owns the current terminal and DOT graph output. It is binary-local and
-is not the future D3 renderer. The future web UI will consume
+is not the D3 renderer. The browser renderer under `web/` consumes
 `AnalysisDocument` instead.
 
 ## Tokenization: `src/tokenizer.rs`
@@ -220,8 +229,8 @@ does not clutter the main graph.
 ## Stable Output: `src/analysis.rs`
 
 This module defines records, not orchestration. `AnalysisDocument` is the
-language-neutral contract that the server, D3 client, and future phone app will
-share.
+language-neutral contract shared by the current D3 client, the planned server,
+and the future phone app.
 
 It contains:
 
@@ -312,6 +321,79 @@ the three focused reading examples, contiguous long-text token byte coverage,
 clause boundaries, deterministic serialization, the JSON fixture, and invalid
 configuration errors.
 
+## Fixture Web Graph: `web/`
+
+The current browser slice deliberately stops at the committed analyzer fixture.
+It proves the complete JSON-to-graph boundary before the loopback API introduces
+network orchestration.
+
+### Schema boundary: `web/src/types.ts`
+
+`parseAnalysisDocument` treats fixture JSON as untrusted input. It accepts only
+schema version 1 and validates every token, match, secondary candidate, node,
+edge, span, and provenance record before the rest of the UI can use it. The
+TypeScript records mirror the Rust `AnalysisDocument` contract without adding
+Japanese-language inference.
+
+### Ordered topology: `web/src/graph-model.ts`
+
+`buildOrderedTree` validates the normalized graph before turning it into nested
+nodes. It rejects duplicate IDs, missing edge references, multiple parents,
+cycles, disconnected nodes, and invalid root or span references. Child order is
+the original edge order, which keeps layout deterministic.
+
+`buildGraphModel` then derives presentation labels from document records:
+
+- Grammar nodes use the matched surface and English meaning.
+- Segment nodes use their covered surface.
+- Token nodes use the exact token surface.
+- The sentence root remains visually unlabeled.
+
+The model follows stable IDs and references. It does not inspect Japanese text
+to decide grammar structure.
+
+### Safe fixture mount: `web/src/app.ts`
+
+`loadAnalysisDocument` fetches and validates JSON. `mountFixtureGraph` keeps the
+renderer behind an injected function boundary, so loading and error behavior can
+be tested without D3. Failed requests, malformed JSON, and invalid schemas
+replace the host with one passage-safe error; no partial input text is exposed.
+
+### Faithful renderer: `web/src/graph.ts`
+
+`renderGraph` reproduces Hanabira's active grammar-tree constants on a
+1200-by-800 slate SVG:
+
+- `d3.tree` and `d3.linkHorizontal` produce the left-to-right hierarchy.
+- The sentence root is blue; descendants are green.
+- Internal labels sit above-left; leaf labels sit to the right.
+- Hover and keyboard focus animate to orange over 200 ms.
+- Stable DOM IDs, tree roles, labels, and focus targets expose the graph to
+  assistive technology and browser tests.
+
+The SVG has separate `viewport` and `plot` groups. Zoom and pan transform only
+the viewport, while the plot permanently retains `translate(200,20)`. This
+preserves Hanabira's margin without its first-interaction jump. Hover and focus
+are tracked independently so either interaction can keep a node emphasized.
+
+`web/src/styles.css` contains only Tailwind's import. Static visual values stay
+in Tailwind utilities; D3 owns geometry and interaction state. Text emphasis
+uses an inline fill because a Tailwind fill class would otherwise override an
+SVG presentation attribute in the browser cascade.
+
+### Browser entry and verification
+
+`web/src/main.ts` locates the semantic host, imports Tailwind, resolves the
+committed fixture through Vite, and mounts the graph. `web/vite.config.ts`
+allows the repository-root fixture in development and keeps Vitest scoped to
+unit tests. `web/src/vite-env.d.ts` supplies Vite's CSS import declarations.
+
+Unit tests cover the schema, topology, labels, safe mount, and renderer. The
+Playwright test in `web/tests/reading-graph.spec.ts` launches Chromium and checks
+rendering, real CSS hover color, keyboard focus, zoom, pan, and the fixed plot
+margin. Its reset screenshot is written under ignored `web/test-results/` for
+visual review.
+
 ## Data and Generated Files
 
 ### `grammar/hanabira/`
@@ -358,6 +440,11 @@ Use tests to understand intended behavior:
 | `tests/reading_analysis.rs` | Public Analyzer pipeline and reading regressions |
 | `src/matcher.rs` tests | Optional tokens, wildcards, boundaries, captures |
 | `src/hanabira_regression.rs` | Corpus-wide generated catalog baseline |
+| `web/src/types.test.ts` | Runtime schema-v1 validation |
+| `web/src/graph-model.test.ts` | Ordered topology and label derivation |
+| `web/src/app.test.ts` | Fixture loading and passage-safe errors |
+| `web/src/graph.test.ts` | Hanabira structure and node interactions |
+| `web/tests/reading-graph.spec.ts` | Chromium rendering, focus, pan, and zoom |
 
 Run one focused test while reading its implementation. It is easier to follow
 than reading the entire module first.
@@ -365,10 +452,10 @@ than reading the entire module first.
 ## Known Sources of Confusion
 
 - `src/main.rs` still uses the old path even though `Analyzer` can now produce
-  complete documents. The next consumer will be the loopback API; CLI migration
-  remains a separate decision.
+  complete documents. The web fixture is the first consumer; the next integration
+  will be the loopback API. CLI migration remains a separate decision.
 - `src/graph/` is dormant unfinished code and is not compiled. Current graph
-  output lives in `src/display.rs`; the future graph will live in D3.
+  output lives in `src/display.rs`; the active D3 graph lives under `web/`.
 - Older `grammar/n1` through `grammar/n5` directories are not the embedded
   Hanabira catalog.
 - UniDic index comments and the selected base/reading fields in `tokenizer.rs`
@@ -387,6 +474,7 @@ than reading the entire module first.
 7. Read the ranking test that makes bare `も` secondary.
 8. Read the hierarchy test and compare expected IDs with `build_tree`.
 9. Read `Analyzer::analyze` and the six end-to-end reading tests.
+10. Run the fixture graph and compare `graph-model.ts` with the rendered nodes.
 
 After that sequence, the remaining matcher implementation will have concrete
 meaning instead of looking like an isolated recursive algorithm.
