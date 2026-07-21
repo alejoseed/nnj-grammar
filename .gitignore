@@ -5,3 +5,8 @@ Cargo.lock
 tools/__pycache__/
 /.superpowers/
 /sessions.json
+/claude-output.md
+/web/node_modules/
+/web/dist/
+/web/test-results/
+/web/playwright-report/
