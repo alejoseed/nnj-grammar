@@ -39,17 +39,20 @@ Key reading examples and intended behavior:
 - Long novel sentences should retain clause boundaries and avoid promoted
   Bunpro footnotes or incomplete one-token variants.
 
-The approved design is
-`docs/superpowers/specs/2026-07-12-reading-graph-alpha-design.md`. The detailed
-desktop implementation plan is
-`docs/superpowers/plans/2026-07-12-reading-graph-alpha-stage-a.md`.
+The overall approved design is
+`docs/superpowers/specs/2026-07-12-reading-graph-alpha-design.md`. The faithful
+fixture-graph slice is specified in
+`docs/superpowers/specs/2026-07-21-hanabira-faithful-graph-design.md` and its
+implementation plan is
+`docs/superpowers/plans/2026-07-21-hanabira-faithful-graph.md`.
 
 ## Current Checkpoint
 
-Stage A analysis-core implementation is complete through the public
-`Analyzer`. The CLI still behaves as before, while the Rust library can now run
-the combined tokenization, catalog, matching, ranking, enrichment-placeholder,
-and hierarchy pipeline into one versioned `AnalysisDocument`.
+Stage A analysis-core implementation is complete through the public `Analyzer`.
+The first visible D3 slice is also complete: a Node.js 26 Vite client validates
+the committed schema-v1 fixture and renders it as a faithful Hanabira graph. The
+CLI still behaves as before, and the browser remains fixture-driven until the
+loopback API is implemented.
 
 Implemented:
 
@@ -70,6 +73,16 @@ Implemented:
 - End-to-end reading regressions in `tests/reading_analysis.rs` using
   `tests/fixtures/local-reading.toml`.
 - Byte-stable schema regression in `tests/fixtures/analysis-soshite.json`.
+- Runtime schema-v1 validation in `web/src/types.ts`.
+- Ordered tree validation and deterministic labels in `web/src/graph-model.ts`.
+- Passage-safe fixture loading in `web/src/app.ts`.
+- Hanabira-faithful D3 rendering in `web/src/graph.ts` with separate viewport
+  and plot layers, 200 ms emphasis, accessible focus, pan, and zoom.
+- Vite/Tailwind browser entry in `web/src/main.ts` and `web/index.html`.
+- Vitest coverage for schema, topology, labels, loading, and rendering.
+- Playwright coverage for real-browser rendering, hover, focus, pan, zoom, and
+  the stable margin transform.
+- Final Fable fidelity review: PASS with no discrepancies.
 - Acceptance coverage for `そしてなによりも`:
   - Primary: `そして`
   - Primary: `何より`, spanning `なによりも`
@@ -81,11 +94,14 @@ The full Stage A plan is:
 
 ## Next Step
 
-Continue with the shortest path to the first D3 visualization:
+Connect the completed analyzer and graph through the local desktop API:
 
 1. Add the loopback analysis endpoint around `Analyzer`.
-2. Build the first faithful D3 visualization before JMdict enrichment.
-3. Return to offline JMdict after the graph path is visible end-to-end.
+2. Replace the development fixture load with `POST /api/analyze` after the
+   endpoint contract is tested.
+3. Add the paste-and-Analyze shell and preserve the current graph on request
+   failures.
+4. Return to offline JMdict after the graph path is visible end-to-end.
 
 Do not start SwiftUI, Xcode, UniFFI, or other iOS work yet.
 
@@ -107,6 +123,10 @@ cargo test --all-targets
 cargo check --all-targets
 cargo clippy --all-targets -- -D warnings
 python3 -m unittest discover -s tools -p 'test_*.py'
+mise exec node@26 -- npm --prefix web test
+mise exec node@26 -- npm --prefix web run typecheck
+mise exec node@26 -- npm --prefix web run build
+mise exec node@26 -- npm --prefix web run test:browser
 jj status
 jj diff --summary
 ```
@@ -120,4 +140,5 @@ cargo test --test hierarchy
 cargo test --test reading_analysis
 ```
 
-Web work requires Node.js 26.x. No Node or D3 files have been created yet.
+Web work requires Node.js 26.x. Start the fixture graph with
+`mise exec node@26 -- npm --prefix web run dev`.
