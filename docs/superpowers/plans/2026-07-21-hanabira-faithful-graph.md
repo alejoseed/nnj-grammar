@@ -379,7 +379,7 @@ mise exec node@26 -- npm --prefix web test -- src/types.test.ts
 mise exec node@26 -- npm --prefix web run typecheck
 ```
 
-Expected: 3 test cases pass and TypeScript exits 0.
+Expected: 6 schema-boundary cases pass and TypeScript exits 0.
 
 - [ ] **Step 8: Inspect and commit Task 1**
 
