@@ -86,3 +86,16 @@ The optional enrichment file contains personal, local-only forms missing from
 the saved source catalog. It uses the versioned schema documented in
 `docs/superpowers/specs/2026-07-12-local-grammar-enrichments-design.md` and
 should remain under the gitignored `grammar/local/` directory.
+
+## Fixture Graph Development
+
+The first web slice renders the committed schema-v1 fixture without starting a
+Rust server. Use Node.js 26.x:
+
+```bash
+mise exec node@26 -- npm --prefix web install
+mise exec node@26 -- npm --prefix web run dev
+```
+
+Vite prints the local browser URL. The page renders
+`tests/fixtures/analysis-soshite.json` as a Hanabira-faithful D3 graph.
