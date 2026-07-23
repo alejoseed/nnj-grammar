@@ -35,8 +35,10 @@ Current fixture UI path
 
 The new analysis path is connected by the public `Analyzer`, and the first D3
 consumer renders its committed deterministic fixture. The existing CLI does not
-call the analyzer yet, and the web page does not call Rust until the loopback API
-is implemented.
+call the analyzer yet. The loopback API (`src/server.rs`, the
+`nnj-grammar-server` binary) now exposes `Analyzer` over HTTP, but the web page
+still renders the committed fixture until the paste/Analyze UI slice wires it to
+the live API.
 
 ## Start Here
 
@@ -54,12 +56,14 @@ Read these files in this order:
 10. `src/analysis.rs` for the stable future UI contract.
 11. `src/hierarchy.rs` for the tree presented to D3.
 12. `src/analyzer.rs` for end-to-end orchestration.
-13. `tests/analysis_core.rs`, `tests/ranking.rs`, `tests/hierarchy.rs`, and
-    `tests/reading_analysis.rs` for
+13. `src/server.rs` and `src/bin/server.rs` for the loopback HTTP API and its
+    binary.
+14. `tests/analysis_core.rs`, `tests/ranking.rs`, `tests/hierarchy.rs`,
+    `tests/reading_analysis.rs`, and `tests/server.rs` for
     executable examples of the intended behavior.
-14. `web/src/types.ts` and `web/src/graph-model.ts` for the browser boundary.
-15. `web/src/graph.ts`, `web/src/app.ts`, and `web/src/main.ts` for rendering.
-16. `web/tests/reading-graph.spec.ts` for the real-browser interaction contract.
+15. `web/src/types.ts` and `web/src/graph-model.ts` for the browser boundary.
+16. `web/src/graph.ts`, `web/src/app.ts`, and `web/src/main.ts` for rendering.
+17. `web/tests/reading-graph.spec.ts` for the real-browser interaction contract.
 
 Do not start by reading all of `matcher.rs`. First understand `PatternRule`,
 `Step`, `MatchCandidate`, and the tests that create them.
@@ -321,6 +325,77 @@ the three focused reading examples, contiguous long-text token byte coverage,
 clause boundaries, deterministic serialization, the JSON fixture, and invalid
 configuration errors.
 
+## Local Desktop API: `src/server.rs`
+
+`src/server.rs` is a reusable Axum layer over `Analyzer`. It never tokenizes,
+matches, ranks, or builds hierarchy itself; it only marshals HTTP requests into
+one `Analyzer::analyze` call and marshals the result back out.
+
+The router exposes two routes and holds the analyzer as shared state:
+
+| Route | Purpose |
+|---|---|
+| `GET /api/health` | Reports `{"status":"ok","schema_version":1}` from the same `ANALYSIS_SCHEMA_VERSION` constant used by `AnalysisDocument` |
+| `POST /api/analyze` | Accepts `{"text":"..."}` and returns the schema-v1 `AnalysisDocument` directly |
+
+State is one `Arc<Analyzer>`. Each analyze call clones that reference and runs
+`Analyzer::analyze` on Tokio's blocking pool, because tokenization and matching
+are CPU-bound and must not block Axum's async I/O workers. The analyzer is built
+once, so embedded UniDic and grammar catalogs are not reloaded per request.
+
+### Errors: `ValidatedJson` and the stable envelope
+
+Every failure returns the same JSON envelope: `{"error":{"code","message"}}`.
+`ApiError` owns the status, stable code, and message and implements
+`IntoResponse`. `ValidatedJson<T>` wraps Axum's `Json` extractor and converts
+its rejections through `classify_json_rejection`, so clients see this contract
+instead of Axum's default plain-text rejection bodies. Client-facing `500`
+messages are generic and never expose internal error chains, paths, or passage
+fragments.
+
+### Validation order
+
+A request is checked in this fixed order, each stage mapping to a stable code:
+
+1. 512 KiB raw body limit via `DefaultBodyLimit` (surfaced as
+   `request_too_large`, `413`), enforced before JSON decoding so malformed input
+   cannot force unbounded allocation.
+2. JSON shape via `ValidatedJson` (`invalid_json`/`400` for malformed JSON,
+   missing `text`, unknown fields, or wrong types; `unsupported_media_type`/`415`
+   for a non-JSON content type). The request record uses `deny_unknown_fields`.
+3. `validate_text` on the decoded string (`empty_input`/`400` for
+   empty/whitespace-only; `input_too_large`/`413` above 65,536 UTF-8 bytes). The
+   raw body limit is not a substitute for this exact decoded-byte check.
+4. `Analyzer::analyze` on the blocking pool (`analysis_failed`/`500`, or
+   `analysis_task_failed`/`500` if the blocking task cannot complete).
+
+A `fallback` handler returns `not_found`/`404`, and a `map_response` layer
+rewrites Axum's built-in empty-bodied `405` into `method_not_allowed` in the same
+envelope.
+
+### Serving boundary: `ensure_loopback` and `serve`
+
+`ensure_loopback` rejects any non-loopback IP; `serve` reads the listener's local
+address, calls `ensure_loopback`, then runs `axum::serve` with graceful shutdown
+on `Ctrl+C`. This makes the reusable boundary refuse to expose the API on
+`0.0.0.0` or a LAN interface even if a future caller binds one.
+
+### Startup discovery: `build_analyzer` and `LocalCatalogMode`
+
+`build_analyzer(base)` checks `base/grammar/local` and returns the analyzer plus
+a `LocalCatalogMode` with four documented cases: missing path →
+`EmbeddedOnly`; a directory → `Combined(path)`; a path that exists but is not a
+directory → error; a directory whose TOML is invalid (or has duplicate IDs) →
+error rather than silently reverting to embedded rules.
+
+### The `nnj-grammar-server` binary: `src/bin/server.rs`
+
+This is a separate binary from `nnj-grammar` and does not touch `src/main.rs`'s
+legacy CLI path. It only does startup glue: discover `grammar/local/` relative
+to the working directory via `build_analyzer`, print the fixed address and
+whether the catalog is embedded-only or combined (never passage text), bind
+`127.0.0.1:7878`, and serve until `Ctrl+C`.
+
 ## Fixture Web Graph: `web/`
 
 The current browser slice deliberately stops at the committed analyzer fixture.
@@ -438,6 +513,7 @@ Use tests to understand intended behavior:
 | `tests/ranking.rs` | Primary/secondary rules and determinism |
 | `tests/hierarchy.rs` | Exact tree shape and stable IDs |
 | `tests/reading_analysis.rs` | Public Analyzer pipeline and reading regressions |
+| `tests/server.rs` | Loopback API health, analyze, error envelopes, and a real-TCP smoke test |
 | `src/matcher.rs` tests | Optional tokens, wildcards, boundaries, captures |
 | `src/hanabira_regression.rs` | Corpus-wide generated catalog baseline |
 | `web/src/types.test.ts` | Runtime schema-v1 validation |
@@ -452,8 +528,10 @@ than reading the entire module first.
 ## Known Sources of Confusion
 
 - `src/main.rs` still uses the old path even though `Analyzer` can now produce
-  complete documents. The web fixture is the first consumer; the next integration
-  will be the loopback API. CLI migration remains a separate decision.
+  complete documents. The web fixture is the first consumer, and the loopback API
+  (`nnj-grammar-server`) is the second; the next integration wires the web UI to
+  that API. CLI migration remains a separate decision, and the API does not touch
+  the CLI path.
 - `src/graph/` is dormant unfinished code and is not compiled. Current graph
   output lives in `src/display.rs`; the active D3 graph lives under `web/`.
 - Older `grammar/n1` through `grammar/n5` directories are not the embedded

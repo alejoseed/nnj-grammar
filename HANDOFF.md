@@ -51,8 +51,8 @@ implementation plan is
 Stage A analysis-core implementation is complete through the public `Analyzer`.
 The first visible D3 slice is also complete: a Node.js 26 Vite client validates
 the committed schema-v1 fixture and renders it as a faithful Hanabira graph. The
-CLI still behaves as before, and the browser remains fixture-driven until the
-loopback API is implemented.
+local desktop API is now complete as well. The CLI still behaves as before, and
+the browser remains fixture-driven until the web UI is wired to the live API.
 
 Implemented:
 
@@ -87,6 +87,37 @@ Implemented:
   - Primary: `そして`
   - Primary: `何より`, spanning `なによりも`
   - Secondary: broad bare-`も` match
+- Reusable loopback server module in `src/server.rs` and the
+  `nnj-grammar-server` binary in `src/bin/server.rs`.
+
+## Local Desktop API Boundary
+
+`src/server.rs` wraps `Analyzer` in an Axum router; `nnj-grammar-server` binds
+`127.0.0.1:7878` and serves it with graceful `Ctrl+C` shutdown. The CLI
+(`src/main.rs`) is unchanged; this is a separate binary and library module.
+
+Implemented HTTP contract:
+
+- `GET /api/health` -> `200 {"status":"ok","schema_version":1}`.
+- `POST /api/analyze` requires `Content-Type: application/json`, accepts
+  `{"text":"..."}` (unknown fields rejected), and returns the schema-v1
+  `AnalysisDocument` directly, with the input preserved byte-for-byte.
+- `Analyzer::analyze` runs on Tokio's blocking pool; the analyzer is built once
+  and shared via `Arc`.
+- Every error uses the envelope `{"error":{"code","message"}}` with stable
+  codes: `invalid_json`/400, `empty_input`/400, `input_too_large`/413 (over
+  65,536 UTF-8 bytes), `request_too_large`/413 (raw body over 512 KiB),
+  `unsupported_media_type`/415, `not_found`/404, `method_not_allowed`/405,
+  `analysis_failed`/500, `analysis_task_failed`/500.
+- The serving boundary refuses any non-loopback listener address.
+- Startup auto-detects `grammar/local/` relative to the working directory
+  (missing -> embedded only; directory -> combined; non-directory or invalid
+  catalog -> startup fails). Startup logging reports only the address and catalog
+  mode; passage text is never logged.
+
+Immediate next step: wire the web UI to this live API instead of the committed
+fixture (Vite `/api` proxy to `127.0.0.1:7878`, replace the fixture loader, add
+the paste field and Analyze button, preserve the current graph on failure).
 
 The full Stage A plan is:
 

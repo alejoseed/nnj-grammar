@@ -18,9 +18,12 @@ D3 consumer is complete. The analyzer produces one deterministic
 `AnalysisDocument`; the browser validates that contract and renders a faithful
 Hanabira-style hierarchy with keyboard focus, pan, and zoom.
 
-The existing CLI still uses the legacy direct path. The browser currently loads
-the committed fixture because no server, JMdict integration, or iOS
-implementation exists yet.
+The loopback desktop API is complete: `nnj-grammar-server` serves `Analyzer`
+over `127.0.0.1:7878` with health, analyze, structured JSON errors, exact input
+limits, loopback-only binding, and `grammar/local/` auto-detection. The existing
+CLI still uses the legacy direct path, and the browser still loads the committed
+fixture; wiring the web UI to the live API is the next slice. JMdict integration
+and the iOS implementation do not exist yet.
 
 ## Progress Legend
 
@@ -44,9 +47,6 @@ implementation exists yet.
 
 ## Milestone 2: First End-to-End Analysis Document
 
-Current next action: write failing loopback API tests against the public
-`Analyzer`.
-
 - [x] Create `src/analyzer.rs`.
 - [x] Add `AnalyzerConfig` for an optional local grammar directory.
 - [x] Reject an explicitly configured local grammar path that is not a directory.
@@ -61,14 +61,18 @@ Current next action: write failing loopback API tests against the public
 
 ## Milestone 3: Local Desktop API
 
-- [ ] Add loopback-only Axum server.
-- [ ] Add `POST /api/analyze`.
-- [ ] Add `GET /api/health`.
-- [ ] Reject empty input and input above 65,536 UTF-8 bytes.
-- [ ] Return structured JSON errors.
-- [ ] Refuse non-loopback bind addresses.
-- [ ] Add `nnj-grammar-server` binary.
-- [ ] Verify passage text is not logged.
+Current next action: wire the web UI to the live loopback API (Vite `/api`
+proxy, replace the fixture loader, add a paste field and Analyze button) per
+`HANDOFF.md`.
+
+- [x] Add loopback-only Axum server.
+- [x] Add `POST /api/analyze`.
+- [x] Add `GET /api/health`.
+- [x] Reject empty input and input above 65,536 UTF-8 bytes.
+- [x] Return structured JSON errors.
+- [x] Refuse non-loopback bind addresses.
+- [x] Add `nnj-grammar-server` binary.
+- [x] Verify passage text is not logged.
 
 ## Milestone 4: First Visible D3 Reading Graph
 
