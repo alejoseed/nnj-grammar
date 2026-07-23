@@ -137,3 +137,18 @@ async fn analyze_rejects_empty_text() {
     assert_eq!(status, StatusCode::BAD_REQUEST);
     assert_eq!(json["error"]["code"], "empty_input");
 }
+
+#[tokio::test]
+async fn analyze_rejects_oversized_raw_body() {
+    let app = router(embedded_analyzer());
+    let oversized = format!(r#"{{"text":"{}"}}"#, "a".repeat(600 * 1024));
+    let request = Request::builder()
+        .method("POST")
+        .uri("/api/analyze")
+        .header("content-type", "application/json")
+        .body(Body::from(oversized))
+        .unwrap();
+    let (status, json) = error_json(app.oneshot(request).await.unwrap()).await;
+    assert_eq!(status, StatusCode::PAYLOAD_TOO_LARGE);
+    assert_eq!(json["error"]["code"], "request_too_large");
+}

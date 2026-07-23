@@ -114,6 +114,8 @@ struct AnalyzeRequest {
 
 pub const MAX_TEXT_BYTES: usize = 65_536;
 
+pub const MAX_REQUEST_BODY_BYTES: usize = 512 * 1024;
+
 fn validate_text(text: &str) -> Result<(), ApiError> {
     if text.trim().is_empty() {
         return Err(ApiError::new(
@@ -164,6 +166,7 @@ pub fn router(analyzer: Arc<Analyzer>) -> Router {
     Router::new()
         .route("/api/health", get(health))
         .route("/api/analyze", post(analyze))
+        .layer(axum::extract::DefaultBodyLimit::max(MAX_REQUEST_BODY_BYTES))
         .with_state(state)
 }
 
