@@ -161,12 +161,34 @@ async fn analyze(
     Ok(Json(document).into_response())
 }
 
+async fn not_found() -> ApiError {
+    ApiError::new(
+        StatusCode::NOT_FOUND,
+        "not_found",
+        "The requested resource does not exist.",
+    )
+}
+
+async fn rewrite_method_not_allowed(response: Response) -> Response {
+    if response.status() == StatusCode::METHOD_NOT_ALLOWED {
+        return ApiError::new(
+            StatusCode::METHOD_NOT_ALLOWED,
+            "method_not_allowed",
+            "This method is not supported for this route.",
+        )
+        .into_response();
+    }
+    response
+}
+
 pub fn router(analyzer: Arc<Analyzer>) -> Router {
     let state = AppState { analyzer };
     Router::new()
         .route("/api/health", get(health))
         .route("/api/analyze", post(analyze))
+        .fallback(not_found)
         .layer(axum::extract::DefaultBodyLimit::max(MAX_REQUEST_BODY_BYTES))
+        .layer(axum::middleware::map_response(rewrite_method_not_allowed))
         .with_state(state)
 }
 

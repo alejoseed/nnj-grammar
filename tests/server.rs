@@ -152,3 +152,40 @@ async fn analyze_rejects_oversized_raw_body() {
     assert_eq!(status, StatusCode::PAYLOAD_TOO_LARGE);
     assert_eq!(json["error"]["code"], "request_too_large");
 }
+
+#[tokio::test]
+async fn unmatched_path_returns_json_404() {
+    let app = router(embedded_analyzer());
+    let (status, json) = error_json(
+        app.oneshot(
+            Request::builder()
+                .uri("/api/does-not-exist")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, StatusCode::NOT_FOUND);
+    assert_eq!(json["error"]["code"], "not_found");
+}
+
+#[tokio::test]
+async fn wrong_method_on_known_route_returns_json_405() {
+    let app = router(embedded_analyzer());
+    let (status, json) = error_json(
+        app.oneshot(
+            Request::builder()
+                .method("DELETE")
+                .uri("/api/analyze")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, StatusCode::METHOD_NOT_ALLOWED);
+    assert_eq!(json["error"]["code"], "method_not_allowed");
+}
