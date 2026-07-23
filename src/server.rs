@@ -112,10 +112,31 @@ struct AnalyzeRequest {
     text: String,
 }
 
+pub const MAX_TEXT_BYTES: usize = 65_536;
+
+fn validate_text(text: &str) -> Result<(), ApiError> {
+    if text.trim().is_empty() {
+        return Err(ApiError::new(
+            StatusCode::BAD_REQUEST,
+            "empty_input",
+            "Text must not be empty.",
+        ));
+    }
+    if text.len() > MAX_TEXT_BYTES {
+        return Err(ApiError::new(
+            StatusCode::PAYLOAD_TOO_LARGE,
+            "input_too_large",
+            "Text must not exceed 65,536 UTF-8 bytes.",
+        ));
+    }
+    Ok(())
+}
+
 async fn analyze(
     State(state): State<AppState>,
     ValidatedJson(request): ValidatedJson<AnalyzeRequest>,
 ) -> Result<Response, ApiError> {
+    validate_text(&request.text)?;
     let text = request.text;
     let analyzer = state.analyzer;
     let document = tokio::task::spawn_blocking(move || analyzer.analyze(&text))
@@ -144,4 +165,32 @@ pub fn router(analyzer: Arc<Analyzer>) -> Router {
         .route("/api/health", get(health))
         .route("/api/analyze", post(analyze))
         .with_state(state)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rejects_empty_and_whitespace_only_text() {
+        assert_eq!(validate_text("").unwrap_err().code, "empty_input");
+        assert_eq!(validate_text("   \n\t").unwrap_err().code, "empty_input");
+    }
+
+    #[test]
+    fn accepts_text_at_the_byte_limit() {
+        let text = "a".repeat(65_536);
+        assert!(validate_text(&text).is_ok());
+    }
+
+    #[test]
+    fn rejects_text_above_the_byte_limit() {
+        let text = "a".repeat(65_537);
+        assert_eq!(validate_text(&text).unwrap_err().code, "input_too_large");
+    }
+
+    #[test]
+    fn accepts_ordinary_text() {
+        assert!(validate_text("そして").is_ok());
+    }
 }

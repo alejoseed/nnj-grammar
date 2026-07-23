@@ -124,3 +124,16 @@ async fn analyze_rejects_unsupported_content_type() {
     assert_eq!(status, StatusCode::UNSUPPORTED_MEDIA_TYPE);
     assert_eq!(json["error"]["code"], "unsupported_media_type");
 }
+
+#[tokio::test]
+async fn analyze_rejects_empty_text() {
+    let app = router(embedded_analyzer());
+    let (status, json) = error_json(
+        app.oneshot(analyze_request(r#"{"text":"   "}"#))
+            .await
+            .unwrap(),
+    )
+    .await;
+    assert_eq!(status, StatusCode::BAD_REQUEST);
+    assert_eq!(json["error"]["code"], "empty_input");
+}
