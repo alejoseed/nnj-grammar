@@ -4,7 +4,7 @@ use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use http_body_util::BodyExt;
 use nnj_grammar::analyzer::{Analyzer, AnalyzerConfig};
-use nnj_grammar::server::router;
+use nnj_grammar::server::{ensure_loopback, router};
 use tower::ServiceExt;
 
 fn embedded_analyzer() -> Arc<Analyzer> {
@@ -188,4 +188,53 @@ async fn wrong_method_on_known_route_returns_json_405() {
     .await;
     assert_eq!(status, StatusCode::METHOD_NOT_ALLOWED);
     assert_eq!(json["error"]["code"], "method_not_allowed");
+}
+
+use std::time::Duration;
+
+use nnj_grammar::server::serve;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::TcpListener as TokioTcpListener;
+
+#[tokio::test]
+async fn real_loopback_listener_serves_health() {
+    let listener = TokioTcpListener::bind("127.0.0.1:0")
+        .await
+        .expect("bind ephemeral loopback port");
+    let addr = listener.local_addr().expect("listener address");
+    let app = router(embedded_analyzer());
+    let server_task = tokio::spawn(async move {
+        let _ = serve(listener, app).await;
+    });
+
+    let mut stream =
+        tokio::time::timeout(Duration::from_secs(5), tokio::net::TcpStream::connect(addr))
+            .await
+            .expect("connect within timeout")
+            .expect("connect to loopback server");
+
+    stream
+        .write_all(
+            format!("GET /api/health HTTP/1.1\r\nHost: {addr}\r\nConnection: close\r\n\r\n")
+                .as_bytes(),
+        )
+        .await
+        .expect("write request");
+
+    let mut response = Vec::new();
+    tokio::time::timeout(Duration::from_secs(5), stream.read_to_end(&mut response))
+        .await
+        .expect("read within timeout")
+        .expect("read response");
+    let response = String::from_utf8_lossy(&response);
+
+    assert!(response.starts_with("HTTP/1.1 200"));
+    assert!(response.contains("\"status\":\"ok\""));
+
+    server_task.abort();
+}
+
+#[tokio::test]
+async fn serve_rejects_a_non_loopback_socket_address() {
+    assert!(ensure_loopback("0.0.0.0:7878".parse().unwrap()).is_err());
 }

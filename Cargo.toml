@@ -55,6 +55,9 @@ tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "signal
 tempfile = "3.27.0"
 tower = { version = "0.5", features = ["util"] }
 http-body-util = "0.1"
+# The real-TCP smoke test in tests/server.rs uses tokio's async IO extension
+# traits and timeouts; union these features in for test builds only.
+tokio = { version = "1", features = ["io-util", "time"] }
 
 [profile.release]
 lto = true
