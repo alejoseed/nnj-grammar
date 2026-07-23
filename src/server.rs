@@ -1,5 +1,7 @@
+use std::net::SocketAddr;
 use std::sync::Arc;
 
+use anyhow::Context;
 use axum::extract::rejection::JsonRejection;
 use axum::extract::{FromRequest, Request, State};
 use axum::http::StatusCode;
@@ -7,6 +9,7 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use serde::{Deserialize, Serialize};
+use tokio::net::TcpListener;
 
 use crate::analysis::ANALYSIS_SCHEMA_VERSION;
 use crate::analyzer::Analyzer;
@@ -192,6 +195,30 @@ pub fn router(analyzer: Arc<Analyzer>) -> Router {
         .with_state(state)
 }
 
+pub fn ensure_loopback(addr: SocketAddr) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        addr.ip().is_loopback(),
+        "refusing to serve on non-loopback address: {}",
+        addr.ip()
+    );
+    Ok(())
+}
+
+pub async fn serve(listener: TcpListener, router: Router) -> anyhow::Result<()> {
+    let local_addr = listener
+        .local_addr()
+        .context("failed to read listener address")?;
+    ensure_loopback(local_addr)?;
+    axum::serve(listener, router)
+        .with_graceful_shutdown(shutdown_signal())
+        .await
+        .context("server error")
+}
+
+async fn shutdown_signal() {
+    let _ = tokio::signal::ctrl_c().await;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -217,5 +244,18 @@ mod tests {
     #[test]
     fn accepts_ordinary_text() {
         assert!(validate_text("そして").is_ok());
+    }
+
+    #[test]
+    fn accepts_ipv4_and_ipv6_loopback_addresses() {
+        assert!(ensure_loopback("127.0.0.1:7878".parse().unwrap()).is_ok());
+        assert!(ensure_loopback("[::1]:7878".parse().unwrap()).is_ok());
+    }
+
+    #[test]
+    fn rejects_non_loopback_addresses() {
+        assert!(ensure_loopback("0.0.0.0:7878".parse().unwrap()).is_err());
+        assert!(ensure_loopback("10.0.0.5:7878".parse().unwrap()).is_err());
+        assert!(ensure_loopback("192.168.1.20:7878".parse().unwrap()).is_err());
     }
 }
