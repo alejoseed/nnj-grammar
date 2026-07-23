@@ -1,4 +1,5 @@
 use std::net::SocketAddr;
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use anyhow::Context;
@@ -12,7 +13,7 @@ use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
 
 use crate::analysis::ANALYSIS_SCHEMA_VERSION;
-use crate::analyzer::Analyzer;
+use crate::analyzer::{Analyzer, AnalyzerConfig};
 
 #[derive(Clone)]
 pub struct AppState {
@@ -219,6 +220,32 @@ async fn shutdown_signal() {
     let _ = tokio::signal::ctrl_c().await;
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum LocalCatalogMode {
+    EmbeddedOnly,
+    Combined(PathBuf),
+}
+
+pub fn build_analyzer(base: &Path) -> anyhow::Result<(Analyzer, LocalCatalogMode)> {
+    let candidate = base.join("grammar/local");
+    if !candidate.exists() {
+        let analyzer = Analyzer::new(AnalyzerConfig::default())
+            .context("failed to initialize embedded-only analyzer")?;
+        return Ok((analyzer, LocalCatalogMode::EmbeddedOnly));
+    }
+    anyhow::ensure!(
+        candidate.is_dir(),
+        "grammar/local exists but is not a directory: {}",
+        candidate.display()
+    );
+    let analyzer = Analyzer::new(AnalyzerConfig {
+        local_grammar_dir: Some(candidate.clone()),
+        dictionary_path: None,
+    })
+    .context("failed to initialize combined analyzer")?;
+    Ok((analyzer, LocalCatalogMode::Combined(candidate)))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -257,5 +284,44 @@ mod tests {
         assert!(ensure_loopback("0.0.0.0:7878".parse().unwrap()).is_err());
         assert!(ensure_loopback("10.0.0.5:7878".parse().unwrap()).is_err());
         assert!(ensure_loopback("192.168.1.20:7878".parse().unwrap()).is_err());
+    }
+
+    use tempfile::tempdir;
+
+    #[test]
+    fn embedded_only_when_grammar_local_is_missing() {
+        let base = tempdir().unwrap();
+        let (_, mode) = build_analyzer(base.path()).expect("embedded analyzer");
+        assert!(matches!(mode, LocalCatalogMode::EmbeddedOnly));
+    }
+
+    #[test]
+    fn combined_when_grammar_local_is_a_valid_directory() {
+        let base = tempdir().unwrap();
+        let local = base.path().join("grammar/local");
+        std::fs::create_dir_all(&local).unwrap();
+        std::fs::write(local.join("empty.toml"), "patterns = []\n").unwrap();
+
+        let (_, mode) = build_analyzer(base.path()).expect("combined analyzer");
+        assert!(matches!(mode, LocalCatalogMode::Combined(path) if path == local));
+    }
+
+    #[test]
+    fn fails_when_grammar_local_is_not_a_directory() {
+        let base = tempdir().unwrap();
+        std::fs::create_dir_all(base.path().join("grammar")).unwrap();
+        std::fs::write(base.path().join("grammar/local"), "not a directory").unwrap();
+
+        assert!(build_analyzer(base.path()).is_err());
+    }
+
+    #[test]
+    fn fails_when_grammar_local_has_an_invalid_catalog() {
+        let base = tempdir().unwrap();
+        let local = base.path().join("grammar/local");
+        std::fs::create_dir_all(&local).unwrap();
+        std::fs::write(local.join("broken.toml"), "not valid toml =====").unwrap();
+
+        assert!(build_analyzer(base.path()).is_err());
     }
 }
