@@ -4,6 +4,7 @@ pub mod hierarchy;
 pub mod matcher;
 pub mod patterns;
 pub mod ranking;
+pub mod server;
 pub mod tokenizer;
 
 #[cfg(test)]
