@@ -113,8 +113,12 @@ describe("buildGraphModel", () => {
   });
 
   it("does not repeat a reading identical to the surface", () => {
+    // Isolate the reading-vs-surface rule from gloss precedence: そして's reading
+    // equals its surface, so with no gloss the secondary label stays empty.
+    const doc = documentCopy();
+    doc.tokens[0]!.glosses = [];
     expect(
-      buildGraphModel(documentCopy()).children[0]?.children[0]?.secondaryLabel,
+      buildGraphModel(doc).children[0]?.children[0]?.secondaryLabel,
     ).toBe("");
   });
 

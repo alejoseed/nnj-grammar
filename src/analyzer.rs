@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use anyhow::{Context, Result};
 
 use crate::analysis::{AnalysisDocument, AnalyzedToken, ANALYSIS_SCHEMA_VERSION};
+use crate::dictionary::Dictionary;
 use crate::hierarchy::build_tree;
 use crate::matcher::match_candidates;
 use crate::patterns::{load_combined, PatternRule};
@@ -45,7 +46,16 @@ impl Analyzer {
             .tokenize(text)
             .context("failed to tokenize input")?;
         let ranked = rank_candidates(match_candidates(&tokens, &self.rules));
-        let analyzed_tokens = tokens.iter().map(AnalyzedToken::from).collect();
+        let token_glosses = Dictionary::shared().gloss_tokens(&tokens);
+        let analyzed_tokens = tokens
+            .iter()
+            .enumerate()
+            .map(|(index, token)| {
+                let mut analyzed = AnalyzedToken::from(token);
+                analyzed.glosses = token_glosses[index].clone();
+                analyzed
+            })
+            .collect();
         let tree = build_tree(&tokens, &ranked);
 
         Ok(AnalysisDocument {

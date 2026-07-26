@@ -381,11 +381,62 @@ class Variant:
     right_context: list[dict[str, Any]]
 
 
+FAMILIES_PATH = (
+    Path(__file__).resolve().parent.parent / "grammar" / "compiler" / "families.json"
+)
+
+
+class FamilyCatalog:
+    """Closed-class auxiliary family registry (grammar/compiler/families.json).
+
+    Widens a conjugating auxiliary token into the `one_of` set of its family's
+    default-register members (standard), so a rule authored from one realization
+    matches the whole family — e.g. a negation authored as ない also matches the
+    polite ん (lemma ず) and cross-POS 無い. The token's own lemma is always
+    included so the source form still matches itself even when its register is
+    off by default. Membership is proven complete and fail-closed by
+    tools/test_families.py against grammar/compiler/aux-inventory.json.
+    """
+
+    def __init__(self, path: Path = FAMILIES_PATH):
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        self.default_registers = set(data["default_widen_registers"])
+        self.family_of: dict[tuple[str, str], str] = {}
+        self.default_members: dict[str, list[dict[str, str]]] = {}
+        for family in data["families"]:
+            name = family["name"]
+            self.default_members[name] = [
+                {"pos1": m["pos1"], "base_form": m["base_form"]}
+                for m in family["members"]
+                if m["register"] in self.default_registers
+            ]
+            for member in family["members"]:
+                self.family_of[(member["pos1"], member["base_form"])] = name
+
+    def widen(self, pos1: str, base_form: str) -> list[dict[str, str]] | None:
+        """`one_of` alternatives for a closed-class auxiliary token, else None."""
+        name = self.family_of.get((pos1, base_form))
+        if name is None:
+            return None
+        members = [dict(member) for member in self.default_members[name]]
+        own = {"pos1": pos1, "base_form": base_form}
+        if own not in members:
+            members.append(own)
+        return members
+
+
 class Compiler:
-    def __init__(self, binary: Path, wildcard_max: int, hosts: HostCatalog):
+    def __init__(
+        self,
+        binary: Path,
+        wildcard_max: int,
+        hosts: HostCatalog,
+        families: "FamilyCatalog | None" = None,
+    ):
         self.binary = binary
         self.wildcard_max = wildcard_max
         self.hosts = hosts
+        self.families = families or FamilyCatalog()
         self.token_cache: dict[str, list[dict[str, Any]]] = {}
 
     def preload(self, fragments: set[str]) -> None:
@@ -410,10 +461,25 @@ class Compiler:
             ]
             byte_start = byte_end + 1
 
-    def literal_steps(self, literal: str, optional: bool = False) -> list[dict[str, Any]]:
+    def literal_steps(self, literal, optional=False):
         steps = []
         for token in self.token_cache.get(literal, []):
-            step: dict[str, Any] = {"surface": token["surface"]}
+            pos1 = token["pos1"]
+            base_form = token["base_form"]
+            widened = self.families.widen(pos1, base_form)
+            if widened is not None:
+                # Closed-class auxiliary: match its whole family (negation ->
+                # ない/ず/無い ...) via the proven registry, not a frozen surface
+                # or a hand-guessed list.
+                step: dict[str, Any] = {"one_of": widened}
+            elif pos1 in ("動詞", "形容詞") and base_form and base_form != "*":
+                # Open-class conjugating word: match by LEMMA so every
+                # conjugation (いか/いき/いけ...) matches, not just the source form.
+                step = {"pos1": pos1, "base_form": base_form}
+            else:
+                # Fixed particle / noun / marker: surface is the precise,
+                # correct representation — freezing it is right.
+                step = {"surface": token["surface"]}
             if optional:
                 step["optional"] = True
             steps.append(step)

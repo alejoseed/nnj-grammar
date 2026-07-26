@@ -16,7 +16,15 @@
       "byte_start": 0,
       "byte_end": 9,
       "position": 0,
-      "glosses": []
+      "glosses": [
+        {
+          "entry_seq": 1006730,
+          "gloss": "and; and then; thus; and now; and finally",
+          "pos": [
+            "Conjunction"
+          ]
+        }
+      ]
     },
     {
       "id": "token-1",
@@ -32,7 +40,50 @@
       "byte_start": 9,
       "byte_end": 15,
       "position": 1,
-      "glosses": []
+      "glosses": [
+        {
+          "entry_seq": 1577100,
+          "gloss": "what",
+          "pos": [
+            "Pronoun"
+          ]
+        },
+        {
+          "entry_seq": 1577100,
+          "gloss": "you-know-what; that thing",
+          "pos": [
+            "Pronoun"
+          ]
+        },
+        {
+          "entry_seq": 1577100,
+          "gloss": "whatsit; whachamacallit; what's-his-name; what's-her-name",
+          "pos": [
+            "Pronoun"
+          ]
+        },
+        {
+          "entry_seq": 1577100,
+          "gloss": "(not) at all; (not) in the slightest",
+          "pos": [
+            "Adverb"
+          ]
+        },
+        {
+          "entry_seq": 1577100,
+          "gloss": "what?; huh?",
+          "pos": [
+            "Interjection"
+          ]
+        },
+        {
+          "entry_seq": 1577100,
+          "gloss": "hey!",
+          "pos": [
+            "Interjection"
+          ]
+        }
+      ]
     },
     {
       "id": "token-2",

@@ -13,6 +13,7 @@ Japanese text
   -> UniDic tokens
   -> grammar candidates
   -> ranked primary and secondary matches
+  -> JMdict English glosses per content token
   -> sentence/grammar/token hierarchy
   -> schema-v1 JSON
   -> validated D3 reading graph
@@ -24,21 +25,19 @@ There are currently two paths through the code:
 Current CLI path
   text -> tokenize -> one catalog -> match_all -> terminal/DOT/legacy JSON
 
-New reading-app path
+Reading-app path
   text -> tokenize -> combined catalogs -> match_candidates -> rank_candidates
-       -> build_tree -> AnalysisDocument
-
-Current fixture UI path
-  committed AnalysisDocument -> validate schema -> validate ordered tree
-                             -> derive labels -> render D3 graph
+       -> glosses -> build_tree -> AnalysisDocument
+       -> POST /api/analyze -> validate schema -> render live D3 graph
 ```
 
-The new analysis path is connected by the public `Analyzer`, and the first D3
-consumer renders its committed deterministic fixture. The existing CLI does not
-call the analyzer yet. The loopback API (`src/server.rs`, the
-`nnj-grammar-server` binary) now exposes `Analyzer` over HTTP, but the web page
-still renders the committed fixture until the paste/Analyze UI slice wires it to
-the live API.
+The reading-app path is connected end to end by the public `Analyzer`, exposed
+over HTTP by the loopback API (`src/server.rs`, the `nnj-grammar-server`
+binary), and consumed live by the web UI. The browser now sends a pasted
+sentence to `POST /api/analyze` through the Vite `/api` proxy and renders the
+returned document; the committed fixture remains only as a test artifact. The
+existing CLI (`src/main.rs`) still uses its own legacy path and does not call
+the analyzer.
 
 ## Start Here
 
@@ -54,9 +53,10 @@ Read these files in this order:
 8. `src/matcher.rs` for candidate detection.
 9. `src/ranking.rs` for primary/secondary selection.
 10. `src/analysis.rs` for the stable future UI contract.
-11. `src/hierarchy.rs` for the tree presented to D3.
-12. `src/analyzer.rs` for end-to-end orchestration.
-13. `src/server.rs` and `src/bin/server.rs` for the loopback HTTP API and its
+11. `src/dictionary.rs` for embedded JMdict English glosses.
+12. `src/hierarchy.rs` for the tree presented to D3.
+13. `src/analyzer.rs` for end-to-end orchestration.
+14. `src/server.rs` and `src/bin/server.rs` for the loopback HTTP API and its
     binary.
 14. `tests/analysis_core.rs`, `tests/ranking.rs`, `tests/hierarchy.rs`,
     `tests/reading_analysis.rs`, and `tests/server.rs` for
@@ -245,8 +245,10 @@ It contains:
 - Secondary matches.
 - A normalized node/edge tree.
 
-`AnalyzedToken` mirrors `Token` and reserves `glosses` for JMdict. The gloss
-list remains empty until dictionary integration is implemented.
+`AnalyzedToken` mirrors `Token`. Its `glosses` list is filled from embedded
+JMdict for content words (see `src/dictionary.rs`); function words and
+punctuation stay empty. The byte-stable `analysis-soshite.json` fixture includes
+these glosses.
 
 Tree records use stable IDs such as:
 
@@ -259,6 +261,27 @@ token-2
 ```
 
 The web renderer follows IDs. It does not perform Japanese-language inference.
+
+## Dictionary: `src/dictionary.rs`
+
+`Dictionary` provides offline English glosses from embedded JMdict. The `jmdict`
+crate bakes the dictionary into the binary at compile time, the same way
+`lindera`'s `embed-unidic` feature embeds UniDic.
+
+`Dictionary::embedded()` runs once and builds a `HashMap` from every kanji and
+reading form to the entries that use it, so per-token lookup is a hash hit, not
+a scan of the whole dictionary. The keys borrow JMdict's `'static` strings, so
+building the index copies no key text.
+
+`lookup_token()` tries the dictionary form, then the surface, then the kana
+reading, and prefers entries whose reading matches the token. Function words and
+punctuation (UniDic `pos1` of `助詞`, `助動詞`, `補助記号`, `記号`, `空白`) are
+skipped, so particles and commas never get glosses. Results are capped per token
+to keep payloads small.
+
+Known limitation: UniDic tokenizes to short units, so compound words such as
+`図書館` are split (`図書` + `館`) and each piece is glossed separately; the
+compound is not yet looked up as one unit.
 
 ## Hierarchy: `src/hierarchy.rs`
 
@@ -292,16 +315,18 @@ consumer does not rebuild expensive state for every sentence.
 `AnalyzerConfig` currently accepts:
 
 - `local_grammar_dir`: optional personal Bunpro TOML directory.
-- `dictionary_path`: reserved for JMdict integration.
+- `dictionary_path`: reserved for a future external/file-based dictionary.
 
 Omitting `local_grammar_dir` loads only the embedded catalog. Supplying it is
 an explicit configuration choice, so the path must exist and be a directory;
 otherwise initialization returns an error instead of silently falling back to
 embedded rules.
 
-Until the dictionary milestone is implemented, supplying `dictionary_path`
-returns an explicit initialization error rather than silently pretending that
-glosses were loaded.
+Embedded JMdict glosses are always on: `analyze` calls `Dictionary::shared()`,
+a process-wide index built once (lazily) and reused by every analyzer, so
+construction stays cheap. A `dictionary_path` (a future external dictionary
+file) is still unimplemented and returns an explicit initialization error
+rather than silently pretending glosses were loaded.
 
 `Analyzer::analyze` performs exactly one pass through each stage:
 
@@ -309,14 +334,14 @@ glosses were loaded.
 tokenize
   -> match_candidates
   -> rank_candidates
-  -> convert Token to AnalyzedToken
+  -> convert Token to AnalyzedToken (+ JMdict glosses)
   -> build_tree
   -> AnalysisDocument
 ```
 
-The token conversion creates stable IDs such as `token-0` and leaves `glosses`
-empty. JMdict will later replace only that enrichment step; it will not change
-matching, ranking, hierarchy, or the public document structure.
+The token conversion creates stable IDs such as `token-0`. When the dictionary
+is enabled it attaches glosses to each content token; this enrichment does not
+change matching, ranking, hierarchy, or the public document structure.
 
 `tests/fixtures/local-reading.toml` supplies a small deterministic local catalog
 for acceptance tests. `tests/fixtures/analysis-soshite.json` freezes one complete
@@ -341,7 +366,9 @@ The router exposes two routes and holds the analyzer as shared state:
 State is one `Arc<Analyzer>`. Each analyze call clones that reference and runs
 `Analyzer::analyze` on Tokio's blocking pool, because tokenization and matching
 are CPU-bound and must not block Axum's async I/O workers. The analyzer is built
-once, so embedded UniDic and grammar catalogs are not reloaded per request.
+once, so embedded UniDic, grammar catalogs, and the JMdict index are not rebuilt
+per request. `build_analyzer` warms the shared JMdict index at startup so the
+first request isn't slow.
 
 ### Errors: `ValidatedJson` and the stable envelope
 
@@ -396,11 +423,11 @@ to the working directory via `build_analyzer`, print the fixed address and
 whether the catalog is embedded-only or combined (never passage text), bind
 `127.0.0.1:7878`, and serve until `Ctrl+C`.
 
-## Fixture Web Graph: `web/`
+## Web Graph: `web/`
 
-The current browser slice deliberately stops at the committed analyzer fixture.
-It proves the complete JSON-to-graph boundary before the loopback API introduces
-network orchestration.
+The browser sends a pasted sentence to the live loopback API and renders the
+returned document. The committed fixture is retained as a test artifact and for
+the fixture-driven unit tests, not as the page's data source.
 
 ### Schema boundary: `web/src/types.ts`
 
@@ -427,12 +454,14 @@ the original edge order, which keeps layout deterministic.
 The model follows stable IDs and references. It does not inspect Japanese text
 to decide grammar structure.
 
-### Safe fixture mount: `web/src/app.ts`
+### Analyze and mount: `web/src/app.ts`
 
-`loadAnalysisDocument` fetches and validates JSON. `mountFixtureGraph` keeps the
-renderer behind an injected function boundary, so loading and error behavior can
-be tested without D3. Failed requests, malformed JSON, and invalid schemas
-replace the host with one passage-safe error; no partial input text is exposed.
+`analyzeText` sends `POST /api/analyze` with the pasted sentence and validates
+the response through `parseAnalysisDocument`. `loadAnalysisDocument` and
+`mountFixtureGraph` remain for the fixture-driven tests, keeping the renderer
+behind an injected function boundary so loading and error behavior can be tested
+without D3. Failed requests, malformed JSON, and invalid schemas surface a
+passage-safe error; no partial input text is exposed.
 
 ### Faithful renderer: `web/src/graph.ts`
 
@@ -458,10 +487,12 @@ SVG presentation attribute in the browser cascade.
 
 ### Browser entry and verification
 
-`web/src/main.ts` locates the semantic host, imports Tailwind, resolves the
-committed fixture through Vite, and mounts the graph. `web/vite.config.ts`
-allows the repository-root fixture in development and keeps Vitest scoped to
-unit tests. `web/src/vite-env.d.ts` supplies Vite's CSS import declarations.
+`web/src/main.ts` locates the semantic host, imports Tailwind, builds the paste
+field and Analyze button, and renders the graph from the live API response
+(seeding one example on load and preserving the current graph on failure).
+`web/vite.config.ts` proxies `/api` to `127.0.0.1:7878`, allows the
+repository-root fixture in development, and keeps Vitest scoped to unit tests.
+`web/src/vite-env.d.ts` supplies Vite's CSS import declarations.
 
 Unit tests cover the schema, topology, labels, safe mount, and renderer. The
 Playwright test in `web/tests/reading-graph.spec.ts` launches Chromium and checks
@@ -481,6 +512,35 @@ regenerate it.
 
 Maps source labels such as `Noun`, `Verb`, and `Phrase` to UniDic predicates or
 bounded wildcards. This keeps source-specific grammar knowledge out of Rust.
+It is fail-closed: an unrecognized structural label aborts the import.
+
+### `grammar/compiler/aux-inventory.json` and `families.json`
+
+Together these make grammatical **family** coverage complete and provable, so
+importer widening never silently misses an auxiliary.
+
+- `aux-inventory.json` is the machine-owned census: every closed-class auxiliary
+  lemma the embedded UniDic can emit (60 助動詞 + 3 形状詞/助動詞語幹 + 3
+  形容詞/非自立可能). Generated by `tools/dump_aux_inventory.py` straight from the
+  embedded dictionary's `lex.csv`; it is a *complete* census because `unk.def`
+  can never assign a closed-class POS to unknown words (the script asserts this).
+- `families.json` is the human-owned classification: each census member assigned
+  to exactly one family (negation, copula, aspect, politeness, ...) with a
+  register (standard/formal/classical/dialect). UniDic has no "negation" feature,
+  so this grouping is irreducibly curatorial.
+- `tools/test_families.py` is the fail-closed proof: it HALTS naming any census
+  member with no family, or any family member absent from the census (which
+  catches phantoms such as classifying the classical-perfective `ぬ` as negation —
+  negative `ぬ`/`ん` actually lemmatize to `ず`).
+
+The importer (`Compiler.literal_steps` in `tools/import_hanabira.py`, shared by
+the Bunpro importer) uses these: a conjugating verb/adjective literal becomes a
+`base_form` predicate, and a closed-class auxiliary becomes the `one_of` of its
+family's standard-register members. This is why one `わけにはいかない` rule now
+matches casual `いかない`, polite `いきません`, and past `いかなかった`, instead of the
+single frozen surface form. `tests/lexicon_conventions.rs` pins the UniDic lemma
+conventions the families depend on, so a dictionary upgrade that shifts them
+fails loudly.
 
 ### `grammar/local/`
 
@@ -489,9 +549,11 @@ Gitignored personal data:
 - Saved Bunpro index.
 - Compiled Bunpro TOML.
 - Personal enrichment forms.
-- Future JMdict SQLite database.
 
 This directory must be recreated or transferred separately on each machine.
+JMdict is not here; it is embedded into the binary at compile time via the
+`jmdict` crate (see `src/dictionary.rs`). A `dictionary_path` for an external
+dictionary file remains reserved and unimplemented.
 
 ### `tools/`
 
@@ -528,10 +590,9 @@ than reading the entire module first.
 ## Known Sources of Confusion
 
 - `src/main.rs` still uses the old path even though `Analyzer` can now produce
-  complete documents. The web fixture is the first consumer, and the loopback API
-  (`nnj-grammar-server`) is the second; the next integration wires the web UI to
-  that API. CLI migration remains a separate decision, and the API does not touch
-  the CLI path.
+  complete documents. The web UI consumes the analyzer live through the loopback
+  API (`nnj-grammar-server`). CLI migration remains a separate decision, and the
+  API does not touch the CLI path.
 - `src/graph/` is dormant unfinished code and is not compiled. Current graph
   output lives in `src/display.rs`; the active D3 graph lives under `web/`.
 - Older `grammar/n1` through `grammar/n5` directories are not the embedded

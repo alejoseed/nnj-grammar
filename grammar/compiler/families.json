@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "note": "Human-owned classification of the closed-class auxiliary universe. The MACHINE owns the universe (grammar/compiler/aux-inventory.json, derived from the embedded UniDic); the HUMAN owns these labels, because UniDic carries no 'negation'/'politeness' feature — the grouping is irreducibly linguistic judgment. Every member of aux-inventory.json must appear in exactly one family here, and every member here must exist in the inventory; tools/test_families.py enforces both directions and HALTS naming any violation. Members are matched by (pos1, base_form); 'register' controls default widening.",
+  "registers": {
+    "standard": "Modern everyday Japanese; widened by default.",
+    "formal": "Modern but stiff/literary (e.g. まい); off by default, opt-in per pattern.",
+    "classical": "Bungo / classical Japanese; classified for completeness, never widened by default.",
+    "dialect": "Regional (Kansai へん/とる, Kyoto どす, etc.); off by default, opt-in per pattern."
+  },
+  "default_widen_registers": ["standard"],
+  "families": [
+    {
+      "name": "negation",
+      "description": "Negates the predicate. NOTE: negative ん/ぬ surfaces lemmatize to ず, so ず is the standard polite-negative member (行きません). The standalone lemma ぬ is the classical PERFECTIVE and lives in 'aspect', not here.",
+      "members": [
+        { "pos1": "助動詞", "base_form": "ない", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ず", "register": "standard" },
+        { "pos1": "形容詞", "base_form": "無い", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "まい", "register": "formal" },
+        { "pos1": "助動詞", "base_form": "へん", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "なんだ", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "じ", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "まじ", "register": "classical" }
+      ]
+    },
+    {
+      "name": "copula",
+      "description": "Assertion/identity (だ/です and their variants).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "だ", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "です", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "じゃ", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "や", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "どす", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "たり-断定", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "たる", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "なり-断定", "register": "classical" }
+      ]
+    },
+    {
+      "name": "politeness",
+      "description": "Addressee-honorific verb suffix (ます and dialectal/archaic polite copulas).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "ます", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ざます", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "ざんす", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "やす", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "んす", "register": "dialect" }
+      ]
+    },
+    {
+      "name": "past",
+      "description": "Past/perfective た and its classical ancestors.",
+      "members": [
+        { "pos1": "助動詞", "base_form": "た", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "き", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "けり", "register": "classical" }
+      ]
+    },
+    {
+      "name": "aspect",
+      "description": "Aspect /補助動詞 contractions (ている→てる, てしまう→ちゃう, ておく→とく...) and classical perfectives (つ/ぬ/り/たり).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "てる", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ちゃう", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ちまう", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "とく", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "てく", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "とる", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "よる", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "つ", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "ぬ", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "り", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "たり-完了", "register": "classical" }
+      ]
+    },
+    {
+      "name": "desiderative",
+      "description": "Want / want-someone-to (たい/たがる/てほしい).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "たい", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "たがる", "register": "standard" },
+        { "pos1": "形容詞", "base_form": "欲しい", "register": "standard" }
+      ]
+    },
+    {
+      "name": "causative",
+      "description": "Make/let do (せる/させる/しめる).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "せる", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "させる", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "しめる", "register": "formal" }
+      ]
+    },
+    {
+      "name": "passive_potential_honorific",
+      "description": "れる/られる — one form, three functions (passive, potential, subject-honorific). Kept as one family because UniDic does not disambiguate them.",
+      "members": [
+        { "pos1": "助動詞", "base_form": "れる", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "られる", "register": "standard" }
+      ]
+    },
+    {
+      "name": "conjecture",
+      "description": "Appears/seems/probably (そう-様態 and classical/dialect conjecturals む/らむ/けむ/ずら/べらなり).",
+      "members": [
+        { "pos1": "形状詞", "base_form": "そう-様態", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "む", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "らむ", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "けむ", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "ずら", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "べらなり", "register": "classical" }
+      ]
+    },
+    {
+      "name": "comparison",
+      "description": "Likeness/resemblance (みたい/よう/ごとし).",
+      "members": [
+        { "pos1": "形状詞", "base_form": "みたい", "register": "standard" },
+        { "pos1": "形状詞", "base_form": "様", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ごとし", "register": "classical" }
+      ]
+    },
+    {
+      "name": "evidential",
+      "description": "Hearsay/inference (らしい and classical なり-伝聞/らし).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "らしい", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "らし", "register": "classical" },
+        { "pos1": "助動詞", "base_form": "なり-伝聞", "register": "classical" }
+      ]
+    },
+    {
+      "name": "honorific",
+      "description": "Subject-honorific / dialectal honorific auxiliaries (はる/しゃる/ていらっしゃる...).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "てらっしゃる", "register": "formal" },
+        { "pos1": "助動詞", "base_form": "はる", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "しゃる", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "とらす", "register": "dialect" },
+        { "pos1": "助動詞", "base_form": "よらす", "register": "dialect" }
+      ]
+    },
+    {
+      "name": "benefactive",
+      "description": "Do-for (てあげる→たげる, てやる→ちゃる).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "たげる", "register": "standard" },
+        { "pos1": "助動詞", "base_form": "ちゃる", "register": "dialect" }
+      ]
+    },
+    {
+      "name": "modal",
+      "description": "Obligation/appropriateness (classical べし).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "べし", "register": "classical" }
+      ]
+    },
+    {
+      "name": "quotative",
+      "description": "Contracted quotative (という→つう).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "つう", "register": "dialect" }
+      ]
+    },
+    {
+      "name": "permission",
+      "description": "Permission/acceptability (てもいい's いい, as 形容詞/非自立可能).",
+      "members": [
+        { "pos1": "形容詞", "base_form": "良い", "register": "standard" }
+      ]
+    },
+    {
+      "name": "attitude",
+      "description": "Speaker-attitude marker with no truth-conditional content (vulgar/contemptuous やがる).",
+      "members": [
+        { "pos1": "助動詞", "base_form": "やがる", "register": "standard" }
+      ]
+    }
+  ]
+}
