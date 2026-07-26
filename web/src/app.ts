@@ -14,6 +14,21 @@ export async function loadAnalysisDocument(
   return parseAnalysisDocument(await response.json());
 }
 
+export async function analyzeText(
+  text: string,
+  fetcher: typeof fetch = fetch,
+) {
+  const response = await fetcher("/api/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
+  });
+  if (!response.ok) {
+    throw new Error(`analyze request failed: ${response.status}`);
+  }
+  return parseAnalysisDocument(await response.json());
+}
+
 function showGraphError(host: HTMLElement): void {
   const error = document.createElement("p");
   error.setAttribute("role", "alert");

@@ -227,6 +227,8 @@ pub enum LocalCatalogMode {
 }
 
 pub fn build_analyzer(base: &Path) -> anyhow::Result<(Analyzer, LocalCatalogMode)> {
+    // Build the embedded JMdict index eagerly so the first request isn't slow.
+    crate::dictionary::Dictionary::shared();
     let candidate = base.join("grammar/local");
     if !candidate.exists() {
         let analyzer = Analyzer::new(AnalyzerConfig::default())

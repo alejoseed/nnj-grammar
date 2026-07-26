@@ -16,7 +16,7 @@ fn analyzer() -> Analyzer {
 }
 
 #[test]
-fn analyzer_builds_versioned_ranked_tree_with_empty_glosses() {
+fn analyzer_builds_versioned_ranked_tree_with_glosses() {
     let document = analyzer()
         .analyze("そしてなによりも")
         .expect("analysis should succeed");
@@ -31,7 +31,15 @@ fn analyzer_builds_versioned_ranked_tree_with_empty_glosses() {
             .collect::<Vec<_>>(),
         ["token-0", "token-1", "token-2", "token-3"]
     );
-    assert!(document.tokens.iter().all(|token| token.glosses.is_empty()));
+    // Glosses are always on now: content words carry JMdict meanings, function
+    // words (より, も) stay empty.
+    let nani = &document.tokens[1];
+    assert_eq!(nani.surface, "なに");
+    assert!(
+        nani.glosses.iter().any(|g| g.gloss.contains("what")),
+        "なに should gloss to 'what', got {:?}",
+        nani.glosses
+    );
     assert!(document
         .primary_matches
         .iter()
