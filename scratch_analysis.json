@@ -1,0 +1,2679 @@
+{
+    "schema_version": 1,
+    "input": "イきそうなら、いつでもイってくれていいですからね」",
+    "tokens": [
+        {
+            "id": "token-0",
+            "surface": "イき",
+            "pos1": "動詞",
+            "pos2": "非自立可能",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "五段-カ行",
+            "conj_form": "連用形-一般",
+            "base_form": "行く",
+            "reading": "いく",
+            "byte_start": 0,
+            "byte_end": 6,
+            "position": 0,
+            "glosses": [
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to go; to move (in a direction or towards a specific location); to head (towards); to be transported (towards); to reach",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to proceed; to take place",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to pass through; to come and go",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to walk",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to die; to pass away",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to do (in a specific way)",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-1",
+            "surface": "そう",
+            "pos1": "形状詞",
+            "pos2": "助動詞語幹",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "そう-様態",
+            "reading": "そう",
+            "byte_start": 6,
+            "byte_end": 12,
+            "position": 1,
+            "glosses": [
+                {
+                    "entry_seq": 1006610,
+                    "gloss": "appearing that; seeming that; looking like; having the appearance of",
+                    "pos": [
+                        "Auxiliary",
+                        "AdjectivalNoun"
+                    ]
+                },
+                {
+                    "entry_seq": 1176700,
+                    "gloss": "to run along; to run beside; to stick to (a line)",
+                    "pos": [
+                        "GodanUVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1176700,
+                    "gloss": "to follow (a policy, plan, etc.); to act in accordance with; to align with",
+                    "pos": [
+                        "GodanUVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1176700,
+                    "gloss": "to meet (wishes, expectations, etc.); to satisfy; to comply with; to live up to",
+                    "pos": [
+                        "GodanUVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1241450,
+                    "gloss": "koto (13-stringed Japanese zither)",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                },
+                {
+                    "entry_seq": 1241450,
+                    "gloss": "zheng (Chinese zither); guzheng",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-2",
+            "surface": "なら",
+            "pos1": "助動詞",
+            "pos2": "",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "助動詞-ダ",
+            "conj_form": "仮定形-一般",
+            "base_form": "だ",
+            "reading": "だ",
+            "byte_start": 12,
+            "byte_end": 18,
+            "position": 2,
+            "glosses": []
+        },
+        {
+            "id": "token-3",
+            "surface": "、",
+            "pos1": "補助記号",
+            "pos2": "読点",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "、",
+            "reading": "",
+            "byte_start": 18,
+            "byte_end": 21,
+            "position": 3,
+            "glosses": []
+        },
+        {
+            "id": "token-4",
+            "surface": "いつ",
+            "pos1": "代名詞",
+            "pos2": "",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "何時",
+            "reading": "いつ",
+            "byte_start": 21,
+            "byte_end": 27,
+            "position": 4,
+            "glosses": [
+                {
+                    "entry_seq": 1188760,
+                    "gloss": "when; at what time; how soon",
+                    "pos": [
+                        "Pronoun"
+                    ]
+                },
+                {
+                    "entry_seq": 1188760,
+                    "gloss": "normal times; ordinary days",
+                    "pos": [
+                        "Pronoun"
+                    ]
+                },
+                {
+                    "entry_seq": 1268060,
+                    "gloss": "five",
+                    "pos": [
+                        "Numeric"
+                    ]
+                },
+                {
+                    "entry_seq": 1585390,
+                    "gloss": "being comfortable; relaxing",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                },
+                {
+                    "entry_seq": 2843147,
+                    "gloss": "one",
+                    "pos": [
+                        "Numeric"
+                    ]
+                },
+                {
+                    "entry_seq": 2843147,
+                    "gloss": "same (mind, path, etc.)",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-5",
+            "surface": "で",
+            "pos1": "助詞",
+            "pos2": "格助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "で",
+            "reading": "で",
+            "byte_start": 27,
+            "byte_end": 30,
+            "position": 5,
+            "glosses": []
+        },
+        {
+            "id": "token-6",
+            "surface": "も",
+            "pos1": "助詞",
+            "pos2": "係助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "も",
+            "reading": "も",
+            "byte_start": 30,
+            "byte_end": 33,
+            "position": 6,
+            "glosses": []
+        },
+        {
+            "id": "token-7",
+            "surface": "イっ",
+            "pos1": "動詞",
+            "pos2": "非自立可能",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "五段-カ行",
+            "conj_form": "連用形-促音便",
+            "base_form": "行く",
+            "reading": "いく",
+            "byte_start": 33,
+            "byte_end": 39,
+            "position": 7,
+            "glosses": [
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to go; to move (in a direction or towards a specific location); to head (towards); to be transported (towards); to reach",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to proceed; to take place",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to pass through; to come and go",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to walk",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to die; to pass away",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1578850,
+                    "gloss": "to do (in a specific way)",
+                    "pos": [
+                        "GodanIkuVerb",
+                        "IntransitiveVerb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-8",
+            "surface": "て",
+            "pos1": "助詞",
+            "pos2": "接続助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "て",
+            "reading": "て",
+            "byte_start": 39,
+            "byte_end": 42,
+            "position": 8,
+            "glosses": []
+        },
+        {
+            "id": "token-9",
+            "surface": "くれ",
+            "pos1": "動詞",
+            "pos2": "非自立可能",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "下一段-ラ行",
+            "conj_form": "連用形-一般",
+            "base_form": "呉れる",
+            "reading": "くれる",
+            "byte_start": 42,
+            "byte_end": 48,
+            "position": 9,
+            "glosses": [
+                {
+                    "entry_seq": 1269130,
+                    "gloss": "to give; to let (one) have",
+                    "pos": [
+                        "IchidanKureruVerb",
+                        "TransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1269130,
+                    "gloss": "to give",
+                    "pos": [
+                        "IchidanKureruVerb",
+                        "TransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1269130,
+                    "gloss": "to do for one; to take the trouble to do",
+                    "pos": [
+                        "AuxiliaryVerb",
+                        "IchidanKureruVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1269130,
+                    "gloss": "to do to someone's disadvantage",
+                    "pos": [
+                        "AuxiliaryVerb",
+                        "IchidanKureruVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1514960,
+                    "gloss": "to get dark; to grow dark",
+                    "pos": [
+                        "IchidanVerb",
+                        "IntransitiveVerb"
+                    ]
+                },
+                {
+                    "entry_seq": 1514960,
+                    "gloss": "to end (of a day, year, season, etc.); to come to an end; to close",
+                    "pos": [
+                        "IchidanVerb",
+                        "IntransitiveVerb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-10",
+            "surface": "て",
+            "pos1": "助詞",
+            "pos2": "接続助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "て",
+            "reading": "て",
+            "byte_start": 48,
+            "byte_end": 51,
+            "position": 10,
+            "glosses": []
+        },
+        {
+            "id": "token-11",
+            "surface": "いい",
+            "pos1": "形容詞",
+            "pos2": "非自立可能",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "形容詞",
+            "conj_form": "終止形-一般",
+            "base_form": "良い",
+            "reading": "よい",
+            "byte_start": 51,
+            "byte_end": 57,
+            "position": 11,
+            "glosses": [
+                {
+                    "entry_seq": 1605820,
+                    "gloss": "good; excellent; fine; nice; pleasant; agreeable",
+                    "pos": [
+                        "Adjective"
+                    ]
+                },
+                {
+                    "entry_seq": 1605820,
+                    "gloss": "sufficient; enough; ready; prepared",
+                    "pos": [
+                        "Adjective"
+                    ]
+                },
+                {
+                    "entry_seq": 1605820,
+                    "gloss": "profitable (deal, business offer, etc.); beneficial",
+                    "pos": [
+                        "Adjective"
+                    ]
+                },
+                {
+                    "entry_seq": 1605820,
+                    "gloss": "OK; all right; fine; no problem",
+                    "pos": [
+                        "Adjective"
+                    ]
+                },
+                {
+                    "entry_seq": 1347600,
+                    "gloss": "evening; early night hours",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                },
+                {
+                    "entry_seq": 1543920,
+                    "gloss": "implied meaning",
+                    "pos": [
+                        "CommonNoun"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "token-12",
+            "surface": "です",
+            "pos1": "助動詞",
+            "pos2": "",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "助動詞-デス",
+            "conj_form": "終止形-一般",
+            "base_form": "です",
+            "reading": "です",
+            "byte_start": 57,
+            "byte_end": 63,
+            "position": 12,
+            "glosses": []
+        },
+        {
+            "id": "token-13",
+            "surface": "から",
+            "pos1": "助詞",
+            "pos2": "接続助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "から",
+            "reading": "から",
+            "byte_start": 63,
+            "byte_end": 69,
+            "position": 13,
+            "glosses": []
+        },
+        {
+            "id": "token-14",
+            "surface": "ね",
+            "pos1": "助詞",
+            "pos2": "終助詞",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "ね",
+            "reading": "ね",
+            "byte_start": 69,
+            "byte_end": 72,
+            "position": 14,
+            "glosses": []
+        },
+        {
+            "id": "token-15",
+            "surface": "」",
+            "pos1": "補助記号",
+            "pos2": "括弧閉",
+            "pos3": "",
+            "pos4": "",
+            "conj_type": "",
+            "conj_form": "",
+            "base_form": "」",
+            "reading": "",
+            "byte_start": 72,
+            "byte_end": 75,
+            "position": 15,
+            "glosses": []
+        }
+    ],
+    "primary_matches": [
+        {
+            "id": "match-1-2",
+            "rule_name": "そう",
+            "jlpt": "N4",
+            "meaning_en": "Look like, Appear, Seem, Have a feeling that",
+            "hint": null,
+            "sense_id": "bunpro-local-105",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 1,
+            "token_end": 2,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 2,
+                "core_specificity": 3,
+                "context_specificity": 1,
+                "wildcard_steps": 0,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-105",
+                    "variant_id": "casual-01-01"
+                },
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-105",
+                    "variant_id": "polite-01-01"
+                }
+            ]
+        },
+        {
+            "id": "match-4-6",
+            "rule_name": "でも",
+            "jlpt": "N4",
+            "meaning_en": "Or something, Any... (with question words), No matter (who)",
+            "hint": null,
+            "sense_id": "bunpro-local-88",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 4,
+            "token_end": 6,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 3,
+                "core_specificity": 3,
+                "context_specificity": 0,
+                "wildcard_steps": 0,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-88",
+                    "variant_id": "casual-05-01"
+                }
+            ]
+        },
+        {
+            "id": "match-8-9",
+            "rule_name": "てくれる",
+            "jlpt": "N4",
+            "meaning_en": "To do something for someone (usually you)",
+            "hint": null,
+            "sense_id": "bunpro-local-103",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 8,
+            "token_end": 9,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 2,
+                "core_specificity": 3,
+                "context_specificity": 1,
+                "wildcard_steps": 0,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-103",
+                    "variant_id": "casual-01-01"
+                }
+            ]
+        },
+        {
+            "id": "match-10-10",
+            "rule_name": "Verb + て+ B",
+            "jlpt": "N5",
+            "meaning_en": "And, And then, After that (sequence)",
+            "hint": null,
+            "sense_id": "bunpro-local-770",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 10,
+            "token_end": 10,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 1,
+                "core_specificity": 1,
+                "context_specificity": 1,
+                "wildcard_steps": 1,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-770",
+                    "variant_id": "casual-01-01"
+                }
+            ]
+        },
+        {
+            "id": "match-11-12",
+            "rule_name": "いい",
+            "jlpt": "N5",
+            "meaning_en": "い-Adjective meaning 'good'",
+            "hint": null,
+            "sense_id": "bunpro-local-7",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 11,
+            "token_end": 12,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 2,
+                "core_specificity": 4,
+                "context_specificity": 0,
+                "wildcard_steps": 0,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-7",
+                    "variant_id": "polite-01-01"
+                }
+            ]
+        },
+        {
+            "id": "match-13-13",
+            "rule_name": "から",
+            "jlpt": "N5",
+            "meaning_en": "Because, Since",
+            "hint": null,
+            "sense_id": "bunpro-local-45",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 13,
+            "token_end": 13,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 1,
+                "core_specificity": 1,
+                "context_specificity": 1,
+                "wildcard_steps": 0,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-45",
+                    "variant_id": "casual-01-01"
+                }
+            ]
+        },
+        {
+            "id": "match-14-14",
+            "rule_name": "ね",
+            "jlpt": "N5",
+            "meaning_en": "Isn't it?, Right? (Sentence ending particle)",
+            "hint": null,
+            "sense_id": "bunpro-local-71",
+            "ambiguity_group": null,
+            "captures": [],
+            "token_start": 14,
+            "token_end": 14,
+            "score": {
+                "fallback": false,
+                "priority": 0,
+                "span_length": 1,
+                "core_specificity": 1,
+                "context_specificity": 0,
+                "wildcard_steps": 1,
+                "optional_steps": 0
+            },
+            "provenance": [
+                {
+                    "source": {
+                        "id": "bunpro-local",
+                        "label": "Bunpro local"
+                    },
+                    "rule_id": "bunpro-local-71",
+                    "variant_id": "casual-01-01"
+                }
+            ]
+        }
+    ],
+    "secondary_matches": [
+        {
+            "id": "secondary-1-2-0",
+            "matched": {
+                "id": "match-1-2-1",
+                "rule_name": "そうだ",
+                "jlpt": "N3",
+                "meaning_en": "I heard that, It is said that",
+                "hint": null,
+                "sense_id": "bunpro-local-200",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 1,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 3,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-200",
+                        "variant_id": "casual-01-01"
+                    },
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-200",
+                        "variant_id": "polite-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-0",
+            "matched": {
+                "id": "match-2-2",
+                "rule_name": "だ",
+                "jlpt": "N5",
+                "meaning_en": "To be, Is",
+                "hint": null,
+                "sense_id": "bunpro-local-1",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-1",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-1",
+            "matched": {
+                "id": "match-2-2-1",
+                "rule_name": "だろう",
+                "jlpt": "N5",
+                "meaning_en": "Right?, Probably, Isn't it?",
+                "hint": null,
+                "sense_id": "bunpro-local-18",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-18",
+                        "variant_id": "casual-02-01"
+                    },
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-18",
+                        "variant_id": "casual-03-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-2",
+            "matched": {
+                "id": "match-2-2-2",
+                "rule_name": "です",
+                "jlpt": "N5",
+                "meaning_en": "To be, Is",
+                "hint": null,
+                "sense_id": "bunpro-local-2",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-2",
+                        "variant_id": "polite-01-01"
+                    },
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-2",
+                        "variant_id": "polite-02-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-3",
+            "matched": {
+                "id": "match-2-2-3",
+                "rule_name": "でしょう",
+                "jlpt": "N5",
+                "meaning_en": "Right?, Probably, Isn't it?",
+                "hint": null,
+                "sense_id": "bunpro-local-9",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-9",
+                        "variant_id": "casual-02-01"
+                    },
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-9",
+                        "variant_id": "casual-04-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-4",
+            "matched": {
+                "id": "match-2-2-4",
+                "rule_name": "なら",
+                "jlpt": "N4",
+                "meaning_en": "Were it, If, If it's the case, As for (Conditional)",
+                "hint": null,
+                "sense_id": "bunpro-local-123",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 1
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-123",
+                        "variant_id": "casual-04-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-5",
+            "matched": {
+                "id": "match-2-2-5",
+                "rule_name": "ば",
+                "jlpt": "N4",
+                "meaning_en": "If… then, (Conditional)",
+                "hint": null,
+                "sense_id": "bunpro-local-154",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 1
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-154",
+                        "variant_id": "casual-03-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-2-2-6",
+            "matched": {
+                "id": "match-2-2-6",
+                "rule_name": "もしも～なら",
+                "jlpt": "N3",
+                "meaning_en": "Express a hypothetical condition or situation; 'if', 'in case', 'suppose'.",
+                "hint": "Formation: Verb-casual + なら, い-Adjective + なら, な-Adjective + なら, Noun + なら",
+                "sense_id": "hanabira-n3-109",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 2,
+                "token_end": 2,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n3-109",
+                        "variant_id": "formation-03"
+                    },
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n3-109",
+                        "variant_id": "formation-04"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-1-2"
+        },
+        {
+            "id": "secondary-4-6-0",
+            "matched": {
+                "id": "match-4-6-1",
+                "rule_name": "いつでも～",
+                "jlpt": "N5",
+                "meaning_en": "Expresses 'anytime', 'always', or 'whenever'.",
+                "hint": "Formation: いつでも + (Verb)",
+                "sense_id": "hanabira-n5-068",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 4,
+                "token_end": 6,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 3,
+                    "core_specificity": 3,
+                    "context_specificity": 0,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-068",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-0",
+            "matched": {
+                "id": "match-5-5",
+                "rule_name": "で",
+                "jlpt": "N5",
+                "meaning_en": "At, In",
+                "hint": null,
+                "sense_id": "bunpro-local-25",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-25",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-1",
+            "matched": {
+                "id": "match-5-5-1",
+                "rule_name": "で",
+                "jlpt": "N5",
+                "meaning_en": "With, By (using)",
+                "hint": null,
+                "sense_id": "bunpro-local-36",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-36",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-2",
+            "matched": {
+                "id": "match-5-5-2",
+                "rule_name": "Adjective + て・Noun + で",
+                "jlpt": "N5",
+                "meaning_en": "And... (Conjunctive)",
+                "hint": null,
+                "sense_id": "bunpro-local-769",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-769",
+                        "variant_id": "casual-07-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-3",
+            "matched": {
+                "id": "match-5-5-3",
+                "rule_name": "Nounで～",
+                "jlpt": "N5",
+                "meaning_en": "Indicate a place or means for an action or situation; 'at, in, on', 'using', or 'by means of'.",
+                "hint": "Formation: Noun + で",
+                "sense_id": "hanabira-n5-030",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-030",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-4",
+            "matched": {
+                "id": "match-5-5-4",
+                "rule_name": "Adjective + て + B",
+                "jlpt": "N5",
+                "meaning_en": "And..., Both and (Conjunctive)",
+                "hint": null,
+                "sense_id": "bunpro-local-771",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-771",
+                        "variant_id": "casual-03-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-5",
+            "matched": {
+                "id": "match-5-5-5",
+                "rule_name": "Verb[て] + B",
+                "jlpt": "N4",
+                "meaning_en": "And・and so, Due to, Because of, Since, Conjunctive",
+                "hint": null,
+                "sense_id": "bunpro-local-772",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-772",
+                        "variant_id": "casual-04-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-6",
+            "matched": {
+                "id": "match-5-5-6",
+                "rule_name": "Verb[て]・Noun[で] + B",
+                "jlpt": "N4",
+                "meaning_en": "By, With, On, By means of, ~ing with",
+                "hint": null,
+                "sense_id": "bunpro-local-773",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-773",
+                        "variant_id": "casual-02-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-5-7",
+            "matched": {
+                "id": "match-5-5-7",
+                "rule_name": "～で",
+                "jlpt": "N4",
+                "meaning_en": "Indicates the means, method, or place.",
+                "hint": "Formation: Noun + ～で",
+                "sense_id": "hanabira-n4-093",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 5,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n4-093",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-6-0",
+            "matched": {
+                "id": "match-5-6",
+                "rule_name": "ても",
+                "jlpt": "N4",
+                "meaning_en": "Even if, Even though",
+                "hint": null,
+                "sense_id": "bunpro-local-174",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 6,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-174",
+                        "variant_id": "casual-04-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-6-1",
+            "matched": {
+                "id": "match-5-6-1",
+                "rule_name": "～ても/でも",
+                "jlpt": "N4",
+                "meaning_en": "Expresses 'even if' or 'even though'; used to convey contradiction or contrast.",
+                "hint": "Formation: Verb-て-form + も, い-Adjective (-い) + くても, な-Adjective + でも, Noun + でも",
+                "sense_id": "hanabira-n4-097",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 6,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n4-097",
+                        "variant_id": "formation-04"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-5-6-2",
+            "matched": {
+                "id": "match-5-6-2",
+                "rule_name": "A。でも、～B。",
+                "jlpt": "N5",
+                "meaning_en": "Used to express contrast between two statements; 'A, but B', 'A, however B'.",
+                "hint": "Formation: Clause A + でも + Clause B",
+                "sense_id": "hanabira-n5-008",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 5,
+                "token_end": 6,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 2,
+                    "context_specificity": 0,
+                    "wildcard_steps": 2,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-008",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-6-6-0",
+            "matched": {
+                "id": "match-6-6",
+                "rule_name": "誰か・どこか・誰も・どこも",
+                "jlpt": "N5",
+                "meaning_en": "Someone, Somewhere, Not anyone, Not anywhere",
+                "hint": null,
+                "sense_id": "bunpro-local-721",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 6,
+                "token_end": 6,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 2,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-721",
+                        "variant_id": "casual-02-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-4-6"
+        },
+        {
+            "id": "secondary-7-8-0",
+            "matched": {
+                "id": "match-7-8",
+                "rule_name": "Verb + て",
+                "jlpt": "N5",
+                "meaning_en": "And, Then (Linking events)",
+                "hint": null,
+                "sense_id": "bunpro-local-416",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 7,
+                "token_end": 8,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 3,
+                    "context_specificity": 0,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-416",
+                        "variant_id": "casual-11-01"
+                    },
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-416",
+                        "variant_id": "casual-11-02"
+                    }
+                ]
+            },
+            "reason": "overlaps_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-8-8-0",
+            "matched": {
+                "id": "match-8-8",
+                "rule_name": "Verb + て+ B",
+                "jlpt": "N5",
+                "meaning_en": "And, And then, After that (sequence)",
+                "hint": null,
+                "sense_id": "bunpro-local-770",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 8,
+                "token_end": 8,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-770",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-8-8-1",
+            "matched": {
+                "id": "match-8-8-1",
+                "rule_name": "Verb[て] + B",
+                "jlpt": "N4",
+                "meaning_en": "And・and so, Due to, Because of, Since, Conjunctive",
+                "hint": null,
+                "sense_id": "bunpro-local-772",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 8,
+                "token_end": 8,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-772",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-8-8-2",
+            "matched": {
+                "id": "match-8-8-2",
+                "rule_name": "Verb[て]・Noun[で] + B",
+                "jlpt": "N4",
+                "meaning_en": "By, With, On, By means of, ~ing with",
+                "hint": null,
+                "sense_id": "bunpro-local-773",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 8,
+                "token_end": 8,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-773",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-8-8-3",
+            "matched": {
+                "id": "match-8-8-3",
+                "rule_name": "Verb[て] + B",
+                "jlpt": "N4",
+                "meaning_en": "Non-sequence, And, But (Contrast), Parallel action/state",
+                "hint": null,
+                "sense_id": "bunpro-local-776",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 8,
+                "token_end": 8,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-776",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-9-9-0",
+            "matched": {
+                "id": "match-9-9",
+                "rule_name": "命令形",
+                "jlpt": "N4",
+                "meaning_en": "(Verb)!, Do (something)!",
+                "hint": null,
+                "sense_id": "bunpro-local-1032",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 9,
+                "token_end": 9,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 0,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-1032",
+                        "variant_id": "casual-13-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-9-9-1",
+            "matched": {
+                "id": "match-9-9-1",
+                "rule_name": "くれる",
+                "jlpt": "N5",
+                "meaning_en": "To give (me), To be given",
+                "hint": null,
+                "sense_id": "bunpro-local-723",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 9,
+                "token_end": 9,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 0,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-723",
+                        "variant_id": "title-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-8-9"
+        },
+        {
+            "id": "secondary-10-10-0",
+            "matched": {
+                "id": "match-10-10-1",
+                "rule_name": "Verb[て] + B",
+                "jlpt": "N4",
+                "meaning_en": "And・and so, Due to, Because of, Since, Conjunctive",
+                "hint": null,
+                "sense_id": "bunpro-local-772",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 10,
+                "token_end": 10,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-772",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-10-10"
+        },
+        {
+            "id": "secondary-10-10-1",
+            "matched": {
+                "id": "match-10-10-2",
+                "rule_name": "Verb[て]・Noun[で] + B",
+                "jlpt": "N4",
+                "meaning_en": "By, With, On, By means of, ~ing with",
+                "hint": null,
+                "sense_id": "bunpro-local-773",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 10,
+                "token_end": 10,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-773",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-10-10"
+        },
+        {
+            "id": "secondary-10-10-2",
+            "matched": {
+                "id": "match-10-10-3",
+                "rule_name": "Verb[て] + B",
+                "jlpt": "N4",
+                "meaning_en": "Non-sequence, And, But (Contrast), Parallel action/state",
+                "hint": null,
+                "sense_id": "bunpro-local-776",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 10,
+                "token_end": 10,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 1,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-776",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-10-10"
+        },
+        {
+            "id": "secondary-11-11-0",
+            "matched": {
+                "id": "match-11-11",
+                "rule_name": "いい",
+                "jlpt": "N5",
+                "meaning_en": "い-Adjective meaning 'good'",
+                "hint": null,
+                "sense_id": "bunpro-local-7",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 11,
+                "token_end": 11,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 0,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-7",
+                        "variant_id": "casual-01-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-11-12"
+        },
+        {
+            "id": "secondary-12-12-0",
+            "matched": {
+                "id": "match-12-12",
+                "rule_name": "だろう",
+                "jlpt": "N5",
+                "meaning_en": "Right?, Probably, Isn't it?",
+                "hint": null,
+                "sense_id": "bunpro-local-18",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 12,
+                "token_end": 12,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-18",
+                        "variant_id": "casual-02-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-11-12"
+        },
+        {
+            "id": "secondary-12-12-1",
+            "matched": {
+                "id": "match-12-12-1",
+                "rule_name": "です",
+                "jlpt": "N5",
+                "meaning_en": "To be, Is",
+                "hint": null,
+                "sense_id": "bunpro-local-2",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 12,
+                "token_end": 12,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-2",
+                        "variant_id": "polite-02-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-11-12"
+        },
+        {
+            "id": "secondary-12-12-2",
+            "matched": {
+                "id": "match-12-12-2",
+                "rule_name": "でしょう",
+                "jlpt": "N5",
+                "meaning_en": "Right?, Probably, Isn't it?",
+                "hint": null,
+                "sense_id": "bunpro-local-9",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 12,
+                "token_end": 12,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 2,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "bunpro-local",
+                            "label": "Bunpro local"
+                        },
+                        "rule_id": "bunpro-local-9",
+                        "variant_id": "casual-04-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-11-12"
+        },
+        {
+            "id": "secondary-12-13-0",
+            "matched": {
+                "id": "match-12-13",
+                "rule_name": "ですから～",
+                "jlpt": "N3",
+                "meaning_en": "Expresses reason or cause; 'because', 'since', 'so'.",
+                "hint": "Formation: Sentence A + ですから + Sentence B",
+                "sense_id": "hanabira-n3-049",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 12,
+                "token_end": 13,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 2,
+                    "core_specificity": 2,
+                    "context_specificity": 0,
+                    "wildcard_steps": 2,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n3-049",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "overlaps_stronger_match",
+            "blocked_by": "match-11-12"
+        },
+        {
+            "id": "secondary-13-13-0",
+            "matched": {
+                "id": "match-13-13-1",
+                "rule_name": "～から",
+                "jlpt": "N4",
+                "meaning_en": "Express a reason or cause; 'because', 'since', 'due to'.",
+                "hint": "Formation: Verb-casual + から, い-Adjective + から, な-Adjective + だから, Noun + だから",
+                "sense_id": "hanabira-n4-078",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 13,
+                "token_end": 13,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n4-078",
+                        "variant_id": "formation-01"
+                    },
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n4-078",
+                        "variant_id": "formation-02"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-13-13"
+        },
+        {
+            "id": "secondary-13-13-1",
+            "matched": {
+                "id": "match-13-13-2",
+                "rule_name": "Verb てから～",
+                "jlpt": "N5",
+                "meaning_en": "Express a sequence of actions or events; 'after', 'since', 'once'.",
+                "hint": "Formation: Verb-て形 + から",
+                "sense_id": "hanabira-n5-048",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 13,
+                "token_end": 13,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-048",
+                        "variant_id": "formation-01"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-13-13"
+        },
+        {
+            "id": "secondary-13-13-2",
+            "matched": {
+                "id": "match-13-13-3",
+                "rule_name": "～から、～",
+                "jlpt": "N5",
+                "meaning_en": "Expresses reason or cause; 'because', 'since', 'so'.",
+                "hint": "Formation: Verb-casual + から / い-Adjective + から / な-Adjective + だから / Noun + だから",
+                "sense_id": "hanabira-n5-073",
+                "ambiguity_group": null,
+                "captures": [],
+                "token_start": 13,
+                "token_end": 13,
+                "score": {
+                    "fallback": false,
+                    "priority": 0,
+                    "span_length": 1,
+                    "core_specificity": 1,
+                    "context_specificity": 1,
+                    "wildcard_steps": 0,
+                    "optional_steps": 0
+                },
+                "provenance": [
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-073",
+                        "variant_id": "formation-01"
+                    },
+                    {
+                        "source": {
+                            "id": "hanabira",
+                            "label": "Hanabira"
+                        },
+                        "rule_id": "hanabira-n5-073",
+                        "variant_id": "formation-02"
+                    }
+                ]
+            },
+            "reason": "contained_by_stronger_match",
+            "blocked_by": "match-13-13"
+        }
+    ],
+    "tree": {
+        "root_id": "sentence-0",
+        "nodes": [
+            {
+                "id": "sentence-0",
+                "kind": "sentence",
+                "token_start": 0,
+                "token_end": 15,
+                "token_id": null,
+                "match_id": null,
+                "secondary_match_ids": [
+                    "secondary-7-8-0",
+                    "secondary-12-13-0"
+                ]
+            },
+            {
+                "id": "segment-0-0",
+                "kind": "segment",
+                "token_start": 0,
+                "token_end": 0,
+                "token_id": null,
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-0",
+                "kind": "token",
+                "token_start": 0,
+                "token_end": 0,
+                "token_id": "token-0",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-1-2",
+                "kind": "grammar",
+                "token_start": 1,
+                "token_end": 2,
+                "token_id": null,
+                "match_id": "match-1-2",
+                "secondary_match_ids": [
+                    "secondary-1-2-0",
+                    "secondary-2-2-0",
+                    "secondary-2-2-1",
+                    "secondary-2-2-2",
+                    "secondary-2-2-3",
+                    "secondary-2-2-4",
+                    "secondary-2-2-5",
+                    "secondary-2-2-6"
+                ]
+            },
+            {
+                "id": "token-1",
+                "kind": "token",
+                "token_start": 1,
+                "token_end": 1,
+                "token_id": "token-1",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-2",
+                "kind": "token",
+                "token_start": 2,
+                "token_end": 2,
+                "token_id": "token-2",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "segment-3-3",
+                "kind": "segment",
+                "token_start": 3,
+                "token_end": 3,
+                "token_id": null,
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-3",
+                "kind": "token",
+                "token_start": 3,
+                "token_end": 3,
+                "token_id": "token-3",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-4-6",
+                "kind": "grammar",
+                "token_start": 4,
+                "token_end": 6,
+                "token_id": null,
+                "match_id": "match-4-6",
+                "secondary_match_ids": [
+                    "secondary-4-6-0",
+                    "secondary-5-5-0",
+                    "secondary-5-5-1",
+                    "secondary-5-5-2",
+                    "secondary-5-5-3",
+                    "secondary-5-5-4",
+                    "secondary-5-5-5",
+                    "secondary-5-5-6",
+                    "secondary-5-5-7",
+                    "secondary-5-6-0",
+                    "secondary-5-6-1",
+                    "secondary-5-6-2",
+                    "secondary-6-6-0"
+                ]
+            },
+            {
+                "id": "token-4",
+                "kind": "token",
+                "token_start": 4,
+                "token_end": 4,
+                "token_id": "token-4",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-5",
+                "kind": "token",
+                "token_start": 5,
+                "token_end": 5,
+                "token_id": "token-5",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-6",
+                "kind": "token",
+                "token_start": 6,
+                "token_end": 6,
+                "token_id": "token-6",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "segment-7-7",
+                "kind": "segment",
+                "token_start": 7,
+                "token_end": 7,
+                "token_id": null,
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-7",
+                "kind": "token",
+                "token_start": 7,
+                "token_end": 7,
+                "token_id": "token-7",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-8-9",
+                "kind": "grammar",
+                "token_start": 8,
+                "token_end": 9,
+                "token_id": null,
+                "match_id": "match-8-9",
+                "secondary_match_ids": [
+                    "secondary-8-8-0",
+                    "secondary-8-8-1",
+                    "secondary-8-8-2",
+                    "secondary-8-8-3",
+                    "secondary-9-9-0",
+                    "secondary-9-9-1"
+                ]
+            },
+            {
+                "id": "token-8",
+                "kind": "token",
+                "token_start": 8,
+                "token_end": 8,
+                "token_id": "token-8",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-9",
+                "kind": "token",
+                "token_start": 9,
+                "token_end": 9,
+                "token_id": "token-9",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-10-10",
+                "kind": "grammar",
+                "token_start": 10,
+                "token_end": 10,
+                "token_id": null,
+                "match_id": "match-10-10",
+                "secondary_match_ids": [
+                    "secondary-10-10-0",
+                    "secondary-10-10-1",
+                    "secondary-10-10-2"
+                ]
+            },
+            {
+                "id": "token-10",
+                "kind": "token",
+                "token_start": 10,
+                "token_end": 10,
+                "token_id": "token-10",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-11-12",
+                "kind": "grammar",
+                "token_start": 11,
+                "token_end": 12,
+                "token_id": null,
+                "match_id": "match-11-12",
+                "secondary_match_ids": [
+                    "secondary-11-11-0",
+                    "secondary-12-12-0",
+                    "secondary-12-12-1",
+                    "secondary-12-12-2"
+                ]
+            },
+            {
+                "id": "token-11",
+                "kind": "token",
+                "token_start": 11,
+                "token_end": 11,
+                "token_id": "token-11",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-12",
+                "kind": "token",
+                "token_start": 12,
+                "token_end": 12,
+                "token_id": "token-12",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-13-13",
+                "kind": "grammar",
+                "token_start": 13,
+                "token_end": 13,
+                "token_id": null,
+                "match_id": "match-13-13",
+                "secondary_match_ids": [
+                    "secondary-13-13-0",
+                    "secondary-13-13-1",
+                    "secondary-13-13-2"
+                ]
+            },
+            {
+                "id": "token-13",
+                "kind": "token",
+                "token_start": 13,
+                "token_end": 13,
+                "token_id": "token-13",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "match-14-14",
+                "kind": "grammar",
+                "token_start": 14,
+                "token_end": 14,
+                "token_id": null,
+                "match_id": "match-14-14",
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-14",
+                "kind": "token",
+                "token_start": 14,
+                "token_end": 14,
+                "token_id": "token-14",
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "segment-15-15",
+                "kind": "segment",
+                "token_start": 15,
+                "token_end": 15,
+                "token_id": null,
+                "match_id": null,
+                "secondary_match_ids": []
+            },
+            {
+                "id": "token-15",
+                "kind": "token",
+                "token_start": 15,
+                "token_end": 15,
+                "token_id": "token-15",
+                "match_id": null,
+                "secondary_match_ids": []
+            }
+        ],
+        "edges": [
+            {
+                "parent_id": "sentence-0",
+                "child_id": "segment-0-0",
+                "order": 0
+            },
+            {
+                "parent_id": "segment-0-0",
+                "child_id": "token-0",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-1-2",
+                "order": 1
+            },
+            {
+                "parent_id": "match-1-2",
+                "child_id": "token-1",
+                "order": 0
+            },
+            {
+                "parent_id": "match-1-2",
+                "child_id": "token-2",
+                "order": 1
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "segment-3-3",
+                "order": 2
+            },
+            {
+                "parent_id": "segment-3-3",
+                "child_id": "token-3",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-4-6",
+                "order": 3
+            },
+            {
+                "parent_id": "match-4-6",
+                "child_id": "token-4",
+                "order": 0
+            },
+            {
+                "parent_id": "match-4-6",
+                "child_id": "token-5",
+                "order": 1
+            },
+            {
+                "parent_id": "match-4-6",
+                "child_id": "token-6",
+                "order": 2
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "segment-7-7",
+                "order": 4
+            },
+            {
+                "parent_id": "segment-7-7",
+                "child_id": "token-7",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-8-9",
+                "order": 5
+            },
+            {
+                "parent_id": "match-8-9",
+                "child_id": "token-8",
+                "order": 0
+            },
+            {
+                "parent_id": "match-8-9",
+                "child_id": "token-9",
+                "order": 1
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-10-10",
+                "order": 6
+            },
+            {
+                "parent_id": "match-10-10",
+                "child_id": "token-10",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-11-12",
+                "order": 7
+            },
+            {
+                "parent_id": "match-11-12",
+                "child_id": "token-11",
+                "order": 0
+            },
+            {
+                "parent_id": "match-11-12",
+                "child_id": "token-12",
+                "order": 1
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-13-13",
+                "order": 8
+            },
+            {
+                "parent_id": "match-13-13",
+                "child_id": "token-13",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "match-14-14",
+                "order": 9
+            },
+            {
+                "parent_id": "match-14-14",
+                "child_id": "token-14",
+                "order": 0
+            },
+            {
+                "parent_id": "sentence-0",
+                "child_id": "segment-15-15",
+                "order": 10
+            },
+            {
+                "parent_id": "segment-15-15",
+                "child_id": "token-15",
+                "order": 0
+            }
+        ]
+    }
+}

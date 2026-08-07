@@ -49,10 +49,12 @@ implementation plan is
 ## Current Checkpoint
 
 Stage A analysis-core implementation is complete through the public `Analyzer`.
-The first visible D3 slice is also complete: a Node.js 26 Vite client validates
-the committed schema-v1 fixture and renders it as a faithful Hanabira graph. The
-local desktop API is now complete as well. The CLI still behaves as before, and
-the browser remains fixture-driven until the web UI is wired to the live API.
+The Node.js 26 Vite client now renders the graph from the live loopback API: the
+paste box and Analyze button POST `/api/analyze` (Vite proxies `/api` to
+`127.0.0.1:7878`) and the current graph is preserved on request failure. Offline
+JMdict glosses are live via the embedded `jmdict` crate, and the Bunpro importer
+now widens closed-class auxiliaries by grammatical family. The CLI still behaves
+as before. `docs/PIPELINE.md` is the current architectural reference.
 
 Implemented:
 
@@ -69,7 +71,7 @@ Implemented:
   `src/analyzer.rs`.
 - Explicit errors for missing configured local grammar directories and the
   not-yet-supported dictionary path.
-- Stable `Token` -> `AnalyzedToken` conversion with empty glosses until JMdict.
+- Stable `Token` -> `AnalyzedToken` conversion, now populated with JMdict glosses.
 - End-to-end reading regressions in `tests/reading_analysis.rs` using
   `tests/fixtures/local-reading.toml`.
 - Byte-stable schema regression in `tests/fixtures/analysis-soshite.json`.
@@ -89,6 +91,17 @@ Implemented:
   - Secondary: broad bare-`も` match
 - Reusable loopback server module in `src/server.rs` and the
   `nnj-grammar-server` binary in `src/bin/server.rs`.
+- Live web wiring: `app.ts::analyzeText` POSTs `/api/analyze`, `main.ts` paste
+  box + Analyze button, Vite `/api` proxy, graph preserved on failure.
+- Offline JMdict glosses via the embedded `jmdict` crate in `src/dictionary.rs`
+  (shared `OnceLock` index, base/surface/reading lookup, compound-fusion pass).
+- Provable auxiliary-family widening: `grammar/compiler/aux-inventory.json`
+  (machine census), `families.json` (human labels), `tools/test_families.py`
+  fail-closed audit, and `tests/lexicon_conventions.rs` UniDic-convention pins.
+  CAVEAT: the audits prove *completeness*, not *meaning preservation* — the
+  whole-family `one_of` widening is over-broad and currently makes distinct
+  grammar points match each other (e.g. `ておく` matches `てる`/`ちゃう`). Known
+  defect; see `docs/GRAPH_ISSUE_BANK.md` entry 3 and `docs/PIPELINE.md` §10.
 
 ## Local Desktop API Boundary
 
@@ -115,9 +128,8 @@ Implemented HTTP contract:
   catalog -> startup fails). Startup logging reports only the address and catalog
   mode; passage text is never logged.
 
-Immediate next step: wire the web UI to this live API instead of the committed
-fixture (Vite `/api` proxy to `127.0.0.1:7878`, replace the fixture loader, add
-the paste field and Analyze button, preserve the current graph on failure).
+This wiring is now done (see the web bullets above); the web UI runs against the
+live API.
 
 The full Stage A plan is:
 
@@ -125,14 +137,21 @@ The full Stage A plan is:
 
 ## Next Step
 
-Connect the completed analyzer and graph through the local desktop API:
+The analyzer, glosses, API, and graph are wired end-to-end. The next slice is
+making the glosses (already in the payload) visible and finishing graph UX:
 
-1. Add the loopback analysis endpoint around `Analyzer`.
-2. Replace the development fixture load with `POST /api/analyze` after the
-   endpoint contract is tested.
-3. Add the paste-and-Analyze shell and preserve the current graph on request
-   failures.
-4. Return to offline JMdict after the graph path is visible end-to-end.
+1. Open a layered reading card on node selection (meaning, breakdown,
+   provenance, secondary candidates) — the home for the JMdict glosses.
+2. Finish the remaining Milestone 4 interactions: reset / fit-to-content,
+   secondary-candidate disclosure, keyboard node selection, 50-entry
+   browser-local history.
+3. Then Milestone 6: embed the built web assets in the Rust server so one binary
+   serves the SPA + API from `127.0.0.1:7878`.
+
+Architectural backlog worth folding in (see `docs/PIPELINE.md` §10–11): populate
+`ambiguity_group` / `fallback` in the importers to unlock secondary-noise
+filtering; clause/punctuation handling; codegen `web/src/types.ts` from the Rust
+records; apply `literal_steps` family widening to Hanabira on next regen.
 
 Do not start SwiftUI, Xcode, UniFFI, or other iOS work yet.
 

@@ -297,7 +297,18 @@ The provable, fail-closed handling of closed-class auxiliaries:
 **Design principle:** the machine owns the *universe* (nothing can be missing);
 the human owns the *labels*; every exclusion is a recorded decision.
 
+> **KNOWN DEFECT — over-widening (do not trust the widening blindly).** The audits
+> prove *completeness* (every auxiliary is classified), not *meaning preservation*.
+> Widening a rule's core literal to its whole family `one_of` collapses
+> semantically-distinct grammar points: the `ておく` rule's core is
+> `one_of{てる, ちゃう, ちまう, とく, てく, り}`, so it now matches `てる` (progressive,
+> in `知ってる`) and `ちゃう` (completive). This is a correctness regression, not
+> cosmetic. See `docs/GRAPH_ISSUE_BANK.md` entry 3. Likely fix: per-lemma widening
+> (conjugation-invariance only) or much finer family granularity, NOT whole-family
+> `one_of`.
+
 **Limitations / change candidates:**
+- **Over-widening (above): the biggest one — family `one_of` is too coarse.**
 - Per-pattern family overrides (`family:negation[-まい]`) are designed but not
   built; widening is uniform `standard` today.
 - Politeness insertion (an optional `ます` between verb and auxiliary) is not
