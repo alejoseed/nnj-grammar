@@ -7,7 +7,7 @@ use crate::dictionary::Dictionary;
 use crate::hierarchy::build_tree;
 use crate::matcher::match_candidates;
 use crate::patterns::{load_combined, PatternRule};
-use crate::ranking::rank_candidates;
+use crate::ranking::rank_with_structure;
 use crate::tokenizer::Tokenizer;
 
 #[derive(Debug, Clone, Default)]
@@ -45,7 +45,8 @@ impl Analyzer {
             .tokenizer
             .tokenize(text)
             .context("failed to tokenize input")?;
-        let ranked = rank_candidates(match_candidates(&tokens, &self.rules));
+        let sentences = crate::chunker::chunk(&tokens);
+        let ranked = rank_with_structure(match_candidates(&tokens, &self.rules), &sentences);
         let token_glosses = Dictionary::shared().gloss_tokens(&tokens);
         let analyzed_tokens = tokens
             .iter()

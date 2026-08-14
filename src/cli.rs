@@ -25,8 +25,11 @@ EXAMPLES:
   # See all raw UniDic fields for each token (use this to verify field indices)
   nnj-grammar --output raw \"行かない\"
 
-  # Get the full JSON output (tokens + matched patterns)
+  # Get the full analysis document (tokens + ranked matches + node/edge tree)
   nnj-grammar --output json \"私はコタローです\"
+
+  # See the graph's real parent/child shape — same tree the web UI renders
+  nnj-grammar --output tree \"わたしは\"
 
   # Read from a file
   nnj-grammar --output graph --file sentence.txt
@@ -55,8 +58,14 @@ pub struct Cli {
 pub enum OutputFormat {
     /// Terminal graph — token chain with grammar annotations below (default)
     Graph,
-    /// Full JSON — tokens array + matches array, for piping or visualization
+    /// Full AnalysisDocument JSON — tokens, ranked matches, and the node/edge tree
     Json,
+    /// Indented node/edge tree — the exact hierarchy the web UI renders
+    Tree,
+    /// 文/文節 chunking — deterministic structure from POS alone, no grammar rules
+    Bunsetsu,
+    /// Chunking trace — every attach/split decision with the rule that made it
+    BunsetsuTrace,
     /// Token table — surface, reading, POS, conjugation form, base form
     Table,
     /// Raw UniDic fields — all 29 indices numbered, for verifying what each index means

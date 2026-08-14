@@ -37,7 +37,7 @@ async fn health_reports_schema_version() {
     assert_eq!(response.status(), StatusCode::OK);
     let json = body_json(response).await;
     assert_eq!(json["status"], "ok");
-    assert_eq!(json["schema_version"], 1);
+    assert_eq!(json["schema_version"], 2);
 }
 
 fn analyze_request(body: &'static str) -> Request<Body> {
@@ -50,7 +50,7 @@ fn analyze_request(body: &'static str) -> Request<Body> {
 }
 
 #[tokio::test]
-async fn analyze_returns_schema_v1_document_for_embedded_soshite() {
+async fn analyze_returns_schema_v2_document_for_embedded_soshite() {
     let app = router(embedded_analyzer());
     let response = app
         .oneshot(analyze_request(r#"{"text":"そして"}"#))
@@ -59,7 +59,7 @@ async fn analyze_returns_schema_v1_document_for_embedded_soshite() {
 
     assert_eq!(response.status(), StatusCode::OK);
     let json = body_json(response).await;
-    assert_eq!(json["schema_version"], 1);
+    assert_eq!(json["schema_version"], 2);
     assert_eq!(json["input"], "そして");
     assert!(json["primary_matches"]
         .as_array()

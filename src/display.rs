@@ -1,5 +1,151 @@
+use nnj_grammar::analysis::{AnalysisDocument, TreeNode, TreeNodeKind};
+use nnj_grammar::chunker::SentenceChunk;
 use nnj_grammar::matcher::PatternMatch;
 use nnj_grammar::tokenizer::Token;
+
+/// Print every chunking decision with the rule that made it. This is the
+/// learning/debugging view of `src/chunker.rs::starts_new_bunsetsu`: read the
+/// reason column, then find the matching arm in that function.
+pub fn print_bunsetsu_trace(tokens: &[Token], decisions: &[nnj_grammar::chunker::Decision]) {
+    for decision in decisions {
+        let token = &tokens[decision.position];
+        let pos = if token.pos2.is_empty() {
+            token.pos1.clone()
+        } else {
+            format!("{}·{}", token.pos1, token.pos2)
+        };
+        let marker = if decision.starts_new { "┌ NEW   " } else { "│ attach" };
+        println!(
+            "{} {:<8} {:<18} {}",
+            marker, token.surface, pos, decision.reason
+        );
+    }
+}
+
+/// Print 文/文節 chunking: one line per sentence, each bunsetsu bracketed with
+/// its token pieces separated by `·`.
+pub fn print_bunsetsu(tokens: &[Token], sentences: &[SentenceChunk]) {
+    for (index, sentence) in sentences.iter().enumerate() {
+        let rendered: Vec<String> = sentence
+            .bunsetsu
+            .iter()
+            .map(|chunk| {
+                let pieces: Vec<&str> = tokens[chunk.token_start..=chunk.token_end]
+                    .iter()
+                    .map(|token| token.surface.as_str())
+                    .collect();
+                format!("[{}]", pieces.join("·"))
+            })
+            .collect();
+        println!("文{}: {}", index + 1, rendered.join(" "));
+    }
+}
+
+/// Print the `AnalysisTree` as an indented outline.
+///
+/// This is the debugging view for node *shape*: it shows exactly which tokens
+/// hang under which grammar/segment node, which is what the web UI renders.
+/// A content word sitting in its own `segment` node next to a particle node
+/// means a rule matched bare and stranded its host.
+pub fn print_tree(document: &AnalysisDocument) {
+    println!("input: {}", document.input);
+    println!(
+        "tokens: {}",
+        document
+            .tokens
+            .iter()
+            .map(|token| format!("{}:{}", token.position, token.surface))
+            .collect::<Vec<_>>()
+            .join(" ")
+    );
+    println!("primary matches:");
+    if document.primary_matches.is_empty() {
+        println!("  (none)");
+    }
+    for matched in &document.primary_matches {
+        println!(
+            "  [{}..={}] {} — {}",
+            matched.token_start, matched.token_end, matched.rule_name, matched.id
+        );
+    }
+    println!();
+    print_tree_node(document, &document.tree.root_id, 0);
+}
+
+fn print_tree_node(document: &AnalysisDocument, id: &str, depth: usize) {
+    let Some(node) = document.tree.node(id) else {
+        println!("{}{} <missing node>", "  ".repeat(depth), id);
+        return;
+    };
+    println!(
+        "{}{} {} {}{}{}",
+        "  ".repeat(depth),
+        kind_label(node.kind),
+        span_label(node),
+        surface_of(document, node),
+        attached_matches_label(document, node),
+        secondary_label(node),
+    );
+    for child in document.tree.children_of(id) {
+        print_tree_node(document, child, depth + 1);
+    }
+}
+
+fn kind_label(kind: TreeNodeKind) -> &'static str {
+    match kind {
+        TreeNodeKind::Document => "document",
+        TreeNodeKind::Sentence => "sentence",
+        TreeNodeKind::Bunsetsu => "bunsetsu",
+        TreeNodeKind::Token => "token   ",
+    }
+}
+
+/// Names of the primary matches attached to this node, e.g. ` ⟨Noun は～⟩`.
+fn attached_matches_label(document: &AnalysisDocument, node: &TreeNode) -> String {
+    let names: Vec<&str> = node
+        .match_ids
+        .iter()
+        .filter_map(|id| {
+            document
+                .primary_matches
+                .iter()
+                .find(|matched| &matched.id == id)
+                .map(|matched| matched.rule_name.as_str())
+        })
+        .collect();
+    if names.is_empty() {
+        return String::new();
+    }
+    format!("  ⟨{}⟩", names.join(", "))
+}
+
+fn span_label(node: &TreeNode) -> String {
+    match (node.token_start, node.token_end) {
+        (Some(start), Some(end)) => format!("[{start}..={end}]"),
+        _ => "[--]".to_string(),
+    }
+}
+
+/// Join the surfaces of every token in the node's span, so a node's own label
+/// shows the text it claims rather than only its id.
+fn surface_of(document: &AnalysisDocument, node: &TreeNode) -> String {
+    let (Some(start), Some(end)) = (node.token_start, node.token_end) else {
+        return String::new();
+    };
+    document
+        .tokens
+        .iter()
+        .filter(|token| token.position >= start && token.position <= end)
+        .map(|token| token.surface.as_str())
+        .collect()
+}
+
+fn secondary_label(node: &TreeNode) -> String {
+    if node.secondary_match_ids.is_empty() {
+        return String::new();
+    }
+    format!("  (+{} secondary)", node.secondary_match_ids.len())
+}
 
 /// Return a fill color for a token node based on its POS category.
 fn pos_color(pos1: &str) -> &'static str {

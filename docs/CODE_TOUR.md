@@ -599,8 +599,6 @@ than reading the entire module first.
   Hanabira catalog.
 - UniDic index comments and the selected base/reading fields in `tokenizer.rs`
   need a documentation consistency pass.
-- The detailed implementation plan is a design record. Current progress is
-  tracked in `PROJECT_STATUS.md`.
 
 ## A Practical First Study Session
 

@@ -3,7 +3,10 @@ use serde::Serialize;
 use crate::ranking::{DisplayMatch, SecondaryMatch};
 use crate::tokenizer::Token;
 
-pub const ANALYSIS_SCHEMA_VERSION: u32 = 1;
+/// Version 2: the tree is structural (document → sentence → bunsetsu → token,
+/// from `crate::chunker`), grammar matches attach to nodes via `match_ids`
+/// instead of defining `grammar`/`segment` nodes.
+pub const ANALYSIS_SCHEMA_VERSION: u32 = 2;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct AnalysisDocument {
@@ -90,9 +93,13 @@ impl AnalysisTree {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeNodeKind {
+    /// 文章 — the whole pasted input; always the root.
+    Document,
+    /// 文 — one sentence, split at 句点 runs by the chunker.
     Sentence,
-    Grammar,
-    Segment,
+    /// 文節 — one content word plus its trailing function words.
+    Bunsetsu,
+    /// 単語 — one UniDic short-unit token; always a leaf.
     Token,
 }
 
@@ -103,7 +110,8 @@ pub struct TreeNode {
     pub token_start: Option<usize>,
     pub token_end: Option<usize>,
     pub token_id: Option<String>,
-    pub match_id: Option<String>,
+    /// Primary grammar matches whose span this node is the smallest cover of.
+    pub match_ids: Vec<String>,
     pub secondary_match_ids: Vec<String>,
 }
 

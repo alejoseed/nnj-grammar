@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 use serde::Serialize;
 
+use crate::chunker::SentenceChunk;
 use crate::matcher::{MatchCandidate, PatternCapture};
 use crate::patterns::CatalogSource;
 
@@ -61,8 +62,26 @@ pub struct RankedMatches {
     pub secondary: Vec<SecondaryMatch>,
 }
 
-pub fn rank_candidates(mut candidates: Vec<MatchCandidate>) -> RankedMatches {
-    candidates.sort_by(candidate_rank_order);
+/// Rank without structural evidence (no bunsetsu alignment). Kept for raw
+/// candidate tests; the analyzer path uses `rank_with_structure`.
+pub fn rank_candidates(candidates: Vec<MatchCandidate>) -> RankedMatches {
+    rank_with_structure(candidates, &[])
+}
+
+pub fn rank_with_structure(
+    mut candidates: Vec<MatchCandidate>,
+    sentences: &[SentenceChunk],
+) -> RankedMatches {
+    let bunsetsu: Vec<(usize, usize)> = sentences
+        .iter()
+        .flat_map(|sentence| {
+            sentence
+                .bunsetsu
+                .iter()
+                .map(|chunk| (chunk.token_start, chunk.token_end))
+        })
+        .collect();
+    candidates.sort_by(|left, right| candidate_rank_order(left, right, &bunsetsu));
     let mut grouped = group_exact_duplicates(candidates);
     assign_stable_ids(&mut grouped);
 
@@ -107,19 +126,59 @@ fn assign_secondary_ids(matches: &mut [SecondaryMatch]) {
     }
 }
 
-fn candidate_rank_order(left: &MatchCandidate, right: &MatchCandidate) -> Ordering {
+fn candidate_rank_order(
+    left: &MatchCandidate,
+    right: &MatchCandidate,
+    bunsetsu: &[(usize, usize)],
+) -> Ordering {
     left.fallback
         .cmp(&right.fallback)
         .then_with(|| right.priority.cmp(&left.priority))
+        // Structural evidence: a span that respects bunsetsu boundaries beats
+        // one that crosses them, before length gets a say — a longer
+        // boundary-crossing span is worse, not better.
+        .then_with(|| is_aligned(right, bunsetsu).cmp(&is_aligned(left, bunsetsu)))
         .then_with(|| span_length(right).cmp(&span_length(left)))
         .then_with(|| right.core_specificity.cmp(&left.core_specificity))
         .then_with(|| right.context_specificity.cmp(&left.context_specificity))
         .then_with(|| left.wildcard_steps.cmp(&right.wildcard_steps))
         .then_with(|| left.optional_steps.cmp(&right.optional_steps))
+        // On otherwise identical evidence, the more basic (higher-N JLPT)
+        // reading wins: a bare も is Noun も〜 (N5), not ～はもとより (N2).
+        .then_with(|| jlpt_level(right).cmp(&jlpt_level(left)))
         .then_with(|| left.matched.rule_id.cmp(&right.matched.rule_id))
         .then_with(|| left.matched.variant_id.cmp(&right.matched.variant_id))
         .then_with(|| left.matched.token_start.cmp(&right.matched.token_start))
         .then_with(|| left.matched.token_end.cmp(&right.matched.token_end))
+}
+
+/// Does the candidate's span respect bunsetsu boundaries? True when the span
+/// stays inside one bunsetsu, or starts and ends exactly on bunsetsu edges.
+/// No structure (empty list) or an uncovered position is neutral: aligned.
+fn is_aligned(candidate: &MatchCandidate, bunsetsu: &[(usize, usize)]) -> bool {
+    if bunsetsu.is_empty() {
+        return true;
+    }
+    let containing =
+        |position: usize| bunsetsu.iter().find(|span| span.0 <= position && position <= span.1);
+    let (Some(first), Some(last)) = (
+        containing(candidate.matched.token_start),
+        containing(candidate.matched.token_end),
+    ) else {
+        return true;
+    };
+    first == last
+        || (candidate.matched.token_start == first.0 && candidate.matched.token_end == last.1)
+}
+
+/// "N5" → 5. Unparseable levels rank lowest (0), below N1.
+fn jlpt_level(candidate: &MatchCandidate) -> u32 {
+    candidate
+        .matched
+        .jlpt
+        .trim_start_matches(|c: char| !c.is_ascii_digit())
+        .parse()
+        .unwrap_or(0)
 }
 
 fn span_length(candidate: &MatchCandidate) -> usize {

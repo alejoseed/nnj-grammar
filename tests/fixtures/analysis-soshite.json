@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "input": "そしてなによりも",
   "tokens": [
     {
@@ -257,24 +257,35 @@
     }
   ],
   "tree": {
-    "root_id": "sentence-0",
+    "root_id": "document-0",
     "nodes": [
+      {
+        "id": "document-0",
+        "kind": "document",
+        "token_start": 0,
+        "token_end": 3,
+        "token_id": null,
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
       {
         "id": "sentence-0",
         "kind": "sentence",
         "token_start": 0,
         "token_end": 3,
         "token_id": null,
-        "match_id": null,
+        "match_ids": [],
         "secondary_match_ids": []
       },
       {
-        "id": "match-0-0",
-        "kind": "grammar",
+        "id": "bunsetsu-0-0",
+        "kind": "bunsetsu",
         "token_start": 0,
         "token_end": 0,
         "token_id": null,
-        "match_id": "match-0-0",
+        "match_ids": [
+          "match-0-0"
+        ],
         "secondary_match_ids": []
       },
       {
@@ -283,16 +294,18 @@
         "token_start": 0,
         "token_end": 0,
         "token_id": "token-0",
-        "match_id": null,
+        "match_ids": [],
         "secondary_match_ids": []
       },
       {
-        "id": "match-1-3",
-        "kind": "grammar",
+        "id": "bunsetsu-0-1",
+        "kind": "bunsetsu",
         "token_start": 1,
         "token_end": 3,
         "token_id": null,
-        "match_id": "match-1-3",
+        "match_ids": [
+          "match-1-3"
+        ],
         "secondary_match_ids": [
           "secondary-1-2-0",
           "secondary-3-3-0"
@@ -304,7 +317,7 @@
         "token_start": 1,
         "token_end": 1,
         "token_id": "token-1",
-        "match_id": null,
+        "match_ids": [],
         "secondary_match_ids": []
       },
       {
@@ -313,7 +326,7 @@
         "token_start": 2,
         "token_end": 2,
         "token_id": "token-2",
-        "match_id": null,
+        "match_ids": [],
         "secondary_match_ids": []
       },
       {
@@ -322,38 +335,43 @@
         "token_start": 3,
         "token_end": 3,
         "token_id": "token-3",
-        "match_id": null,
+        "match_ids": [],
         "secondary_match_ids": []
       }
     ],
     "edges": [
       {
-        "parent_id": "sentence-0",
-        "child_id": "match-0-0",
+        "parent_id": "document-0",
+        "child_id": "sentence-0",
         "order": 0
       },
       {
-        "parent_id": "match-0-0",
+        "parent_id": "sentence-0",
+        "child_id": "bunsetsu-0-0",
+        "order": 0
+      },
+      {
+        "parent_id": "bunsetsu-0-0",
         "child_id": "token-0",
         "order": 0
       },
       {
         "parent_id": "sentence-0",
-        "child_id": "match-1-3",
+        "child_id": "bunsetsu-0-1",
         "order": 1
       },
       {
-        "parent_id": "match-1-3",
+        "parent_id": "bunsetsu-0-1",
         "child_id": "token-1",
         "order": 0
       },
       {
-        "parent_id": "match-1-3",
+        "parent_id": "bunsetsu-0-1",
         "child_id": "token-2",
         "order": 1
       },
       {
-        "parent_id": "match-1-3",
+        "parent_id": "bunsetsu-0-1",
         "child_id": "token-3",
         "order": 2
       }

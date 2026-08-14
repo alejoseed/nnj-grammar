@@ -17,8 +17,8 @@ describe("mountFixtureGraph", () => {
     expect(fetcher).toHaveBeenCalledWith(fixtureUrl);
     expect(render).toHaveBeenCalledOnce();
     expect(render.mock.calls[0]?.[1]).toMatchObject({
-      id: "sentence-0",
-      kind: "sentence",
+      id: "document-0",
+      kind: "document",
     });
     expect(host.querySelector("[role=alert]")).toBeNull();
   });
@@ -26,7 +26,7 @@ describe("mountFixtureGraph", () => {
   it.each([
     new Response("unavailable", { status: 503 }),
     new Response("not json", { status: 200 }),
-    new Response(JSON.stringify({ ...fixture, schema_version: 2 }), {
+    new Response(JSON.stringify({ ...fixture, schema_version: 1 }), {
       status: 200,
     }),
   ])("shows one safe error without rendering partial data", async (response) => {

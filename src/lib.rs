@@ -1,5 +1,6 @@
 pub mod analysis;
 pub mod analyzer;
+pub mod chunker;
 pub mod dictionary;
 pub mod hierarchy;
 pub mod matcher;

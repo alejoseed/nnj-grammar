@@ -10,3 +10,4 @@ tools/__pycache__/
 /web/dist/
 /web/test-results/
 /web/playwright-report/
+/data/

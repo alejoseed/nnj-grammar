@@ -5,13 +5,8 @@ deterministic grammar-rule database.
 
 ## Project Documentation
 
-- [`PROJECT_STATUS.md`](PROJECT_STATUS.md): canonical progress checklist and
-  current next action.
 - [`docs/CODE_TOUR.md`](docs/CODE_TOUR.md): beginner-oriented architecture and
   recommended code reading order.
-- [`HANDOFF.md`](HANDOFF.md): compact session context for continuing work.
-- [`docs/superpowers/plans/2026-07-12-reading-graph-alpha-stage-a.md`](docs/superpowers/plans/2026-07-12-reading-graph-alpha-stage-a.md):
-  detailed Stage A implementation plan.
 
 The runtime is source-neutral: the matcher implements token predicates,
 variants, bounded slots, and context matching, but contains no catalog-specific
@@ -83,14 +78,12 @@ cargo run -- --grammar-db grammar/local --output graph "東京しか行かない
 ```
 
 The optional enrichment file contains personal, local-only forms missing from
-the saved source catalog. It uses the versioned schema documented in
-`docs/superpowers/specs/2026-07-12-local-grammar-enrichments-design.md` and
-should remain under the gitignored `grammar/local/` directory.
+the saved source catalog. It should remain under the gitignored
+`grammar/local/` directory.
 
 ## Fixture Graph Development
 
-The first web slice renders the committed schema-v1 fixture without starting a
-Rust server. Use Node.js 26.x:
+Use Node.js 26.x:
 
 ```bash
 mise exec node@26 -- npm --prefix web install

@@ -1015,9 +1015,12 @@ hint       = "Formation: Noun + は"
 sense_id   = "hanabira-n5-040"
 
 [[patterns.variants]]
-id              = "formation-01"
-priority        = 0
-sense_id        = "hanabira-n5-040"
+id                  = "formation-01"
+priority            = 0
+sense_id            = "hanabira-n5-040"
+# Claim the host noun too, so the graph shows one わたしは node with わたし and
+# は as token children instead of stranding the noun in a sibling gap segment.
+absorb_left_context = true
 
 [[patterns.variants.left_context]]
 one_of      = [{ pos1 = "名詞" }, { pos1 = "代名詞" }, { pos1 = "形状詞" }]

@@ -33,6 +33,25 @@
             },
             "args": ["--output", "table", "食べている"],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug: chunker (pick a sentence)",
+            "cargo": {
+                "args": ["build", "--bin", "nnj-grammar"],
+                "filter": { "name": "nnj-grammar", "kind": "bin" }
+            },
+            "args": ["--output", "bunsetsu-trace", "${input:sentence}"],
+            "cwd": "${workspaceFolder}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "sentence",
+            "type": "promptString",
+            "description": "Japanese sentence to chunk",
+            "default": "わたしの友達も来た"
         }
     ]
 }

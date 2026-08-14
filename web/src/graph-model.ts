@@ -129,8 +129,8 @@ function spanTokens(
 
 export function buildGraphModel(document: AnalysisDocument): GraphNode {
   const ordered = buildOrderedTree(document.tree);
-  if (ordered.node.kind !== "sentence") {
-    throw new Error("tree root must be a sentence");
+  if (ordered.node.kind !== "document") {
+    throw new Error("tree root must be a document");
   }
   const tokensById = uniqueMap(
     document.tokens,
@@ -160,28 +160,37 @@ export function buildGraphModel(document: AnalysisDocument): GraphNode {
         throw new Error(`missing secondary match: ${secondaryId}`);
       }
     }
+    const attached = node.match_ids.map((matchId) => {
+      const matched = matchesById.get(matchId);
+      if (!matched) {
+        throw new Error(`missing primary match: ${matchId}`);
+      }
+      // The node covers the match, never the reverse.
+      if (
+        node.token_start === null ||
+        node.token_end === null ||
+        matched.token_start < node.token_start ||
+        matched.token_end > node.token_end
+      ) {
+        throw new Error(`match span escapes its tree node: ${matched.id}`);
+      }
+      return matched;
+    });
 
     let primaryLabel = "";
     let secondaryLabel = "";
-    if (node.kind === "grammar") {
-      const matched = matchesById.get(node.match_id ?? "");
-      if (!matched) {
-        throw new Error(`missing primary match: ${String(node.match_id)}`);
-      }
-      if (
-        matched.token_start !== node.token_start ||
-        matched.token_end !== node.token_end
-      ) {
-        throw new Error(`tree and match spans differ: ${matched.id}`);
-      }
+    if (node.kind === "sentence" || node.kind === "bunsetsu") {
       primaryLabel = spanTokens(node, tokensByPosition)
         .map((token) => token.surface)
         .join("");
-      secondaryLabel = matched.meaning_en.trim();
-    } else if (node.kind === "segment") {
-      primaryLabel = spanTokens(node, tokensByPosition)
-        .map((token) => token.surface)
-        .join("");
+      // A sentence label would duplicate its bunsetsu children; only show it
+      // when a match is attached (a span no bunsetsu could cover).
+      if (node.kind === "sentence" && attached.length === 0) {
+        primaryLabel = "";
+      }
+      secondaryLabel = attached
+        .map((matched) => matched.meaning_en.trim())
+        .find((meaning) => meaning !== "") ?? "";
     } else if (node.kind === "token") {
       const token = tokensById.get(node.token_id ?? "");
       if (!token) {

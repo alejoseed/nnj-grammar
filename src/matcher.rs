@@ -73,6 +73,7 @@ struct EffectiveVariant<'a> {
     right_context: &'a [Step],
     left_boundary: Option<Boundary>,
     right_boundary: Option<Boundary>,
+    absorb_left_context: bool,
     priority: i32,
     sense_id: Option<&'a str>,
     ambiguity_group: Option<&'a str>,
@@ -115,6 +116,7 @@ pub fn match_candidates(tokens: &[Token], rules: &[PatternRule]) -> Vec<MatchCan
                 right_context: &[],
                 left_boundary: None,
                 right_boundary: None,
+                absorb_left_context: false,
                 priority: rule.priority,
                 sense_id: rule.sense_id.as_deref(),
                 ambiguity_group: rule.ambiguity_group.as_deref(),
@@ -162,6 +164,7 @@ fn effective_variant<'a>(
         right_context: &variant.right_context,
         left_boundary: variant.left_boundary,
         right_boundary: variant.right_boundary,
+        absorb_left_context: variant.absorb_left_context,
         priority: variant.priority.unwrap_or(rule.priority),
         sense_id: variant.sense_id.as_deref().or(rule.sense_id.as_deref()),
         ambiguity_group: variant
@@ -198,11 +201,12 @@ fn collect_variant_matches(
             if core.end <= start || !has_boundary(tokens, core.end, variant.right_boundary, false) {
                 continue;
             }
+
             let Some(right) = match_right_context(tokens, core.end, variant.right_context) else {
                 continue;
             };
 
-            let mut captures = left.captures.clone();
+            let mut captures = left.1.captures.clone();
             captures.extend(core.captures);
             captures.extend(right.captures);
             candidates.push(MatchCandidate {
@@ -217,12 +221,12 @@ fn collect_variant_matches(
                     ambiguity_group: variant.ambiguity_group.map(str::to_owned),
                     source: rule.source.clone(),
                     captures,
-                    token_start: start,
+                    token_start: if variant.absorb_left_context { left.0 } else { start },
                     token_end: core.end - 1,
                 },
                 fallback: variant.fallback,
                 core_specificity: core.specificity,
-                context_specificity: left.specificity
+                context_specificity: left.1.specificity
                     + right.specificity
                     + usize::from(variant.left_boundary.is_some())
                     + usize::from(variant.right_boundary.is_some()),
@@ -239,13 +243,13 @@ fn match_left_context(
     tokens: &[Token],
     core_start: usize,
     steps: &[Step],
-) -> Option<SequenceMatch> {
+) -> Option<(usize, SequenceMatch)> {
     if steps.is_empty() {
-        return Some(SequenceMatch {
+        return Some((core_start, SequenceMatch {
             end: core_start,
             captures: Vec::new(),
             specificity: 0,
-        });
+        }));
     }
 
     // Prefer stronger evidence, then the nearest viable start. The sequence
@@ -264,7 +268,7 @@ fn match_left_context(
             }
         }
     }
-    best.map(|(_, matched)| matched)
+    best
 }
 
 fn match_right_context(tokens: &[Token], core_end: usize, steps: &[Step]) -> Option<SequenceMatch> {

@@ -71,7 +71,10 @@ pub struct PatternVariant {
     /// Assert a clause/sentence boundary immediately after the core.
     #[serde(default, alias = "end_boundary")]
     pub right_boundary: Option<Boundary>,
-
+    /// Widen window to the left to include matched left_context tokens.
+    /// off by default
+    #[serde(default)]
+    pub absorb_left_context: bool,
     /// Variant values override their rule-level counterparts when present.
     #[serde(default)]
     pub priority: Option<i32>,

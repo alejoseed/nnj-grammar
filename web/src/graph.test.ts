@@ -26,8 +26,8 @@ describe("renderGraph", () => {
     expect(svg?.getAttribute("role")).toBe("tree");
     expect(svg?.getAttribute("aria-label")).toBe("Grammar analysis tree");
     expect(svg?.classList.contains("bg-[#f1f5f9]")).toBe(true);
-    expect(host.querySelectorAll(".graph-node")).toHaveLength(7);
-    expect(host.querySelectorAll(".graph-link")).toHaveLength(6);
+    expect(host.querySelectorAll(".graph-node")).toHaveLength(8);
+    expect(host.querySelectorAll(".graph-link")).toHaveLength(7);
     expect(
       host.querySelector("[data-layer=plot]")?.getAttribute("transform"),
     ).toBe("translate(200,20)");
@@ -36,7 +36,7 @@ describe("renderGraph", () => {
     expect(host.textContent).toContain("(Above all else, more than anything)");
 
     const internalLabel = host.querySelector(
-      "#graph-node-match-1-3 .graph-primary-label",
+      "#graph-node-bunsetsu-0-1 .graph-primary-label",
     );
     expect(internalLabel?.getAttribute("x")).toBe("-10");
     expect(internalLabel?.getAttribute("dy")).toBe("-1.5em");
@@ -50,14 +50,14 @@ describe("renderGraph", () => {
   });
 
   it("uses stable accessible node identities", () => {
-    const node = host.querySelector("#graph-node-match-1-3");
+    const node = host.querySelector("#graph-node-bunsetsu-0-1");
     expect(node?.getAttribute("role")).toBe("treeitem");
     expect(node?.getAttribute("tabindex")).toBe("0");
     expect(node?.getAttribute("aria-label")).toContain("なによりも");
     expect(node?.querySelector("circle")?.getAttribute("fill")).toBe("#4daf4a");
     expect(
       host
-        .querySelector("#graph-node-sentence-0 circle")
+        .querySelector("#graph-node-document-0 circle")
         ?.getAttribute("fill"),
     ).toBe("#1f77b4");
   });
@@ -65,7 +65,7 @@ describe("renderGraph", () => {
   it.each(["mouseenter", "focus"])(
     "applies orange emphasis on %s",
     (eventName) => {
-      const node = host.querySelector<SVGGElement>("#graph-node-match-1-3")!;
+      const node = host.querySelector<SVGGElement>("#graph-node-bunsetsu-0-1")!;
       node.dispatchEvent(new Event(eventName));
       vi.advanceTimersByTime(200);
       timerFlush();
@@ -95,7 +95,7 @@ describe("renderGraph", () => {
   );
 
   it("keeps emphasis while either hover or focus remains active", () => {
-    const node = host.querySelector<SVGGElement>("#graph-node-match-1-3")!;
+    const node = host.querySelector<SVGGElement>("#graph-node-bunsetsu-0-1")!;
     node.dispatchEvent(new Event("focus"));
     node.dispatchEvent(new Event("mouseenter"));
     node.dispatchEvent(new Event("mouseleave"));

@@ -16,6 +16,10 @@ path = "src/main.rs"
 name = "nnj-grammar-server"
 path = "src/bin/server.rs"
 
+[[bin]]
+name = "chunker-eval"
+path = "src/bin/chunker_eval.rs"
+
 [dependencies]
 # Japanese morphological analyzer.
 # Using lindera with the UniDic dictionary (same POS taxonomy as Sudachi).

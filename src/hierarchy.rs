@@ -1,132 +1,152 @@
+//! Build the structural analysis tree: document → sentence → bunsetsu → token.
+//!
+//! Structure comes from `crate::chunker` (deterministic, POS-only). Grammar
+//! matches never define nodes; each match is attached to the smallest existing
+//! node that fully covers its token span (bunsetsu, else sentence, else
+//! document). A wrong or missing grammar match can therefore mislabel a node,
+//! but can never fragment the graph.
+
 use crate::analysis::{AnalysisTree, TreeEdge, TreeNode, TreeNodeKind};
+use crate::chunker;
 use crate::ranking::RankedMatches;
 use crate::tokenizer::Token;
 
 pub fn build_tree(tokens: &[Token], ranked: &RankedMatches) -> AnalysisTree {
-    let root_id = "sentence-0".to_string();
+    let root_id = "document-0".to_string();
     let root_span = (!tokens.is_empty()).then(|| (0, tokens.len() - 1));
     let mut tree = AnalysisTree {
         root_id: root_id.clone(),
-        nodes: vec![TreeNode {
-            id: root_id.clone(),
-            kind: TreeNodeKind::Sentence,
-            token_start: root_span.map(|span| span.0),
-            token_end: root_span.map(|span| span.1),
-            token_id: None,
-            match_id: None,
-            secondary_match_ids: Vec::new(),
-        }],
+        nodes: vec![node(
+            root_id.clone(),
+            TreeNodeKind::Document,
+            root_span,
+            None,
+        )],
         edges: Vec::new(),
     };
 
-    let mut cursor = 0;
-    for matched in &ranked.primary {
-        if cursor < matched.token_start {
-            add_span(
-                &mut tree,
-                &root_id,
-                TreeNodeKind::Segment,
-                format!("segment-{cursor}-{}", matched.token_start - 1),
-                cursor,
-                matched.token_start - 1,
-                None,
-            );
-        }
-        add_span(
-            &mut tree,
-            &root_id,
-            TreeNodeKind::Grammar,
-            matched.id.clone(),
-            matched.token_start,
-            matched.token_end,
-            Some(matched.id.clone()),
-        );
-        cursor = matched.token_end + 1;
-    }
-    if cursor < tokens.len() {
-        add_span(
-            &mut tree,
-            &root_id,
-            TreeNodeKind::Segment,
-            format!("segment-{cursor}-{}", tokens.len() - 1),
-            cursor,
-            tokens.len() - 1,
+    for (sentence_index, sentence) in chunker::chunk(tokens).iter().enumerate() {
+        let sentence_id = format!("sentence-{sentence_index}");
+        tree.nodes.push(node(
+            sentence_id.clone(),
+            TreeNodeKind::Sentence,
+            Some((sentence.token_start, sentence.token_end)),
             None,
-        );
+        ));
+        tree.edges.push(TreeEdge {
+            parent_id: root_id.clone(),
+            child_id: sentence_id.clone(),
+            order: sentence_index,
+        });
+
+        for (bunsetsu_index, bunsetsu) in sentence.bunsetsu.iter().enumerate() {
+            let bunsetsu_id = format!("bunsetsu-{sentence_index}-{bunsetsu_index}");
+            tree.nodes.push(node(
+                bunsetsu_id.clone(),
+                TreeNodeKind::Bunsetsu,
+                Some((bunsetsu.token_start, bunsetsu.token_end)),
+                None,
+            ));
+            tree.edges.push(TreeEdge {
+                parent_id: sentence_id.clone(),
+                child_id: bunsetsu_id.clone(),
+                order: bunsetsu_index,
+            });
+
+            for (order, position) in (bunsetsu.token_start..=bunsetsu.token_end).enumerate() {
+                let token_id = format!("token-{position}");
+                tree.nodes.push(node(
+                    token_id.clone(),
+                    TreeNodeKind::Token,
+                    Some((position, position)),
+                    Some(token_id.clone()),
+                ));
+                tree.edges.push(TreeEdge {
+                    parent_id: bunsetsu_id.clone(),
+                    child_id: token_id.clone(),
+                    order,
+                });
+            }
+        }
     }
 
-    attach_secondary_matches(&mut tree, ranked);
+    attach_matches(&mut tree, ranked);
     tree
 }
 
-fn add_span(
-    tree: &mut AnalysisTree,
-    root_id: &str,
-    kind: TreeNodeKind,
+fn node(
     id: String,
-    token_start: usize,
-    token_end: usize,
-    match_id: Option<String>,
-) {
-    let root_order = tree.children_of(root_id).len();
-    tree.edges.push(TreeEdge {
-        parent_id: root_id.to_string(),
-        child_id: id.clone(),
-        order: root_order,
-    });
-    tree.nodes.push(TreeNode {
-        id: id.clone(),
+    kind: TreeNodeKind,
+    span: Option<(usize, usize)>,
+    token_id: Option<String>,
+) -> TreeNode {
+    TreeNode {
+        id,
         kind,
-        token_start: Some(token_start),
-        token_end: Some(token_end),
-        token_id: None,
-        match_id,
+        token_start: span.map(|span| span.0),
+        token_end: span.map(|span| span.1),
+        token_id,
+        match_ids: Vec::new(),
         secondary_match_ids: Vec::new(),
-    });
-
-    for (order, position) in (token_start..=token_end).enumerate() {
-        let token_id = format!("token-{position}");
-        tree.edges.push(TreeEdge {
-            parent_id: id.clone(),
-            child_id: token_id.clone(),
-            order,
-        });
-        tree.nodes.push(TreeNode {
-            id: token_id.clone(),
-            kind: TreeNodeKind::Token,
-            token_start: Some(position),
-            token_end: Some(position),
-            token_id: Some(token_id),
-            match_id: None,
-            secondary_match_ids: Vec::new(),
-        });
     }
 }
 
-fn attach_secondary_matches(tree: &mut AnalysisTree, ranked: &RankedMatches) {
-    for secondary in &ranked.secondary {
-        let token_start = secondary.matched.token_start;
-        let token_end = secondary.matched.token_end;
-        let owner = tree
-            .nodes
-            .iter()
-            .enumerate()
-            .filter(|(_, node)| {
-                matches!(node.kind, TreeNodeKind::Grammar | TreeNodeKind::Segment)
-                    && node
-                        .token_start
-                        .zip(node.token_end)
-                        .is_some_and(|span| span.0 <= token_start && span.1 >= token_end)
-            })
-            .min_by_key(|(_, node)| {
-                node.token_start
-                    .zip(node.token_end)
-                    .map_or(usize::MAX, |span| span.1 - span.0)
-            })
-            .map(|(index, _)| index)
-            .unwrap_or(0);
-        tree.nodes[owner]
-            .secondary_match_ids
-            .push(secondary.id.clone());
+/// Attach every match to the smallest non-token node that fully covers its
+/// span. Tokens are excluded so a single-particle match labels its bunsetsu
+/// (the は match labels [わたし+は]) rather than disappearing onto a leaf.
+fn attach_matches(tree: &mut AnalysisTree, ranked: &RankedMatches) {
+    let primary: Vec<(String, usize, usize)> = ranked
+        .primary
+        .iter()
+        .map(|matched| (matched.id.clone(), matched.token_start, matched.token_end))
+        .collect();
+    for (id, start, end) in primary {
+        if let Some(owner) = smallest_cover(tree, start, end) {
+            tree.nodes[owner].match_ids.push(id);
+        }
     }
+
+    let secondary: Vec<(String, usize, usize)> = ranked
+        .secondary
+        .iter()
+        .map(|secondary| {
+            (
+                secondary.id.clone(),
+                secondary.matched.token_start,
+                secondary.matched.token_end,
+            )
+        })
+        .collect();
+    for (id, start, end) in secondary {
+        if let Some(owner) = smallest_cover(tree, start, end) {
+            tree.nodes[owner].secondary_match_ids.push(id);
+        }
+    }
+}
+
+fn smallest_cover(tree: &AnalysisTree, token_start: usize, token_end: usize) -> Option<usize> {
+    tree.nodes
+        .iter()
+        .enumerate()
+        .filter(|(_, node)| {
+            node.kind != TreeNodeKind::Token
+                && node
+                    .token_start
+                    .zip(node.token_end)
+                    .is_some_and(|span| span.0 <= token_start && span.1 >= token_end)
+        })
+        .min_by_key(|(_, node)| {
+            let span = node
+                .token_start
+                .zip(node.token_end)
+                .map_or(usize::MAX, |span| span.1 - span.0);
+            // On equal spans (single-sentence input), prefer the deeper node.
+            let depth = match node.kind {
+                TreeNodeKind::Bunsetsu => 0,
+                TreeNodeKind::Sentence => 1,
+                _ => 2,
+            };
+            (span, depth)
+        })
+        .map(|(index, _)| index)
 }

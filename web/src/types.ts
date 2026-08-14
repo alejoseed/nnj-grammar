@@ -1,4 +1,4 @@
-export type TreeNodeKind = "sentence" | "grammar" | "segment" | "token";
+export type TreeNodeKind = "document" | "sentence" | "bunsetsu" | "token";
 export type SecondaryReason =
   | "contained_by_stronger_match"
   | "overlaps_stronger_match";
@@ -81,7 +81,8 @@ export interface AnalysisTreeNode {
   token_start: number | null;
   token_end: number | null;
   token_id: string | null;
-  match_id: string | null;
+  /** Primary matches this node is the smallest cover of. */
+  match_ids: string[];
   secondary_match_ids: string[];
 }
 
@@ -98,7 +99,7 @@ export interface AnalysisTree {
 }
 
 export interface AnalysisDocument {
-  schema_version: 1;
+  schema_version: 2;
   input: string;
   tokens: AnalyzedToken[];
   primary_matches: DisplayMatch[];
@@ -114,7 +115,7 @@ export function parseAnalysisDocument(value: unknown): AnalysisDocument {
   if (!isRecord(value)) {
     throw new Error("invalid analysis document");
   }
-  if (value.schema_version !== 1) {
+  if (value.schema_version !== 2) {
     throw new Error(`unsupported analysis schema version: ${String(value.schema_version)}`);
   }
   if (

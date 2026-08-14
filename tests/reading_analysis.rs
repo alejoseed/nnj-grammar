@@ -51,9 +51,28 @@ fn analyzer_builds_versioned_ranked_tree_with_glosses() {
         secondary.matched.rule_name == "誰か・どこか・誰も・どこも"
             && secondary.id.starts_with("secondary-3-3-")
     }));
+    // Structural tree: [そして] [なによりも], with the matches attached to
+    // the bunsetsu they cover.
+    assert_eq!(document.tree.root_id, "document-0");
     assert_eq!(
         document.tree.children_of("sentence-0"),
-        ["match-0-0", "match-1-3"]
+        ["bunsetsu-0-0", "bunsetsu-0-1"]
+    );
+    assert_eq!(
+        document
+            .tree
+            .node("bunsetsu-0-0")
+            .expect("そして bunsetsu")
+            .match_ids,
+        ["match-0-0"]
+    );
+    assert_eq!(
+        document
+            .tree
+            .node("bunsetsu-0-1")
+            .expect("なによりも bunsetsu")
+            .match_ids,
+        ["match-1-3"]
     );
 }
 
@@ -80,8 +99,10 @@ fn analyzer_covers_negative_contrast_topic_and_shortened_kamo() {
     let kamo = analyzer()
         .analyze("それは......そうかも」")
         .expect("shortened kamo analysis");
+    // The topic-は rule absorbs its host noun, so the span covers それ + は
+    // rather than the bare particle.
     assert!(kamo.primary_matches.iter().any(|matched| {
-        matched.token_start == 1
+        matched.token_start == 0
             && matched.token_end == 1
             && matched.rule_name.contains('は')
             && matched.meaning_en.to_lowercase().contains("topic")
@@ -123,7 +144,7 @@ fn analyzer_is_deterministic_and_handles_long_novel_text() {
         .expect("long sentence should analyze");
     assert_eq!(long.schema_version, ANALYSIS_SCHEMA_VERSION);
     assert!(!long.tokens.is_empty());
-    assert_eq!(long.tree.root_id, "sentence-0");
+    assert_eq!(long.tree.root_id, "document-0");
     assert_eq!(
         long.tokens
             .iter()

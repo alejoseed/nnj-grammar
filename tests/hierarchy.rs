@@ -5,10 +5,10 @@ use nnj_grammar::patterns::CatalogSource;
 use nnj_grammar::ranking::rank_candidates;
 use nnj_grammar::tokenizer::Token;
 
-fn token(position: usize, surface: &str) -> Token {
+fn token(position: usize, surface: &str, pos1: &str) -> Token {
     Token {
         surface: surface.to_string(),
-        pos1: String::new(),
+        pos1: pos1.to_string(),
         pos2: String::new(),
         pos3: String::new(),
         pos4: String::new(),
@@ -49,12 +49,13 @@ fn candidate(rule_id: &str, name: &str, span: (usize, usize)) -> MatchCandidate 
 }
 
 #[test]
-fn grammar_nodes_preserve_source_order_and_own_their_tokens() {
+fn structure_is_document_sentence_bunsetsu_token_and_matches_attach() {
+    // [そして] [なに・より・も] — two bunsetsu from POS alone.
     let tokens = vec![
-        token(0, "そして"),
-        token(1, "なに"),
-        token(2, "より"),
-        token(3, "も"),
+        token(0, "そして", "接続詞"),
+        token(1, "なに", "代名詞"),
+        token(2, "より", "助詞"),
+        token(3, "も", "助詞"),
     ];
     let ranked = rank_candidates(vec![
         candidate("broad-mo", "誰か・どこか・誰も・どこも", (3, 3)),
@@ -63,52 +64,44 @@ fn grammar_nodes_preserve_source_order_and_own_their_tokens() {
 
     let tree = build_tree(&tokens, &ranked);
 
-    assert_eq!(tree.root_id, "sentence-0");
-    assert_eq!(tree.children_of("sentence-0"), ["segment-0-0", "match-1-3"]);
+    assert_eq!(tree.root_id, "document-0");
+    assert_eq!(tree.children_of("document-0"), ["sentence-0"]);
     assert_eq!(
-        tree.children_of("match-1-3"),
+        tree.children_of("sentence-0"),
+        ["bunsetsu-0-0", "bunsetsu-0-1"]
+    );
+    assert_eq!(tree.children_of("bunsetsu-0-0"), ["token-0"]);
+    assert_eq!(
+        tree.children_of("bunsetsu-0-1"),
         ["token-1", "token-2", "token-3"]
     );
-    assert_eq!(
-        tree.node("match-1-3")
-            .expect("grammar node")
-            .secondary_match_ids,
-        ["secondary-3-3-0"]
-    );
-    assert_eq!(
-        tree.edges
-            .iter()
-            .map(|edge| (edge.parent_id.as_str(), edge.child_id.as_str(), edge.order))
-            .collect::<Vec<_>>(),
-        [
-            ("sentence-0", "segment-0-0", 0),
-            ("segment-0-0", "token-0", 0),
-            ("sentence-0", "match-1-3", 1),
-            ("match-1-3", "token-1", 0),
-            ("match-1-3", "token-2", 1),
-            ("match-1-3", "token-3", 2),
-        ]
-    );
+    // The 何より match spans exactly bunsetsu-0-1, so it labels that node;
+    // the contained secondary attaches to the same smallest cover.
+    let owner = tree.node("bunsetsu-0-1").expect("bunsetsu node");
+    assert_eq!(owner.match_ids, ["match-1-3"]);
+    assert_eq!(owner.secondary_match_ids, ["secondary-3-3-0"]);
 }
 
 #[test]
-fn adjacent_uncovered_tokens_form_ordered_segments_with_punctuation() {
+fn punctuation_attaches_to_the_preceding_bunsetsu() {
+    // [前・、] [文法] [後] — punctuation can never float as its own node.
     let tokens = vec![
-        token(0, "前"),
-        token(1, "、"),
-        token(2, "文法"),
-        token(3, "後"),
+        token(0, "前", "名詞"),
+        token(1, "、", "補助記号"),
+        token(2, "文法", "名詞"),
+        token(3, "後", "名詞"),
     ];
     let ranked = rank_candidates(vec![candidate("grammar", "grammar", (2, 2))]);
 
     let tree = build_tree(&tokens, &ranked);
 
+    assert_eq!(tree.children_of("bunsetsu-0-0"), ["token-0", "token-1"]);
+    // 文法+後 compound as adjacent nouns; the match labels that bunsetsu.
+    assert_eq!(tree.children_of("bunsetsu-0-1"), ["token-2", "token-3"]);
     assert_eq!(
-        tree.children_of("sentence-0"),
-        ["segment-0-1", "match-2-2", "segment-3-3"]
+        tree.node("bunsetsu-0-1").expect("bunsetsu").match_ids,
+        ["match-2-2"]
     );
-    assert_eq!(tree.children_of("segment-0-1"), ["token-0", "token-1"]);
-    assert_eq!(tree.children_of("segment-3-3"), ["token-3"]);
 }
 
 #[test]
@@ -125,33 +118,40 @@ fn analysis_document_serializes_schema_version_and_tree_root() {
 
     let json = serde_json::to_value(document).expect("serialize analysis document");
 
-    assert_eq!(json["schema_version"], 1);
-    assert_eq!(json["tree"]["root_id"], "sentence-0");
-    assert_eq!(json["tree"]["nodes"][0]["kind"], "sentence");
+    assert_eq!(json["schema_version"], 2);
+    assert_eq!(json["tree"]["root_id"], "document-0");
+    assert_eq!(json["tree"]["nodes"][0]["kind"], "document");
     assert!(json["tree"]["nodes"][0]["token_start"].is_null());
     assert!(json["tree"]["nodes"][0]["token_end"].is_null());
+    assert!(json["tree"]["nodes"][0]["match_ids"].is_array());
     assert!(json["primary_matches"].is_array());
     assert!(json["secondary_matches"].is_array());
 }
 
 #[test]
-fn crossing_secondary_match_attaches_to_sentence_root() {
+fn match_crossing_bunsetsu_attaches_to_the_sentence() {
+    // [前が] [文法だ] — a span crossing both bunsetsu can only be covered by
+    // the sentence node.
     let tokens = vec![
-        token(0, "前"),
-        token(1, "文法"),
-        token(2, "点"),
-        token(3, "後"),
+        token(0, "前", "名詞"),
+        token(1, "が", "助詞"),
+        token(2, "文法", "名詞"),
+        token(3, "だ", "助動詞"),
     ];
-    let mut grammar = candidate("grammar", "grammar", (1, 2));
+    let mut grammar = candidate("grammar", "grammar", (2, 3));
     grammar.priority = 10;
-    let ranked = rank_candidates(vec![grammar, candidate("crossing", "crossing", (0, 1))]);
+    let ranked = rank_candidates(vec![grammar, candidate("crossing", "crossing", (0, 2))]);
 
     let tree = build_tree(&tokens, &ranked);
 
     assert_eq!(
+        tree.node("bunsetsu-0-1").expect("bunsetsu").match_ids,
+        ["match-2-3"]
+    );
+    assert_eq!(
         tree.node("sentence-0")
-            .expect("sentence root")
+            .expect("sentence")
             .secondary_match_ids,
-        ["secondary-0-1-0"]
+        ["secondary-0-2-0"]
     );
 }
