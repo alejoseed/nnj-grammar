@@ -128,6 +128,22 @@ fn analyzer_covers_negative_contrast_topic_and_shortened_kamo() {
 }
 
 #[test]
+fn lexicalized_compound_renders_as_one_word_leaf() {
+    // Demo anchor (docs/GRAPH_ISSUE_BANK.md, Demo wins): six UniDic short
+    // units, one JMdict entry, one 単語 node.
+    let document = analyzer()
+        .analyze("国際連合安全保障理事会")
+        .expect("compound analysis");
+    assert_eq!(document.tokens.len(), 6);
+    assert_eq!(
+        document.tree.children_of("bunsetsu-0-0"),
+        ["word-0-5"],
+        "the full compound fuses into a single word leaf"
+    );
+    assert!(document.tree.children_of("word-0-5").is_empty());
+}
+
+#[test]
 fn analyzer_is_deterministic_and_handles_long_novel_text() {
     let analyzer = analyzer();
     let sentence = "そしてなによりも";

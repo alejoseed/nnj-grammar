@@ -1,4 +1,9 @@
-export type TreeNodeKind = "document" | "sentence" | "bunsetsu" | "token";
+export type TreeNodeKind =
+  | "document"
+  | "sentence"
+  | "bunsetsu"
+  | "word"
+  | "token";
 export type SecondaryReason =
   | "contained_by_stronger_match"
   | "overlaps_stronger_match";
@@ -99,7 +104,7 @@ export interface AnalysisTree {
 }
 
 export interface AnalysisDocument {
-  schema_version: 2;
+  schema_version: 3;
   input: string;
   tokens: AnalyzedToken[];
   primary_matches: DisplayMatch[];
@@ -115,7 +120,7 @@ export function parseAnalysisDocument(value: unknown): AnalysisDocument {
   if (!isRecord(value)) {
     throw new Error("invalid analysis document");
   }
-  if (value.schema_version !== 2) {
+  if (value.schema_version !== 3) {
     throw new Error(`unsupported analysis schema version: ${String(value.schema_version)}`);
   }
   if (

@@ -96,6 +96,7 @@ fn kind_label(kind: TreeNodeKind) -> &'static str {
         TreeNodeKind::Document => "document",
         TreeNodeKind::Sentence => "sentence",
         TreeNodeKind::Bunsetsu => "bunsetsu",
+        TreeNodeKind::Word => "word    ",
         TreeNodeKind::Token => "token   ",
     }
 }

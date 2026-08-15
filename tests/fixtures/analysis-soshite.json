@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "input": "そしてなによりも",
   "tokens": [
     {
@@ -99,7 +99,29 @@
       "byte_start": 15,
       "byte_end": 21,
       "position": 2,
-      "glosses": []
+      "glosses": [
+        {
+          "entry_seq": 1013190,
+          "gloss": "than",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 1013190,
+          "gloss": "from; out of; since; at; on",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 1013190,
+          "gloss": "except; but; other than",
+          "pos": [
+            "Particle"
+          ]
+        }
+      ]
     },
     {
       "id": "token-3",
@@ -115,7 +137,36 @@
       "byte_start": 21,
       "byte_end": 24,
       "position": 3,
-      "glosses": []
+      "glosses": [
+        {
+          "entry_seq": 2028940,
+          "gloss": "too; also; in addition; as well; (not) either (in a negative sentence)",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028940,
+          "gloss": "both A and B; A as well as B; neither A nor B (in a negative sentence)",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028940,
+          "gloss": "even; as much as; as many as; as far as; as long as; no less than; no fewer than",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028940,
+          "gloss": "even if; even though; although; in spite of",
+          "pos": [
+            "Particle"
+          ]
+        }
+      ]
     }
   ],
   "primary_matches": [

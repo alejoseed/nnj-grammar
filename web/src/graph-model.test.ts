@@ -80,22 +80,20 @@ describe("buildGraphModel", () => {
   it("derives faithful labels from the committed document", () => {
     const root = buildGraphModel(documentCopy());
     expect([root.primaryLabel, root.secondaryLabel]).toEqual(["", ""]);
-    // The sentence has no attached match, so it stays unlabeled rather than
-    // duplicating its bunsetsu children.
-    const sentence = root.children[0]!;
-    expect([sentence.primaryLabel, sentence.secondaryLabel]).toEqual(["", ""]);
-    expect(sentence.children[0]).toMatchObject({
+    // Single-sentence input: the sentence scaffold is hoisted away and the
+    // bunsetsu hang straight off the document.
+    expect(root.children[0]).toMatchObject({
       id: "bunsetsu-0-0",
       primaryLabel: "そして",
       secondaryLabel: "Used to connect two sentences; 'and then', 'and'.",
     });
-    expect(sentence.children[1]).toMatchObject({
+    expect(root.children[1]).toMatchObject({
       id: "bunsetsu-0-1",
       primaryLabel: "なによりも",
       secondaryLabel: "Above all else, more than anything",
     });
     expect(
-      sentence.children[1]?.children.map((node) => node.primaryLabel),
+      root.children[1]?.children.map((node) => node.primaryLabel),
     ).toEqual(["なに", "より", "も"]);
   });
 
@@ -106,14 +104,12 @@ describe("buildGraphModel", () => {
       { entry_seq: 1, gloss: "what", pos: ["pronoun"] },
     ];
     expect(
-      buildGraphModel(withGloss).children[0]?.children[1]?.children[0]
-        ?.secondaryLabel,
+      buildGraphModel(withGloss).children[1]?.children[0]?.secondaryLabel,
     ).toBe("what");
 
     withGloss.tokens[1]!.glosses = [];
     expect(
-      buildGraphModel(withGloss).children[0]?.children[1]?.children[0]
-        ?.secondaryLabel,
+      buildGraphModel(withGloss).children[1]?.children[0]?.secondaryLabel,
     ).toBe("なに");
   });
 
@@ -123,8 +119,7 @@ describe("buildGraphModel", () => {
     const doc = documentCopy();
     doc.tokens[0]!.glosses = [];
     expect(
-      buildGraphModel(doc).children[0]?.children[0]?.children[0]
-        ?.secondaryLabel,
+      buildGraphModel(doc).children[0]?.children[0]?.secondaryLabel,
     ).toBe("");
   });
 
@@ -139,9 +134,30 @@ describe("buildGraphModel", () => {
   it("shows a bunsetsu surface without inventing a translation", () => {
     const document = documentCopy();
     document.tree.nodes[2]!.match_ids = [];
-    expect(buildGraphModel(document).children[0]?.children[0]).toMatchObject({
+    expect(buildGraphModel(document).children[0]).toMatchObject({
       primaryLabel: "そして",
       secondaryLabel: "",
+    });
+  });
+
+  it("renders a sentence-attached match as a relation between bunsetsu", () => {
+    const document = documentCopy();
+    // Reattach the (1,2) secondary to the sentence, as the analyzer does for
+    // spans no single bunsetsu covers.
+    document.tree.nodes[4]!.secondary_match_ids = ["secondary-3-3-0"];
+    document.tree.nodes[1]!.secondary_match_ids = ["secondary-1-2-0"];
+
+    const root = buildGraphModel(document);
+    expect(root.children.map((child) => child.id)).toEqual([
+      "bunsetsu-0-0",
+      "bunsetsu-0-1",
+      "relation-match-1-2",
+    ]);
+    expect(root.children[2]).toMatchObject({
+      kind: "relation",
+      primaryLabel: "何より",
+      secondaryLabel: "Above all else, more than anything",
+      children: [],
     });
   });
 

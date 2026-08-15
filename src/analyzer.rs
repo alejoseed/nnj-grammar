@@ -47,7 +47,7 @@ impl Analyzer {
             .context("failed to tokenize input")?;
         let sentences = crate::chunker::chunk(&tokens);
         let ranked = rank_with_structure(match_candidates(&tokens, &self.rules), &sentences);
-        let token_glosses = Dictionary::shared().gloss_tokens(&tokens);
+        let (token_glosses, words) = Dictionary::shared().gloss_tokens(&tokens, &sentences);
         let analyzed_tokens = tokens
             .iter()
             .enumerate()
@@ -57,7 +57,7 @@ impl Analyzer {
                 analyzed
             })
             .collect();
-        let tree = build_tree(&tokens, &ranked);
+        let tree = build_tree(&tokens, &ranked, &words);
 
         Ok(AnalysisDocument {
             schema_version: ANALYSIS_SCHEMA_VERSION,

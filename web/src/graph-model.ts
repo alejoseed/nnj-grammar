@@ -13,7 +13,12 @@ export interface OrderedTreeNode {
 
 export interface GraphNode {
   id: string;
-  kind: TreeNodeKind;
+  /**
+   * "relation" is a render-only kind: a grammar point spanning multiple
+   * bunsetsu (しか〜ない) drawn as a sibling between the bunsetsu it links,
+   * not as their parent — the bunsetsu are not a constituent.
+   */
+  kind: TreeNodeKind | "relation";
   primaryLabel: string;
   secondaryLabel: string;
   children: GraphNode[];
@@ -179,18 +184,20 @@ export function buildGraphModel(document: AnalysisDocument): GraphNode {
 
     let primaryLabel = "";
     let secondaryLabel = "";
-    if (node.kind === "sentence" || node.kind === "bunsetsu") {
+    if (node.kind === "bunsetsu") {
       primaryLabel = spanTokens(node, tokensByPosition)
         .map((token) => token.surface)
         .join("");
-      // A sentence label would duplicate its bunsetsu children; only show it
-      // when a match is attached (a span no bunsetsu could cover).
-      if (node.kind === "sentence" && attached.length === 0) {
-        primaryLabel = "";
-      }
       secondaryLabel = attached
         .map((matched) => matched.meaning_en.trim())
         .find((meaning) => meaning !== "") ?? "";
+    } else if (node.kind === "word") {
+      // One dictionary word split into short units: label with the joined
+      // surface and the compound gloss (prepended to every covered token).
+      const pieces = spanTokens(node, tokensByPosition);
+      primaryLabel = pieces.map((token) => token.surface).join("");
+      secondaryLabel =
+        pieces[0]?.glosses.find((gloss) => gloss.gloss.trim())?.gloss.trim() ?? "";
     } else if (node.kind === "token") {
       const token = tokensById.get(node.token_id ?? "");
       if (!token) {
@@ -205,14 +212,47 @@ export function buildGraphModel(document: AnalysisDocument): GraphNode {
         (token.reading !== token.surface ? token.reading : "");
     }
 
+    const converted = children.map(convert);
+
+    if (node.kind === "sentence") {
+      const relations = [
+        ...attached,
+        ...node.secondary_match_ids.map(
+          (secondaryId) => secondaryById.get(secondaryId)!.matched,
+        ),
+      ];
+      for (const matched of relations) {
+        const hostIndex = children.findIndex(
+          (child) =>
+            child.node.token_start !== null &&
+            child.node.token_end !== null &&
+            child.node.token_start <= matched.token_start &&
+            matched.token_start <= child.node.token_end,
+        );
+        converted.splice(hostIndex === -1 ? converted.length : hostIndex + 1, 0, {
+          id: `relation-${matched.id}`,
+          kind: "relation",
+          primaryLabel: matched.rule_name,
+          secondaryLabel: matched.meaning_en.trim(),
+          children: [],
+        });
+      }
+    }
+
     return {
       id: node.id,
       kind: node.kind,
       primaryLabel,
       secondaryLabel,
-      children: children.map(convert),
+      children: converted,
     };
   };
 
-  return convert(ordered);
+  const root = convert(ordered);
+  // If there is a lone sentence then just go once more because document spans it.
+  // multi-sentence keeps sentence nodes still.
+  if (root.children.length === 1 && root.children[0]!.kind === "sentence") {
+    root.children = root.children[0]!.children;
+  }
+  return root;
 }

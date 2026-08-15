@@ -11,7 +11,11 @@ use crate::chunker;
 use crate::ranking::RankedMatches;
 use crate::tokenizer::Token;
 
-pub fn build_tree(tokens: &[Token], ranked: &RankedMatches) -> AnalysisTree {
+pub fn build_tree(
+    tokens: &[Token],
+    ranked: &RankedMatches,
+    words: &[(usize, usize)],
+) -> AnalysisTree {
     let root_id = "document-0".to_string();
     let root_span = (!tokens.is_empty()).then(|| (0, tokens.len() - 1));
     let mut tree = AnalysisTree {
@@ -53,19 +57,37 @@ pub fn build_tree(tokens: &[Token], ranked: &RankedMatches) -> AnalysisTree {
                 order: bunsetsu_index,
             });
 
-            for (order, position) in (bunsetsu.token_start..=bunsetsu.token_end).enumerate() {
-                let token_id = format!("token-{position}");
-                tree.nodes.push(node(
-                    token_id.clone(),
-                    TreeNodeKind::Token,
-                    Some((position, position)),
-                    Some(token_id.clone()),
-                ));
+            // Dictionary words fuse their short-unit tokens into one leaf;
+            // compound spans never cross a bunsetsu boundary by construction.
+            let mut order = 0;
+            let mut position = bunsetsu.token_start;
+            while position <= bunsetsu.token_end {
+                let word = words.iter().find(|(start, _)| *start == position);
+                let (child_id, kind, span, token_id) = match word {
+                    Some(&(start, end)) => (
+                        format!("word-{start}-{end}"),
+                        TreeNodeKind::Word,
+                        (start, end),
+                        None,
+                    ),
+                    None => {
+                        let token_id = format!("token-{position}");
+                        (
+                            token_id.clone(),
+                            TreeNodeKind::Token,
+                            (position, position),
+                            Some(token_id),
+                        )
+                    }
+                };
+                tree.nodes.push(node(child_id.clone(), kind, Some(span), token_id));
                 tree.edges.push(TreeEdge {
                     parent_id: bunsetsu_id.clone(),
-                    child_id: token_id.clone(),
+                    child_id,
                     order,
                 });
+                position = span.1 + 1;
+                order += 1;
             }
         }
     }
@@ -129,7 +151,7 @@ fn smallest_cover(tree: &AnalysisTree, token_start: usize, token_end: usize) -> 
         .iter()
         .enumerate()
         .filter(|(_, node)| {
-            node.kind != TreeNodeKind::Token
+            !matches!(node.kind, TreeNodeKind::Token | TreeNodeKind::Word)
                 && node
                     .token_start
                     .zip(node.token_end)

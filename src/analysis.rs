@@ -3,10 +3,11 @@ use serde::Serialize;
 use crate::ranking::{DisplayMatch, SecondaryMatch};
 use crate::tokenizer::Token;
 
-/// Version 2: the tree is structural (document → sentence → bunsetsu → token,
-/// from `crate::chunker`), grammar matches attach to nodes via `match_ids`
-/// instead of defining `grammar`/`segment` nodes.
-pub const ANALYSIS_SCHEMA_VERSION: u32 = 2;
+/// Version 3: version 2's structural tree (document → sentence → bunsetsu →
+/// token, matches attached via `match_ids`) plus `word` leaves — one JMdict
+/// word that UniDic split into short units (自動+販売+機) renders as a single
+/// 単語 node instead of its pieces.
+pub const ANALYSIS_SCHEMA_VERSION: u32 = 3;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct AnalysisDocument {
@@ -99,7 +100,10 @@ pub enum TreeNodeKind {
     Sentence,
     /// 文節 — one content word plus its trailing function words.
     Bunsetsu,
-    /// 単語 — one UniDic short-unit token; always a leaf.
+    /// 単語 — one dictionary word spanning several short-unit tokens
+    /// (自動+販売+機 → 自動販売機); always a leaf.
+    Word,
+    /// One UniDic short-unit token; always a leaf.
     Token,
 }
 

@@ -62,7 +62,7 @@ fn structure_is_document_sentence_bunsetsu_token_and_matches_attach() {
         candidate("nani-yori", "何より", (1, 3)),
     ]);
 
-    let tree = build_tree(&tokens, &ranked);
+    let tree = build_tree(&tokens, &ranked, &[]);
 
     assert_eq!(tree.root_id, "document-0");
     assert_eq!(tree.children_of("document-0"), ["sentence-0"]);
@@ -93,7 +93,7 @@ fn punctuation_attaches_to_the_preceding_bunsetsu() {
     ];
     let ranked = rank_candidates(vec![candidate("grammar", "grammar", (2, 2))]);
 
-    let tree = build_tree(&tokens, &ranked);
+    let tree = build_tree(&tokens, &ranked, &[]);
 
     assert_eq!(tree.children_of("bunsetsu-0-0"), ["token-0", "token-1"]);
     // 文法+後 compound as adjacent nouns; the match labels that bunsetsu.
@@ -105,8 +105,29 @@ fn punctuation_attaches_to_the_preceding_bunsetsu() {
 }
 
 #[test]
+fn dictionary_word_spans_fuse_short_units_into_one_leaf() {
+    // [前・、] [文法・後] with 文法+後 known to be one dictionary word.
+    let tokens = vec![
+        token(0, "前", "名詞"),
+        token(1, "、", "補助記号"),
+        token(2, "文法", "名詞"),
+        token(3, "後", "名詞"),
+    ];
+    let tree = build_tree(&tokens, &Default::default(), &[(2, 3)]);
+
+    assert_eq!(tree.children_of("bunsetsu-0-1"), ["word-2-3"]);
+    let word = tree.node("word-2-3").expect("word leaf");
+    assert_eq!(
+        (word.token_start, word.token_end),
+        (Some(2), Some(3)),
+        "word leaf spans its short units"
+    );
+    assert!(tree.children_of("word-2-3").is_empty(), "words are leaves");
+}
+
+#[test]
 fn analysis_document_serializes_schema_version_and_tree_root() {
-    let tree = build_tree(&[], &Default::default());
+    let tree = build_tree(&[], &Default::default(), &[]);
     let document = AnalysisDocument {
         schema_version: ANALYSIS_SCHEMA_VERSION,
         input: "".to_string(),
@@ -118,7 +139,7 @@ fn analysis_document_serializes_schema_version_and_tree_root() {
 
     let json = serde_json::to_value(document).expect("serialize analysis document");
 
-    assert_eq!(json["schema_version"], 2);
+    assert_eq!(json["schema_version"], 3);
     assert_eq!(json["tree"]["root_id"], "document-0");
     assert_eq!(json["tree"]["nodes"][0]["kind"], "document");
     assert!(json["tree"]["nodes"][0]["token_start"].is_null());
@@ -142,7 +163,7 @@ fn match_crossing_bunsetsu_attaches_to_the_sentence() {
     grammar.priority = 10;
     let ranked = rank_candidates(vec![grammar, candidate("crossing", "crossing", (0, 2))]);
 
-    let tree = build_tree(&tokens, &ranked);
+    let tree = build_tree(&tokens, &ranked, &[]);
 
     assert_eq!(
         tree.node("bunsetsu-0-1").expect("bunsetsu").match_ids,

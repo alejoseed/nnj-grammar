@@ -26,12 +26,13 @@ describe("renderGraph", () => {
     expect(svg?.getAttribute("role")).toBe("tree");
     expect(svg?.getAttribute("aria-label")).toBe("Grammar analysis tree");
     expect(svg?.classList.contains("bg-[#f1f5f9]")).toBe(true);
-    expect(host.querySelectorAll(".graph-node")).toHaveLength(8);
-    expect(host.querySelectorAll(".graph-link")).toHaveLength(7);
+    expect(host.querySelectorAll(".graph-node")).toHaveLength(7);
+    expect(host.querySelectorAll(".graph-link")).toHaveLength(6);
     expect(
       host.querySelector("[data-layer=plot]")?.getAttribute("transform"),
     ).toBe("translate(200,20)");
-    expect(host.querySelector("#graph-node-sentence-0 text")).toBeNull();
+    // The lone sentence scaffold is hoisted away entirely.
+    expect(host.querySelector("#graph-node-sentence-0")).toBeNull();
     expect(host.textContent).toContain("なによりも");
     expect(host.textContent).toContain("(Above all else, more than anything)");
 

@@ -35,6 +35,14 @@
             "cwd": "${workspaceFolder}"
         },
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Debug: web UI (Vite)",
+            "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/web"
+        },
+        {
             "type": "lldb",
             "request": "launch",
             "name": "Debug: chunker (pick a sentence)",
