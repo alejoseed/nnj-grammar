@@ -1,0 +1,9 @@
+target/
+web/
+data/
+docs/
+tests/
+tools/
+.git/
+.jj/
+claude-output.md

@@ -2,6 +2,17 @@
 # Start the backend (Rust API) and frontend (web UI) together.
 # Press Ctrl+C once to stop both.
 set -euo pipefail
+frontend_source="../nnj-grammar-fe"
+frontend_dir="./web"
+
+if [ -d "$frontend_dir" ]; then
+    echo "Frontend folder/link exists"
+else
+    if [ ! -d "$frontend_source" ]; then
+        git clone https://github.com/alejoseed/nnj-grammar-fe.git $frontend_source
+    fi
+    ln -s "$(realpath "$frontend_source")" "$frontend_dir"
+fi
 
 cd "$(dirname "$0")"
 

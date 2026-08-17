@@ -36,3 +36,20 @@ Requests to `/api/*` are proxied to the backend automatically.
 ```
 
 Starts both together. Press `Ctrl+C` once to stop both.
+
+## Docker (backend only)
+
+```bash
+docker build -t nnj-grammar .
+docker run -p 127.0.0.1:7878:7878 -v /var/log/nnj-grammar:/logs nnj-grammar
+```
+
+The image runs only the backend. The server logs with slog to stdout and,
+because the image sets `NNJ_GRAMMAR_LOG_DIR=/logs`, also to one file per day
+(`/logs/YYYY-MM-DD.log`). The same variable works outside Docker.
+
+Inside the container the server binds `0.0.0.0:7878` (set via
+`NNJ_GRAMMAR_BIND`, an explicit opt-out of the loopback-only guard) because
+loopback is unreachable through a port mapping — publish on `127.0.0.1` as
+above to keep the API local to the host. To use a local grammar catalog,
+mount it at `/app/grammar/local`.

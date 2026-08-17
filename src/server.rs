@@ -10,6 +10,7 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use serde::{Deserialize, Serialize};
+use slog::Logger;
 use tokio::net::TcpListener;
 
 use crate::analysis::ANALYSIS_SCHEMA_VERSION;
@@ -18,6 +19,7 @@ use crate::analyzer::{Analyzer, AnalyzerConfig};
 #[derive(Clone)]
 pub struct AppState {
     analyzer: Arc<Analyzer>,
+    logger: Logger,
 }
 
 #[derive(Debug)]
@@ -185,14 +187,40 @@ async fn rewrite_method_not_allowed(response: Response) -> Response {
     response
 }
 
+async fn log_request(
+    State(state): State<AppState>,
+    request: Request,
+    next: axum::middleware::Next,
+) -> Response {
+    let method = request.method().clone();
+    let path = request.uri().path().to_owned();
+    let started = std::time::Instant::now();
+    let response = next.run(request).await;
+    slog::info!(state.logger, "request";
+        "method" => %method,
+        "path" => path,
+        "status" => response.status().as_u16(),
+        "ms" => started.elapsed().as_millis() as u64,
+    );
+    response
+}
+
 pub fn router(analyzer: Arc<Analyzer>) -> Router {
-    let state = AppState { analyzer };
+    router_with_logger(analyzer, crate::logging::discard_logger())
+}
+
+pub fn router_with_logger(analyzer: Arc<Analyzer>, logger: Logger) -> Router {
+    let state = AppState { analyzer, logger };
     Router::new()
         .route("/api/health", get(health))
         .route("/api/analyze", post(analyze))
         .fallback(not_found)
         .layer(axum::extract::DefaultBodyLimit::max(MAX_REQUEST_BODY_BYTES))
         .layer(axum::middleware::map_response(rewrite_method_not_allowed))
+        .layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            log_request,
+        ))
         .with_state(state)
 }
 
@@ -210,6 +238,13 @@ pub async fn serve(listener: TcpListener, router: Router) -> anyhow::Result<()> 
         .local_addr()
         .context("failed to read listener address")?;
     ensure_loopback(local_addr)?;
+    serve_unrestricted(listener, router).await
+}
+
+/// [`serve`] without the loopback guard. For deployments where the caller has
+/// explicitly chosen a non-loopback bind — e.g. inside a container, where
+/// loopback is unreachable and the host's port mapping is the boundary.
+pub async fn serve_unrestricted(listener: TcpListener, router: Router) -> anyhow::Result<()> {
     axum::serve(listener, router)
         .with_graceful_shutdown(shutdown_signal())
         .await

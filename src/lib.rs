@@ -3,6 +3,7 @@ pub mod analyzer;
 pub mod chunker;
 pub mod dictionary;
 pub mod hierarchy;
+pub mod logging;
 pub mod matcher;
 pub mod patterns;
 pub mod ranking;

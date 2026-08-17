@@ -51,6 +51,11 @@ anyhow = "1"
 # Used on iOS (no writable filesystem for resources) and for single-binary distribution.
 rust-embed = { version = "8", features = ["include-exclude"] }
 
+slog = "2"
+slog-term = "2"
+slog-async = "2"
+time = { version = "0.3", features = ["local-offset"] }
+
 # Loopback HTTP server for the local desktop analysis API.
 axum = "0.8"
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "signal"] }
