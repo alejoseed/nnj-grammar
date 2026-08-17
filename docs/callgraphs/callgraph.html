@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nnj-grammar — interactive call graphs</title>
+<style>
+  :root {
+    --ink: #1f2933;
+    --muted: #6b7480;
+    --line: #d8dee6;
+    --bg: #f7f8fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 14px 22px;
+  }
+  header h1 { margin: 0; font-size: 17px; font-weight: 600; }
+  header p { margin: 4px 0 0; font-size: 12.5px; color: #b8c4cf; }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .tabs { display: flex; gap: 6px; }
+  .tab {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .tab.active { background: #2c3e50; color: #fff; border-color: #2c3e50; }
+  .toolbar button.small {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--muted);
+  }
+  .toolbar button.small:hover { color: var(--ink); }
+  #search {
+    flex: 1;
+    min-width: 180px;
+    max-width: 340px;
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .legend { font-size: 11.5px; color: var(--muted); }
+
+  main { padding: 14px 22px 60px; max-width: 1200px; }
+  .tree { display: none; }
+  .tree.active { display: block; }
+
+  /* ── Tree nodes ─────────────────────────────────────────── */
+  details.node, div.leaf {
+    margin: 2px 0 2px 0;
+  }
+  details.node > :not(summary) , div.leaf.child {
+    margin-left: 26px;
+    border-left: 2px solid var(--line);
+    padding-left: 12px;
+  }
+  summary.row, div.leaf > .row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    list-style: none;
+  }
+  div.leaf > .row { cursor: default; }
+  summary.row::-webkit-details-marker { display: none; }
+  summary.row::before {
+    content: "▸";
+    color: var(--muted);
+    font-size: 11px;
+    width: 12px;
+    display: inline-block;
+    transition: transform .12s ease;
+  }
+  details[open] > summary.row::before { transform: rotate(90deg); }
+  div.leaf > .row::before {
+    content: "·";
+    color: var(--muted);
+    width: 12px;
+    display: inline-block;
+  }
+  summary.row:hover { background: #eef1f5; }
+
+  .fn { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 13px; font-weight: 600; }
+  .ret { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #7c3aed; }
+  .note { font-size: 12px; color: var(--muted); }
+  .cond {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1565c0;
+    background: #e7f0fb;
+    border-radius: 4px;
+    padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .step {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: #2c3e50;
+    border-radius: 10px;
+    padding: 1px 8px;
+    white-space: nowrap;
+  }
+  .chip {
+    font-size: 10.5px;
+    font-family: ui-monospace, Consolas, monospace;
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: #3a4450;
+    white-space: nowrap;
+  }
+  .ext .fn { font-weight: 400; color: var(--muted); font-style: italic; }
+  .recur {
+    font-size: 11px; font-weight: 700; color: #b45309;
+    background: #fef3c7; border-radius: 4px; padding: 1px 7px;
+  }
+  mark { background: #ffe58a; padding: 0 1px; border-radius: 2px; }
+  .hidden { display: none !important; }
+
+  .hint {
+    margin: 10px 0 18px;
+    font-size: 12.5px;
+    color: var(--muted);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>nnj-grammar — interactive call graphs</h1>
+  <p>Click any row to expand its callees. Execution order is top-to-bottom. Traced by hand from source, 2026-08-17.</p>
+</header>
+
+<div class="toolbar">
+  <div class="tabs">
+    <button class="tab active" data-tree="cli">CLI (nnj-grammar)</button>
+    <button class="tab" data-tree="server">Server (nnj-grammar-server)</button>
+  </div>
+  <button class="small" id="expand-all">Expand all</button>
+  <button class="small" id="collapse-all">Collapse all</button>
+  <input id="search" type="search" placeholder="Filter functions… (e.g. chunk, rank, gloss)">
+  <span class="legend">
+    <span class="step" style="font-size:10px">1</span> pipeline order &nbsp;
+    <span class="cond" style="font-size:10px">condition</span> branch taken when &nbsp;
+    <span class="recur" style="font-size:10px">↻</span> recursion &nbsp;
+    <em style="color:#9aa3ad">italic</em> = external crate
+  </span>
+</div>
+
+<main>
+  <div class="hint">
+    <b>How to read this:</b> each row is one function call — the purple arrow is what it returns,
+    the grey text says what data flows or why it's called. Indented rows are the functions it calls,
+    in the order they run. The colored chip is the source file. Both binaries end up in the same
+    <code>Analyzer::analyze</code> pipeline (steps 1–7); the CLI's legacy output formats take their own paths.
+  </div>
+  <div id="tree-cli" class="tree active"></div>
+  <div id="tree-server" class="tree"></div>
+</main>
+
+<script>
+// ── Module colors (chip backgrounds), keyed by file ─────────────────────
+const FILE_COLORS = {
+  "main.rs":        "#eceff1",
+  "cli.rs":         "#e3f2fd",
+  "analyzer.rs":    "#fff9c4",
+  "tokenizer.rs":   "#e8f5e9",
+  "chunker.rs":     "#e0f2f1",
+  "patterns":       "#f3e5f5",
+  "matcher.rs":     "#fff3e0",
+  "ranking.rs":     "#fce4ec",
+  "dictionary.rs":  "#e8eaf6",
+  "hierarchy.rs":   "#f1f8e9",
+  "analysis.rs":    "#f1f8e9",
+  "display.rs":     "#ffebee",
+  "logging.rs":     "#efebe9",
+  "server.rs":      "#e1f5fe",
+  "bin/server.rs":  "#eceff1",
+  "external":       "#eeeeee",
+};
+
+// Node shape: { fn, file, ret, note, cond, step, ext, recur, kids: [...] }
+// `cond` = branch condition badge, `step` = numbered pipeline badge,
+// `ext` = external crate, `recur` = recursion marker.
+
+// ── Shared subtrees (used verbatim by both binaries) ────────────────────
+
+const T_TOKENIZER_NEW = {
+  fn: "Tokenizer::new()", file: "tokenizer.rs", ret: "Tokenizer",
+  note: "loads the UniDic dictionary embedded in the binary",
+  kids: [
+    { fn: "lindera::load_dictionary(\"embedded://unidic\") + Segmenter::new", file: "external", ext: true, kids: [] },
+  ],
+};
+
+const T_PARSE_TOML = {
+  fn: "parse_toml_with_source(src, name, source)", file: "patterns", ret: "Vec<PatternRule>",
+  note: "one TOML file → rules, tagged with their catalog source",
+  kids: [
+    { fn: "toml::from_str::<GrammarFile>", file: "external", ext: true, kids: [] },
+    { fn: "validate_rules(&rules, name)", file: "patterns",
+      note: "ids non-empty, variants well-formed",
+      kids: [
+        { fn: "validate_steps(&steps, rule_id, name)", file: "patterns",
+          note: "wildcard bounds sane; every step constrains something", kids: [] },
+      ] },
+  ],
+};
+
+const T_LOAD_COMBINED = {
+  fn: "load_combined(local_dir)", file: "patterns", ret: "Vec<PatternRule>",
+  note: "embedded Hanabira catalog + optional local overlay",
+  kids: [
+    { fn: "load_embedded()", file: "patterns", ret: "Vec<PatternRule>",
+      note: "828 rules baked in via rust-embed (grammar/hanabira/*.toml)",
+      kids: [
+        { ...T_PARSE_TOML, cond: "per embedded file" },
+        { fn: "validate_unique_rule_ids(&rules, \"embedded…\")", file: "patterns", kids: [] },
+      ] },
+    { fn: "load_grammar_dir_with_source(dir, source)", file: "patterns", ret: "Vec<PatternRule>",
+      cond: "if local dir exists", note: "walkdir over *.toml on disk",
+      kids: [
+        { ...T_PARSE_TOML, cond: "per file on disk" },
+        { fn: "validate_unique_rule_ids(&rules, dir)", file: "patterns", kids: [] },
+      ] },
+    { fn: "validate_unique_rule_ids(&rules, \"combined…\")", file: "patterns",
+      note: "no id may collide across embedded + local", kids: [] },
+  ],
+};
+
+const T_ANALYZER_NEW = {
+  fn: "Analyzer::new(config)", file: "analyzer.rs", ret: "Analyzer { tokenizer, rules }",
+  note: "fails fast if dictionary_path is set or local grammar dir is missing",
+  kids: [ T_TOKENIZER_NEW, T_LOAD_COMBINED ],
+};
+
+const T_TOKENIZE = {
+  fn: "tokenizer.tokenize(&text)", file: "tokenizer.rs", ret: "Vec<Token>",
+  note: "morphemes with UniDic POS fields + byte spans",
+  kids: [
+    { fn: "lindera inner.tokenize(text)", file: "external", ext: true, note: "raw morphemes with details()", kids: [] },
+    { fn: "katakana_to_hiragana(&reading)", file: "tokenizer.rs", ret: "String",
+      cond: "per token", note: "語彙素読み katakana → hiragana for furigana", kids: [] },
+  ],
+};
+
+const T_STARTS_NEW = {
+  fn: "starts_new_bunsetsu(tokens, pos)", file: "chunker.rs", ret: "(bool, reason)",
+  cond: "per token", note: "THE structural decision: does this token open a new bunsetsu or attach?",
+  kids: [
+    { fn: "is_punct_surface(&token)", file: "chunker.rs", ret: "bool",
+      note: "punctuation attaches to the preceding bunsetsu", kids: [] },
+    { fn: "compounds_with_following_noun(&previous)", file: "chunker.rs", ret: "bool",
+      note: "noun+noun compounds stay together (日本+語)",
+      kids: [ { fn: "is_punct_surface(&previous)", file: "chunker.rs", ret: "bool", kids: [] } ] },
+    { fn: "follows_te_chain(tokens, pos)", file: "chunker.rs", ret: "bool",
+      note: "て/で before it (through は/も) → auxiliary use, attach (食べてはいけない)", kids: [] },
+    { fn: "is_stem(&previous)", file: "chunker.rs", ret: "bool",
+      note: "連用形/語幹 stem → compound predicate, attach (強すぎる)", kids: [] },
+  ],
+};
+
+const T_CHUNK = {
+  fn: "chunker::chunk(&tokens)", file: "chunker.rs", ret: "Vec<SentenceChunk>",
+  note: "文 + 文節 structure from POS alone — this decides the graph's shape",
+  kids: [
+    { fn: "split_sentences(&tokens)", file: "chunker.rs", ret: "Vec<(start, end)>",
+      note: "cut at 。！？ runs, absorbing closing brackets",
+      kids: [
+        { fn: "is_sentence_terminator(&token)", file: "chunker.rs", ret: "bool", kids: [] },
+        { fn: "is_closing_bracket(&token)", file: "chunker.rs", ret: "bool", kids: [] },
+      ] },
+    { fn: "chunk_bunsetsu(tokens, start, end)", file: "chunker.rs", ret: "Vec<Bunsetsu>",
+      cond: "per sentence", kids: [ T_STARTS_NEW ] },
+  ],
+};
+
+const T_STEP_MATCHES = {
+  fn: "Step::matches(&token)", file: "patterns", ret: "bool",
+  note: "does this token satisfy the step's predicate?",
+  kids: [
+    { fn: "Step::direct_matches(&token)", file: "patterns", ret: "bool",
+      note: "surface/pos1/pos2/conj_form/base_form all must match if set",
+      kids: [ { fn: "matches_field(expected, actual)", file: "patterns", ret: "bool", kids: [] } ] },
+    { fn: "TokenAlternative::matches / TokenPredicate::matches", file: "patterns", ret: "bool",
+      cond: "one_of set", note: "alternatives are ORed, then ANDed with the direct fields",
+      kids: [ { fn: "matches_field(expected, actual)", file: "patterns", ret: "bool", kids: [] } ] },
+  ],
+};
+
+const T_MATCH_SEQUENCE = {
+  fn: "match_sequence(tokens, start, steps)", file: "matcher.rs", ret: "Vec<SequenceMatch>",
+  note: "every end position where the step list can succeed",
+  kids: [
+    { fn: "match_steps(tokens, pos, steps, …)", file: "matcher.rs", recur: true,
+      note: "backtracking engine: consumes one step, recurses on the rest",
+      kids: [
+        { fn: "is_clause_boundary(&token)", file: "matcher.rs", ret: "bool",
+          cond: "wildcard step", note: "a bounded gap may never cross 、。！？", kids: [] },
+        T_STEP_MATCHES,
+        { fn: "Step::specificity()", file: "patterns", ret: "usize",
+          note: "how many fields the step pins down — ranking evidence", kids: [] },
+        { fn: "push_capture(captures, step, start, end)", file: "matcher.rs",
+          note: "stores named token ranges on the match", kids: [] },
+      ] },
+  ],
+};
+
+const T_MATCH_CANDIDATES = {
+  fn: "matcher::match_candidates(&tokens, &rules)", file: "matcher.rs", ret: "Vec<MatchCandidate>",
+  step: "3", note: "every distinct successful parse of every rule, with ranking evidence",
+  kids: [
+    { fn: "effective_variant(rule, variant)", file: "matcher.rs", ret: "EffectiveVariant",
+      cond: "per explicit variant", note: "variant fields override rule-level defaults", kids: [] },
+    { fn: "collect_variant_matches(tokens, rule, variant, out)", file: "matcher.rs",
+      cond: "per rule + variant", note: "tries every start position in the sentence",
+      kids: [
+        { fn: "has_boundary(tokens, pos, boundary, left)", file: "matcher.rs", ret: "bool",
+          note: "left/right clause- or sentence-boundary assertions",
+          kids: [
+            { fn: "is_clause_boundary(&token)", file: "matcher.rs", ret: "bool", kids: [] },
+            { fn: "is_sentence_boundary(&token)", file: "matcher.rs", ret: "bool", kids: [] },
+          ] },
+        { fn: "match_left_context(tokens, core_start, steps)", file: "matcher.rs",
+          ret: "Option<(start, SequenceMatch)>",
+          note: "context must end exactly where the core begins; excluded from the span",
+          kids: [ T_MATCH_SEQUENCE ] },
+        { ...T_MATCH_SEQUENCE, cond: "core steps" },
+        { fn: "match_right_context(tokens, core_end, steps)", file: "matcher.rs",
+          ret: "Option<SequenceMatch>", kids: [ T_MATCH_SEQUENCE ] },
+      ] },
+    { fn: "candidate_key(&candidate)", file: "matcher.rs", ret: "CandidateKey",
+      note: "dedupes byte-identical parses", kids: [] },
+    { fn: "candidate_identity_order(l, r)", file: "matcher.rs", ret: "Ordering",
+      note: "deterministic final sort", kids: [] },
+  ],
+};
+
+const T_RANK = {
+  fn: "ranking::rank_with_structure(candidates, &sentences)", file: "ranking.rs", ret: "RankedMatches { primary, secondary }",
+  step: "4", note: "sorts by evidence, fuses duplicates, splits primary vs blocked-overlap matches",
+  kids: [
+    { fn: "candidate_rank_order(l, r, bunsetsu)", file: "ranking.rs", ret: "Ordering",
+      note: "fallback < priority < bunsetsu alignment < length < specificity < JLPT",
+      kids: [
+        { fn: "is_aligned(candidate, bunsetsu)", file: "ranking.rs", ret: "bool",
+          note: "spans that respect bunsetsu edges beat spans that cross them", kids: [] },
+        { fn: "span_length(&candidate)", file: "ranking.rs", ret: "usize", kids: [] },
+        { fn: "jlpt_level(&candidate)", file: "ranking.rs", ret: "u32",
+          note: "\"N5\" → 5; more basic reading wins ties", kids: [] },
+      ] },
+    { fn: "group_exact_duplicates(candidates)", file: "ranking.rs", ret: "Vec<DisplayMatch>",
+      note: "same span + same name/meaning → one match with merged provenance",
+      kids: [
+        { fn: "normalize(&str)", file: "ranking.rs", ret: "String", note: "whitespace/case-insensitive fingerprint", kids: [] },
+        { fn: "provenance_order(l, r)", file: "ranking.rs", ret: "Ordering", kids: [] },
+      ] },
+    { fn: "assign_stable_ids(&mut matches)", file: "ranking.rs", note: "match-{start}-{end}", kids: [] },
+    { fn: "overlaps(l, r) / contains(l, r)", file: "ranking.rs", ret: "bool",
+      note: "an overlap with a stronger match demotes to secondary, with the reason", kids: [] },
+    { fn: "display_source_order(l, r)", file: "ranking.rs", ret: "Ordering", note: "final reading-order sort", kids: [] },
+    { fn: "assign_secondary_ids(&mut secondary)", file: "ranking.rs", note: "secondary-{start}-{end}-{n}", kids: [] },
+  ],
+};
+
+const T_DICT = [
+  { fn: "Dictionary::shared()", file: "dictionary.rs", ret: "&'static Dictionary",
+    step: "5", note: "process-wide singleton (OnceLock)",
+    kids: [
+      { fn: "Dictionary::embedded()", file: "dictionary.rs", ret: "Dictionary",
+        cond: "first call only", note: "indexes every JMdict entry by kanji + reading",
+        kids: [ { fn: "jmdict::entries()", file: "external", ext: true, kids: [] } ] },
+    ] },
+  { fn: "dictionary.gloss_tokens(&tokens, &sentences)", file: "dictionary.rs",
+    ret: "(Vec<Vec<DictionaryGloss>>, word spans)",
+    step: "6", note: "English glosses per token, plus compound fusing (図書+館 → 図書館)",
+    kids: [
+      { fn: "lookup_token(&token)", file: "dictionary.rs", ret: "Vec<DictionaryGloss>",
+        cond: "per token",
+        kids: [
+          { fn: "is_function_word(pos1)", file: "dictionary.rs", ret: "bool",
+            note: "助詞/助動詞 → restricted particle/aux lookup", kids: [] },
+          { fn: "is_content_word(pos1)", file: "dictionary.rs", ret: "bool", kids: [] },
+          { fn: "collect_entries(&[base_form, surface, reading])", file: "dictionary.rs",
+            ret: "Vec<jmdict::Entry>", note: "dictionary form first, then surface, then kana", kids: [] },
+          { fn: "function_word_glosses(&entries, limit)", file: "dictionary.rs", ret: "Vec<DictionaryGloss>",
+            cond: "function words", note: "only senses JMdict marks particle/auxiliary — は never glosses as 歯", kids: [] },
+          { fn: "reading_matches(entry, &reading)", file: "dictionary.rs", ret: "bool",
+            note: "prefer entries whose reading matches (行った → 行く not 行う)", kids: [] },
+          { fn: "entries_to_glosses(&entries, limit)", file: "dictionary.rs", ret: "Vec<DictionaryGloss>", kids: [] },
+        ] },
+      { fn: "compound pass (inline in gloss_tokens)", file: "dictionary.rs",
+        note: "longest adjacent content-word run inside the bunsetsu that JMdict knows",
+        kids: [
+          { fn: "is_content_word(pos1)", file: "dictionary.rs", ret: "bool", kids: [] },
+          { fn: "entries_to_glosses(&hits, 2)", file: "dictionary.rs", ret: "Vec<DictionaryGloss>", kids: [] },
+        ] },
+    ] },
+];
+
+const T_BUILD_TREE = {
+  fn: "hierarchy::build_tree(&tokens, &ranked, &words)", file: "hierarchy.rs", ret: "AnalysisTree",
+  step: "7", note: "document → sentence → bunsetsu → word/token; matches only decorate, never shape",
+  kids: [
+    { ...T_CHUNK, cond: "re-chunks", note: "same structure computed again for node spans" },
+    { fn: "node(id, kind, span, token_id)", file: "hierarchy.rs", ret: "TreeNode",
+      cond: "every node", kids: [] },
+    { fn: "attach_matches(&mut tree, &ranked)", file: "hierarchy.rs",
+      note: "primary + secondary match ids onto their owning nodes",
+      kids: [
+        { fn: "smallest_cover(&tree, start, end)", file: "hierarchy.rs", ret: "Option<node index>",
+          note: "smallest non-token node fully covering the span (bunsetsu > sentence > document)", kids: [] },
+      ] },
+  ],
+};
+
+const T_ANALYZE = {
+  fn: "analyzer.analyze(&text)", file: "analyzer.rs", ret: "AnalysisDocument",
+  note: "THE pipeline — identical for CLI and server",
+  kids: [
+    { ...T_TOKENIZE, step: "1" },
+    { ...T_CHUNK, step: "2" },
+    T_MATCH_CANDIDATES,
+    T_RANK,
+    ...T_DICT,
+    { fn: "AnalyzedToken::from(&token) + glosses", file: "analysis.rs", ret: "AnalyzedToken",
+      cond: "per token", note: "token + its dictionary glosses for the JSON payload", kids: [] },
+    T_BUILD_TREE,
+  ],
+};
+
+// ── CLI tree ─────────────────────────────────────────────────────────────
+
+const TREE_CLI = [{
+  fn: "main()", file: "main.rs", ret: "Result<()>",
+  note: "binary: nnj-grammar",
+  kids: [
+    { fn: "Cli::parse()", file: "cli.rs", ret: "Cli", note: "clap derive over argv", kids: [] },
+    { fn: "cli.read_text()", file: "cli.rs", ret: "Option<String>",
+      note: "positional arg | --file | piped stdin; None → print help, exit", kids: [] },
+
+    { fn: "analyzer path", file: "main.rs", cond: "--output json | tree",
+      note: "the modern path — same document the server serves",
+      kids: [
+        { fn: "analyzer_config(&cli)", file: "main.rs", ret: "AnalyzerConfig",
+          note: "--grammar-db ≠ default → local overlay dir", kids: [] },
+        T_ANALYZER_NEW,
+        T_ANALYZE,
+        { fn: "serde_json::to_string_pretty(&document)", file: "external", ext: true,
+          cond: "json", kids: [] },
+        { fn: "display::print_tree(&document)", file: "display.rs",
+          cond: "tree", note: "indented outline of the node/edge tree",
+          kids: [
+            { fn: "print_tree_node(document, id, depth)", file: "display.rs", recur: true,
+              note: "walks the tree from root_id",
+              kids: [
+                { fn: "AnalysisTree::node(id)", file: "analysis.rs", ret: "Option<&TreeNode>", kids: [] },
+                { fn: "AnalysisTree::children_of(id)", file: "analysis.rs", ret: "Vec<&str>", note: "edges sorted by order", kids: [] },
+                { fn: "kind_label / span_label / surface_of / attached_matches_label / secondary_label", file: "display.rs",
+                  note: "one formatted line per node", kids: [] },
+              ] },
+          ] },
+      ] },
+
+    { fn: "legacy paths", file: "main.rs", cond: "all other --output formats",
+      note: "build their own tokenizer; no ranking, no glosses, no tree",
+      kids: [
+        T_TOKENIZER_NEW,
+        T_TOKENIZE,
+        { fn: "tokenizer::print_table(&tokens)", file: "tokenizer.rs",
+          cond: "table", note: "surface/reading/POS columns + POS guide", kids: [] },
+        { fn: "tokenizer::print_raw(&tokenizer, &text)", file: "tokenizer.rs",
+          cond: "raw", note: "re-tokenizes; dumps all 29 UniDic fields",
+          kids: [ { fn: "lindera inner.tokenize + details()", file: "external", ext: true, kids: [] } ] },
+        { fn: "serde_json::to_string(&tokens)", file: "external", ext: true, cond: "tokens", kids: [] },
+        { fn: "bunsetsu view", file: "main.rs", cond: "bunsetsu | bunsetsu-trace",
+          kids: [
+            T_CHUNK,
+            { fn: "display::print_bunsetsu(&tokens, &sentences)", file: "display.rs",
+              note: "文1: [わたしは] [本も] [読む]", kids: [] },
+            { fn: "chunker::trace(&tokens)", file: "chunker.rs", ret: "Vec<Decision>",
+              cond: "bunsetsu-trace", note: "same decision fn as chunk — why every token attached or split",
+              kids: [
+                { fn: "split_sentences(&tokens)", file: "chunker.rs", ret: "Vec<(start, end)>", kids: [] },
+                T_STARTS_NEW,
+              ] },
+            { fn: "display::print_bunsetsu_trace(&tokens, &decisions)", file: "display.rs",
+              cond: "bunsetsu-trace", kids: [] },
+          ] },
+        { fn: "graph / dot view", file: "main.rs", cond: "graph | dot",
+          note: "loads rules itself, uses the simpler match_all",
+          kids: [
+            { fn: "patterns::load_grammar_dir(&cli.grammar_db)", file: "patterns", ret: "Vec<PatternRule>",
+              cond: "--grammar-db set",
+              kids: [ { fn: "load_grammar_dir_with_source(dir, \"filesystem\")", file: "patterns", ret: "Vec<PatternRule>", kids: [] } ] },
+            { fn: "patterns::load_embedded()", file: "patterns", ret: "Vec<PatternRule>", cond: "default db", kids: [] },
+            { fn: "matcher::match_all(&tokens, &rules)", file: "matcher.rs", ret: "Vec<PatternMatch>",
+              note: "match_candidates + sense/ambiguity resolution, first occurrence wins",
+              kids: [
+                { ...T_MATCH_CANDIDATES, step: null },
+                { fn: "resolve_candidates(candidates)", file: "matcher.rs", ret: "Vec<PatternMatch>",
+                  note: "same-span duplicate senses and ambiguity groups → best one",
+                  kids: [
+                    { fn: "candidate_identity_order(l, r)", file: "matcher.rs", ret: "Ordering", kids: [] },
+                    { fn: "same_span(l, r)", file: "matcher.rs", ret: "bool", kids: [] },
+                    { fn: "same_sense_or_rule(l, r)", file: "matcher.rs", ret: "bool", kids: [] },
+                    { fn: "better_candidate(l, r)", file: "matcher.rs", ret: "bool",
+                      note: "non-fallback > specificity > priority > length", kids: [] },
+                  ] },
+              ] },
+            { fn: "display::print_graph(&tokens, &matches)", file: "display.rs",
+              cond: "graph", note: "terminal token chain + annotation boxes",
+              kids: [ { fn: "cols(&str)", file: "display.rs", ret: "usize", note: "CJK chars are 2 columns wide", kids: [] } ] },
+            { fn: "display::print_dot(&tokens, &matches)", file: "display.rs",
+              cond: "dot", note: "Graphviz DOT on stdout",
+              kids: [
+                { fn: "pos_color(pos1)", file: "display.rs", ret: "&str", kids: [] },
+                { fn: "dot_escape(&str)", file: "display.rs", ret: "String", kids: [] },
+              ] },
+          ] },
+      ] },
+  ],
+}];
+
+// ── Server tree ──────────────────────────────────────────────────────────
+
+const TREE_SERVER = [
+  {
+    fn: "main()  [tokio::main]", file: "bin/server.rs", ret: "anyhow::Result<()>",
+    note: "binary: nnj-grammar-server — startup, then serves until ctrl-c",
+    kids: [
+      { fn: "logging::root_logger(log_dir)", file: "logging.rs", ret: "Logger",
+        step: "1", note: "terminal always; + daily file when $NNJ_GRAMMAR_LOG_DIR is set",
+        kids: [
+          { fn: "DateRotatingWriter::new(dir)", file: "logging.rs", ret: "DateRotatingWriter",
+            cond: "log dir set",
+            kids: [
+              { fn: "today()", file: "logging.rs", ret: "\"YYYY-MM-DD\"", kids: [] },
+              { fn: "open_dated(dir, date)", file: "logging.rs", ret: "File", note: "append <dir>/<date>.log", kids: [] },
+            ] },
+          { fn: "DateRotatingWriter::write(buf)", file: "logging.rs",
+            cond: "per log record", note: "checks today(); reopens the file at midnight rollover",
+            kids: [] },
+        ] },
+      { fn: "server::build_analyzer(&cwd)", file: "server.rs", ret: "(Analyzer, LocalCatalogMode)",
+        step: "2", note: "detects ./grammar/local overlay; embedded-only otherwise",
+        kids: [
+          { fn: "Dictionary::shared()", file: "dictionary.rs", ret: "&'static Dictionary",
+            note: "eager warm-up so the first request isn't slow", kids: [] },
+          T_ANALYZER_NEW,
+        ] },
+      { fn: "TcpListener::bind(addr)", file: "external", ext: true,
+        step: "3", note: "127.0.0.1:7878, or $NNJ_GRAMMAR_BIND override", kids: [] },
+      { fn: "server::router_with_logger(Arc<Analyzer>, Logger)", file: "server.rs", ret: "Router",
+        step: "4", note: "wires routes, body limit (512 KiB), and middleware",
+        kids: [
+          { fn: "registers: GET /api/health → health()", file: "server.rs", kids: [] },
+          { fn: "registers: POST /api/analyze → analyze()", file: "server.rs", kids: [] },
+          { fn: "registers: fallback → not_found()", file: "server.rs", kids: [] },
+          { fn: "layer: DefaultBodyLimit::max(512 KiB)", file: "external", ext: true, kids: [] },
+          { fn: "layer: map_response(rewrite_method_not_allowed)", file: "server.rs", kids: [] },
+          { fn: "layer: from_fn_with_state(log_request)", file: "server.rs", kids: [] },
+        ] },
+      { fn: "server::serve(listener, app)", file: "server.rs", ret: "Result<()>",
+        step: "5", cond: "default",
+        kids: [
+          { fn: "ensure_loopback(local_addr)", file: "server.rs",
+            note: "refuses to serve on anything but 127.0.0.1 / ::1", kids: [] },
+          { fn: "serve_unrestricted(listener, app)", file: "server.rs", ret: "Result<()>",
+            kids: [
+              { fn: "axum::serve(...).with_graceful_shutdown(...)", file: "external", ext: true, kids: [] },
+              { fn: "shutdown_signal()", file: "server.rs", note: "resolves on ctrl-c", kids: [] },
+            ] },
+        ] },
+      { fn: "server::serve_unrestricted(listener, app)", file: "server.rs", ret: "Result<()>",
+        step: "5", cond: "$NNJ_GRAMMAR_BIND set",
+        note: "loopback guard skipped — for containers where the port mapping is the boundary", kids: [] },
+    ],
+  },
+  {
+    fn: "── per request ──  POST /api/analyze", file: "server.rs",
+    note: "what runs every time a client sends text",
+    kids: [
+      { fn: "log_request middleware", file: "server.rs",
+        note: "wraps every route; logs method/path/status/ms after next.run()", kids: [] },
+      { fn: "ValidatedJson::<AnalyzeRequest>::from_request(req)", file: "server.rs", ret: "AnalyzeRequest { text }",
+        note: "extractor runs before the handler body",
+        kids: [
+          { fn: "classify_json_rejection(rejection)", file: "server.rs", ret: "ApiError",
+            cond: "bad request body", note: "415 wrong content-type / 413 too large / 400 invalid JSON", kids: [] },
+        ] },
+      { fn: "analyze(State, ValidatedJson)", file: "server.rs", ret: "Json<AnalysisDocument> | ApiError",
+        note: "the handler",
+        kids: [
+          { fn: "validate_text(&text)", file: "server.rs", ret: "Result<(), ApiError>",
+            note: "empty_input / input_too_large (> 65,536 bytes)", kids: [] },
+          { fn: "tokio::task::spawn_blocking(move || analyzer.analyze(&text))", file: "external", ext: true,
+            note: "analysis is CPU-bound; keeps the async runtime free",
+            kids: [ T_ANALYZE ] },
+          { fn: "ApiError::new(status, code, msg)", file: "server.rs", ret: "ApiError",
+            cond: "on failure", note: "500 analysis_task_failed / analysis_failed",
+            kids: [
+              { fn: "ApiError::into_response()", file: "server.rs", ret: "Response",
+                note: "(status, Json { error: { code, message } })", kids: [] },
+            ] },
+        ] },
+    ],
+  },
+  {
+    fn: "── per request ──  other routes", file: "server.rs",
+    kids: [
+      { fn: "health()", file: "server.rs", ret: "Json<HealthResponse>",
+        cond: "GET /api/health", note: "{ status: \"ok\", schema_version: 3 }", kids: [] },
+      { fn: "not_found()", file: "server.rs", ret: "ApiError 404", cond: "unmatched route", kids: [] },
+      { fn: "rewrite_method_not_allowed(response)", file: "server.rs", ret: "Response",
+        cond: "405 from router", note: "rewrites axum's bare 405 into the JSON error shape", kids: [] },
+    ],
+  },
+];
+
+// ── Rendering ────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+}
+
+function renderNode(n, depth) {
+  const hasKids = n.kids && n.kids.length > 0;
+  const chipColor = FILE_COLORS[n.file] || "#eee";
+  const row = `
+    ${n.step ? `<span class="step">${esc(n.step)}</span>` : ""}
+    ${n.cond ? `<span class="cond">${esc(n.cond)}</span>` : ""}
+    <span class="fn">${esc(n.fn)}</span>
+    ${n.recur ? `<span class="recur">↻ recursive</span>` : ""}
+    <span class="chip" style="background:${chipColor}">${esc(n.file)}</span>
+    ${n.ret ? `<span class="ret">→ ${esc(n.ret)}</span>` : ""}
+    ${n.note ? `<span class="note">${esc(n.note)}</span>` : ""}`;
+
+  if (!hasKids) {
+    return `<div class="leaf ${depth > 0 ? "child" : ""} ${n.ext ? "ext" : ""}"><div class="row">${row}</div></div>`;
+  }
+  const open = depth === 0 ? " open" : "";
+  return `<details class="node ${n.ext ? "ext" : ""}"${open}>
+    <summary class="row">${row}</summary>
+    ${n.kids.map(k => renderNode(k, depth + 1)).join("")}
+  </details>`;
+}
+
+document.getElementById("tree-cli").innerHTML = TREE_CLI.map(n => renderNode(n, 0)).join("");
+document.getElementById("tree-server").innerHTML = TREE_SERVER.map(n => renderNode(n, 0)).join("");
+
+// ── Tabs ─────────────────────────────────────────────────────────────────
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tree").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById("tree-" + tab.dataset.tree).classList.add("active");
+    applyFilter();
+  });
+});
+
+// ── Expand / collapse ────────────────────────────────────────────────────
+function activeTree() { return document.querySelector(".tree.active"); }
+document.getElementById("expand-all").addEventListener("click", () =>
+  activeTree().querySelectorAll("details").forEach(d => d.open = true));
+document.getElementById("collapse-all").addEventListener("click", () =>
+  activeTree().querySelectorAll("details").forEach((d, i) => d.open = false));
+
+// ── Search filter ────────────────────────────────────────────────────────
+const searchBox = document.getElementById("search");
+searchBox.addEventListener("input", applyFilter);
+
+function applyFilter() {
+  const q = searchBox.value.trim().toLowerCase();
+  const tree = activeTree();
+  tree.querySelectorAll(".hidden").forEach(el => el.classList.remove("hidden"));
+  tree.querySelectorAll("mark").forEach(m => m.replaceWith(m.textContent));
+  if (!q) return;
+
+  // A node stays visible if it matches or any descendant matches.
+  function visit(el) {
+    const isNode = el.matches("details.node, div.leaf");
+    let selfMatch = false;
+    if (isNode) {
+      const rowText = el.querySelector(":scope > summary.row, :scope > .row").textContent.toLowerCase();
+      selfMatch = rowText.includes(q);
+    }
+    let childMatch = false;
+    el.querySelectorAll(":scope > details.node, :scope > div.leaf").forEach(child => {
+      if (visit(child)) childMatch = true;
+    });
+    if (!isNode) return childMatch;
+    if (selfMatch || childMatch) {
+      if (el.tagName === "DETAILS" && childMatch) el.open = true;
+      if (selfMatch) highlight(el.querySelector(":scope > summary.row, :scope > .row"), q);
+      return true;
+    }
+    el.classList.add("hidden");
+    return false;
+  }
+  tree.querySelectorAll(":scope > details.node, :scope > div.leaf").forEach(visit);
+}
+
+function highlight(rowEl, q) {
+  rowEl.querySelectorAll(".fn, .note, .ret").forEach(span => {
+    const text = span.textContent;
+    const idx = text.toLowerCase().indexOf(q);
+    if (idx < 0) return;
+    span.innerHTML = esc(text.slice(0, idx)) + "<mark>" + esc(text.slice(idx, idx + q.length)) + "</mark>" + esc(text.slice(idx + q.length));
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+// Call graph for the server binary: nnj-grammar-server (src/bin/server.rs).
+// Every project function the server executes is a node, grouped by source
+// file. Edge labels show the data that flows. The top half is startup,
+// the middle is the per-request path, the bottom is the analysis pipeline
+// (shared with the CLI — same functions, see cli.dot).
+//
+// Render: dot -Tsvg server.dot -o server.svg   (or npx -y @hpcc-js/wasm dot-wasm server.dot)
+
+digraph server {
+    rankdir=LR;
+    fontname="Helvetica";
+    node [shape=box, style="rounded,filled", fillcolor="#FFFFFF", fontname="Helvetica", fontsize=11];
+    edge [fontname="Helvetica", fontsize=9, color="#555555"];
+    compound=true;
+
+    // ── Entry point ──────────────────────────────────────────────────────
+    subgraph cluster_bin {
+        label="src/bin/server.rs  (binary: nnj-grammar-server)";
+        style=filled; fillcolor="#ECEFF1"; fontsize=13;
+        smain [label="main()  [tokio::main]\n→ anyhow::Result<()>", fillcolor="#2C3E50", fontcolor="white"];
+    }
+
+    // ── Logging ──────────────────────────────────────────────────────────
+    subgraph cluster_logging {
+        label="src/logging.rs";
+        style=filled; fillcolor="#EFEBE9"; fontsize=13;
+        root_logger [label="root_logger(Option<PathBuf>)\nterm + optional daily file\n→ Logger"];
+        drw_new     [label="DateRotatingWriter::new(dir)\n→ DateRotatingWriter"];
+        drw_write   [label="DateRotatingWriter::write(buf)\n(per log record, rolls at midnight)"];
+        open_dated  [label="open_dated(dir, date)\nappend <dir>/<date>.log\n→ File"];
+        today       [label="today()\n→ \"YYYY-MM-DD\""];
+    }
+
+    // ── Server module ────────────────────────────────────────────────────
+    subgraph cluster_server {
+        label="src/server.rs  (startup)";
+        style=filled; fillcolor="#E1F5FE"; fontsize=13;
+        build_analyzer [label="build_analyzer(&Path cwd)\ndetects grammar/local overlay\n→ (Analyzer, LocalCatalogMode)"];
+        router_logger  [label="router_with_logger(Arc<Analyzer>, Logger)\nroutes + body limit + middleware\n→ Router"];
+        serve          [label="serve(TcpListener, Router)\nloopback-guarded\n→ Result<()>"];
+        serve_unres    [label="serve_unrestricted(TcpListener, Router)\nused when NNJ_GRAMMAR_BIND set\n→ Result<()>"];
+        ensure_loop    [label="ensure_loopback(SocketAddr)\nrefuse non-127.0.0.1/::1"];
+        shutdown       [label="shutdown_signal()\nawaits ctrl_c"];
+    }
+
+    subgraph cluster_request {
+        label="src/server.rs  (per-request path)";
+        style=filled; fillcolor="#E8F5E9"; fontsize=13;
+        log_request   [label="log_request middleware\nmethod/path/status/ms → slog"];
+        rewrite_405   [label="rewrite_method_not_allowed(Response)\n405 → JSON ApiError body"];
+        vj_from_req   [label="ValidatedJson::from_request\nparse JSON body → AnalyzeRequest"];
+        classify_rej  [label="classify_json_rejection(JsonRejection)\n→ ApiError (415/413/400)"];
+        health        [label="health()  [GET /api/health]\n→ Json<HealthResponse>"];
+        analyze_h     [label="analyze()  [POST /api/analyze]\nState + ValidatedJson\n→ Json<AnalysisDocument> | ApiError", fillcolor="#C8E6C9"];
+        validate_text [label="validate_text(&str)\nempty / >65,536 bytes\n→ Result<(), ApiError>"];
+        not_found     [label="not_found()  [fallback]\n→ ApiError 404"];
+        api_err_new   [label="ApiError::new(status, code, msg)\n→ ApiError"];
+        api_err_resp  [label="ApiError::into_response\n→ (status, Json{error{code,message}})"];
+    }
+
+    // ── Analyzer facade ──────────────────────────────────────────────────
+    subgraph cluster_analyzer {
+        label="src/analyzer.rs";
+        style=filled; fillcolor="#FFF9C4"; fontsize=13;
+        analyzer_new [label="Analyzer::new(AnalyzerConfig)\n→ Analyzer { tokenizer, rules }"];
+        analyze      [label="Analyzer::analyze(&str)\n→ AnalysisDocument", fillcolor="#FFECB3"];
+    }
+
+    // ── Tokenizer ────────────────────────────────────────────────────────
+    subgraph cluster_tokenizer {
+        label="src/tokenizer.rs";
+        style=filled; fillcolor="#E8F5E9"; fontsize=13;
+        tokenizer_new [label="Tokenizer::new()\nembedded UniDic\n→ Tokenizer"];
+        tokenize      [label="Tokenizer::tokenize(&str)\n→ Vec<Token>"];
+        kata2hira     [label="katakana_to_hiragana(&str)\n→ String (reading)"];
+    }
+
+    // ── Chunker ──────────────────────────────────────────────────────────
+    subgraph cluster_chunker {
+        label="src/chunker.rs  (文/文節 structure)";
+        style=filled; fillcolor="#E0F2F1"; fontsize=13;
+        chunk           [label="chunk(&[Token])\n→ Vec<SentenceChunk>"];
+        split_sentences [label="split_sentences(&[Token])\n→ Vec<(start, end)>"];
+        is_sent_term    [label="is_sentence_terminator(&Token)\n→ bool"];
+        is_closing_br   [label="is_closing_bracket(&Token)\n→ bool"];
+        chunk_bunsetsu  [label="chunk_bunsetsu(tokens, start, end)\n→ Vec<Bunsetsu>"];
+        starts_new      [label="starts_new_bunsetsu(tokens, pos)\n→ (bool, reason)"];
+        is_punct        [label="is_punct_surface(&Token)\n→ bool"];
+        compounds       [label="compounds_with_following_noun(&Token)\n→ bool"];
+        follows_te      [label="follows_te_chain(tokens, pos)\n→ bool"];
+        is_stem         [label="is_stem(&Token)\n→ bool"];
+    }
+
+    // ── Pattern catalog loading ──────────────────────────────────────────
+    subgraph cluster_patterns {
+        label="src/patterns/loader.rs + rule.rs";
+        style=filled; fillcolor="#F3E5F5"; fontsize=13;
+        load_combined   [label="load_combined(Option<&Path>)\nembedded + local overlay\n→ Vec<PatternRule>"];
+        load_embedded   [label="load_embedded()\nrust-embed grammar/hanabira\n→ Vec<PatternRule>"];
+        load_dir_src    [label="load_grammar_dir_with_source(dir, source)\nwalkdir *.toml\n→ Vec<PatternRule>"];
+        parse_toml_src  [label="parse_toml_with_source(src, name, source)\n→ Vec<PatternRule>"];
+        validate_rules  [label="validate_rules(&[PatternRule], name)"];
+        validate_steps  [label="validate_steps(&[Step], rule_id, name)"];
+        validate_unique [label="validate_unique_rule_ids(&[PatternRule], name)"];
+        step_matches    [label="Step::matches(&Token)\n→ bool"];
+        direct_matches  [label="Step::direct_matches(&Token)\n→ bool"];
+        step_spec       [label="Step::specificity()\n→ usize"];
+        alt_matches     [label="TokenAlternative::matches /\nTokenPredicate::matches\n→ bool"];
+        matches_field   [label="matches_field(Option<String>, &str)\n→ bool"];
+    }
+
+    // ── Matcher ──────────────────────────────────────────────────────────
+    subgraph cluster_matcher {
+        label="src/matcher.rs";
+        style=filled; fillcolor="#FFF3E0"; fontsize=13;
+        match_candidates [label="match_candidates(tokens, rules)\nevery distinct parse\n→ Vec<MatchCandidate>"];
+        effective_var    [label="effective_variant(rule, variant)\n→ EffectiveVariant"];
+        collect_var      [label="collect_variant_matches(tokens,\nrule, variant, &mut candidates)"];
+        match_left       [label="match_left_context(tokens,\ncore_start, steps)\n→ Option<(start, SequenceMatch)>"];
+        match_right      [label="match_right_context(tokens,\ncore_end, steps)\n→ Option<SequenceMatch>"];
+        match_sequence   [label="match_sequence(tokens, start, steps)\n→ Vec<SequenceMatch>"];
+        match_steps      [label="match_steps(tokens, pos, steps,\nspecificity, captures, matches)\n(recursive backtracker)"];
+        push_capture     [label="push_capture(captures, step,\nstart, end)"];
+        has_boundary     [label="has_boundary(tokens, pos,\nOption<Boundary>, left)\n→ bool"];
+        is_clause_b      [label="is_clause_boundary(&Token)\n→ bool"];
+        is_sentence_b    [label="is_sentence_boundary(&Token)\n→ bool"];
+        candidate_key    [label="candidate_key(&MatchCandidate)\n→ CandidateKey (dedupe)"];
+        cand_id_order    [label="candidate_identity_order(l, r)\n→ Ordering (stable sort)"];
+    }
+
+    // ── Ranking ──────────────────────────────────────────────────────────
+    subgraph cluster_ranking {
+        label="src/ranking.rs";
+        style=filled; fillcolor="#FCE4EC"; fontsize=13;
+        rank_struct     [label="rank_with_structure(candidates,\n&[SentenceChunk])\n→ RankedMatches {primary, secondary}"];
+        cand_rank_order [label="candidate_rank_order(l, r, bunsetsu)\n→ Ordering"];
+        is_aligned      [label="is_aligned(candidate, bunsetsu)\n→ bool"];
+        span_length     [label="span_length(&MatchCandidate)\n→ usize"];
+        jlpt_level      [label="jlpt_level(&MatchCandidate)\n→ u32"];
+        group_dupes     [label="group_exact_duplicates(candidates)\nfuse same-span/name matches\n→ Vec<DisplayMatch>"];
+        normalize       [label="normalize(&str)\n→ String (fingerprint)"];
+        prov_order      [label="provenance_order(l, r)\n→ Ordering"];
+        assign_ids      [label="assign_stable_ids(&mut [DisplayMatch])\nmatch-{start}-{end}"];
+        overlaps        [label="overlaps(l, r) → bool"];
+        contains        [label="contains(container, contained) → bool"];
+        disp_order      [label="display_source_order(l, r)\n→ Ordering"];
+        assign_sec_ids  [label="assign_secondary_ids(&mut [SecondaryMatch])\nsecondary-{start}-{end}-{n}"];
+    }
+
+    // ── Dictionary glosses ───────────────────────────────────────────────
+    subgraph cluster_dictionary {
+        label="src/dictionary.rs  (JMdict glosses)";
+        style=filled; fillcolor="#E8EAF6"; fontsize=13;
+        dict_shared     [label="Dictionary::shared()\nOnceLock singleton\n→ &'static Dictionary"];
+        dict_embedded   [label="Dictionary::embedded()\nindex all JMdict entries\n→ Dictionary"];
+        gloss_tokens    [label="gloss_tokens(tokens, sentences)\nper-token + compound pass\n→ (Vec<Vec<DictionaryGloss>>, word spans)"];
+        lookup_token    [label="lookup_token(&Token)\n→ Vec<DictionaryGloss>"];
+        collect_entries [label="collect_entries(&[&str])\n→ Vec<jmdict::Entry>"];
+        entries_gloss   [label="entries_to_glosses(entries, limit)\n→ Vec<DictionaryGloss>"];
+        func_gloss      [label="function_word_glosses(entries, limit)\nparticle/aux senses only\n→ Vec<DictionaryGloss>"];
+        reading_match   [label="reading_matches(entry, reading)\n→ bool"];
+        is_func_word    [label="is_function_word(pos1) → bool"];
+        is_content      [label="is_content_word(pos1) → bool"];
+    }
+
+    // ── Tree building ────────────────────────────────────────────────────
+    subgraph cluster_hierarchy {
+        label="src/hierarchy.rs + src/analysis.rs";
+        style=filled; fillcolor="#F1F8E9"; fontsize=13;
+        build_tree     [label="build_tree(tokens, ranked, words)\ndocument→sentence→bunsetsu→word/token\n→ AnalysisTree"];
+        node_fn        [label="node(id, kind, span, token_id)\n→ TreeNode"];
+        attach_matches [label="attach_matches(&mut tree, ranked)\nputs match ids on nodes"];
+        smallest_cover [label="smallest_cover(tree, start, end)\n→ Option<node index>"];
+        analyzed_from  [label="AnalyzedToken::from(&Token)\n→ AnalyzedToken"];
+    }
+
+    // ── External ─────────────────────────────────────────────────────────
+    lindera     [label="lindera\nload_dictionary / Segmenter\n(embedded UniDic)", style="dashed,filled", fillcolor="#EEEEEE", color="#999999"];
+    jmdict_ext  [label="jmdict::entries()\n(embedded dictionary)", style="dashed,filled", fillcolor="#EEEEEE", color="#999999"];
+    tcp_bind    [label="TcpListener::bind\n127.0.0.1:7878 | $NNJ_GRAMMAR_BIND", style="dashed,filled", fillcolor="#EEEEEE", color="#999999"];
+    axum_serve  [label="axum::serve\n.with_graceful_shutdown", style="dashed,filled", fillcolor="#EEEEEE", color="#999999"];
+    spawn_block [label="tokio::task::spawn_blocking", style="dashed,filled", fillcolor="#EEEEEE", color="#999999"];
+
+    // ══ Startup ═══════════════════════════════════════════════════════════
+    smain -> root_logger    [label="1. $NNJ_GRAMMAR_LOG_DIR\n→ Logger"];
+    root_logger -> drw_new  [label="when log dir set"];
+    drw_new -> today;
+    drw_new -> open_dated;
+    drw_write -> today      [label="date changed?"];
+    drw_write -> open_dated [label="reopen on rollover"];
+
+    smain -> build_analyzer [label="2. cwd → (Analyzer, mode)", penwidth=2];
+    build_analyzer -> dict_shared [label="warm JMdict index eagerly"];
+    build_analyzer -> analyzer_new [label="embedded-only, or\ngrammar/local overlay"];
+    analyzer_new -> tokenizer_new [label="→ Tokenizer"];
+    analyzer_new -> load_combined [label="→ Vec<PatternRule>"];
+    tokenizer_new -> lindera;
+    load_combined -> load_embedded;
+    load_combined -> load_dir_src [label="if grammar/local exists"];
+    load_combined -> validate_unique;
+    load_embedded -> parse_toml_src [label="per embedded .toml"];
+    load_embedded -> validate_unique;
+    load_dir_src -> parse_toml_src [label="per file on disk"];
+    load_dir_src -> validate_unique;
+    parse_toml_src -> validate_rules;
+    validate_rules -> validate_steps;
+
+    smain -> tcp_bind      [label="3. → TcpListener"];
+    smain -> router_logger [label="4. Arc<Analyzer> + Logger\n→ Router (app)", penwidth=2];
+    smain -> serve         [label="5. default (loopback bind)"];
+    smain -> serve_unres   [label="5. when NNJ_GRAMMAR_BIND set"];
+    serve -> ensure_loop   [label="listener local_addr"];
+    serve -> serve_unres;
+    serve_unres -> axum_serve;
+    serve_unres -> shutdown [label="graceful shutdown future"];
+
+    // router registrations (wired at startup, run per request)
+    router_logger -> health      [label="GET /api/health", style=dotted];
+    router_logger -> analyze_h   [label="POST /api/analyze", style=dotted];
+    router_logger -> not_found   [label="fallback", style=dotted];
+    router_logger -> rewrite_405 [label="map_response layer", style=dotted];
+    router_logger -> log_request [label="from_fn_with_state layer", style=dotted];
+
+    // ══ Per-request path ══════════════════════════════════════════════════
+    log_request -> analyze_h  [label="next.run(request)", color="#2E7D32", fontcolor="#2E7D32"];
+    log_request -> health     [label="next.run(request)", color="#2E7D32", fontcolor="#2E7D32"];
+    log_request -> not_found  [label="unmatched route", color="#2E7D32", fontcolor="#2E7D32"];
+    analyze_h -> vj_from_req  [label="body → AnalyzeRequest { text }", color="#2E7D32", fontcolor="#2E7D32"];
+    vj_from_req -> classify_rej [label="on JSON rejection"];
+    classify_rej -> api_err_new;
+    analyze_h -> validate_text [label="&text", color="#2E7D32", fontcolor="#2E7D32"];
+    validate_text -> api_err_new [label="empty_input / input_too_large"];
+    analyze_h -> spawn_block  [label="move analyzer + text", color="#2E7D32", fontcolor="#2E7D32"];
+    spawn_block -> analyze    [label="analyzer.analyze(&text)\n→ AnalysisDocument", color="#2E7D32", fontcolor="#2E7D32", penwidth=2];
+    analyze_h -> api_err_new  [label="task/analysis failure → 500"];
+    not_found -> api_err_new;
+    rewrite_405 -> api_err_new [label="405 responses"];
+    api_err_new -> api_err_resp [label="via IntoResponse"];
+
+    // ══ Analysis pipeline (same functions as the CLI) ═════════════════════
+    analyze -> tokenize     [label="1. text → Vec<Token>", penwidth=2];
+    tokenize -> lindera;
+    tokenize -> kata2hira   [label="per token reading"];
+
+    analyze -> chunk        [label="2. &tokens → Vec<SentenceChunk>", penwidth=2];
+    chunk -> split_sentences;
+    split_sentences -> is_sent_term;
+    split_sentences -> is_closing_br;
+    chunk -> chunk_bunsetsu [label="per sentence range"];
+    chunk_bunsetsu -> starts_new [label="per token: attach or split?"];
+    starts_new -> is_punct;
+    starts_new -> compounds;
+    starts_new -> follows_te;
+    starts_new -> is_stem;
+    compounds -> is_punct;
+
+    analyze -> match_candidates [label="3. tokens + rules\n→ Vec<MatchCandidate>", penwidth=2];
+    match_candidates -> collect_var [label="rule.steps as implicit variant"];
+    match_candidates -> effective_var [label="per explicit variant"];
+    match_candidates -> candidate_key [label="dedupe identical parses"];
+    match_candidates -> cand_id_order [label="deterministic sort"];
+    collect_var -> has_boundary [label="left + right boundary asserts"];
+    has_boundary -> is_clause_b;
+    has_boundary -> is_sentence_b;
+    collect_var -> match_left  [label="left_context steps"];
+    collect_var -> match_sequence [label="core steps, per start pos"];
+    collect_var -> match_right [label="right_context steps"];
+    match_left -> match_sequence;
+    match_right -> match_sequence;
+    match_sequence -> match_steps;
+    match_steps -> match_steps [label="next step", style=dashed, constraint=false];
+    match_steps -> step_matches [label="token predicate"];
+    match_steps -> step_spec    [label="evidence weight"];
+    match_steps -> push_capture [label="named captures"];
+    match_steps -> is_clause_b  [label="wildcard gap must not\ncross clause boundary"];
+    step_matches -> direct_matches;
+    step_matches -> alt_matches [label="one_of alternatives"];
+    direct_matches -> matches_field;
+    alt_matches -> matches_field;
+
+    analyze -> rank_struct [label="4. candidates + sentences\n→ RankedMatches", penwidth=2];
+    rank_struct -> cand_rank_order [label="sort by evidence"];
+    cand_rank_order -> is_aligned  [label="bunsetsu alignment"];
+    cand_rank_order -> span_length;
+    cand_rank_order -> jlpt_level;
+    rank_struct -> group_dupes [label="→ Vec<DisplayMatch>"];
+    group_dupes -> normalize;
+    group_dupes -> span_length;
+    group_dupes -> prov_order;
+    rank_struct -> assign_ids;
+    rank_struct -> overlaps [label="primary vs secondary split"];
+    rank_struct -> contains [label="contained vs overlapping"];
+    rank_struct -> disp_order [label="final display sort"];
+    rank_struct -> assign_sec_ids;
+
+    analyze -> dict_shared [label="5. (already warm)"];
+    dict_shared -> dict_embedded [label="first call only"];
+    dict_embedded -> jmdict_ext;
+    analyze -> gloss_tokens [label="tokens + sentences\n→ (glosses, word spans)", penwidth=2];
+    gloss_tokens -> lookup_token [label="per token"];
+    gloss_tokens -> is_content   [label="compound fusing pass"];
+    gloss_tokens -> entries_gloss [label="compound entry → glosses"];
+    lookup_token -> is_func_word;
+    lookup_token -> is_content;
+    lookup_token -> collect_entries [label="base_form, surface, reading"];
+    lookup_token -> func_gloss   [label="particles/auxiliaries"];
+    lookup_token -> reading_match [label="prefer matching reading"];
+    lookup_token -> entries_gloss;
+
+    analyze -> analyzed_from [label="6. per token, + glosses"];
+    analyze -> build_tree    [label="7. tokens + ranked + words\n→ AnalysisTree", penwidth=2];
+    build_tree -> chunk      [label="re-chunks tokens"];
+    build_tree -> node_fn    [label="every tree node"];
+    build_tree -> attach_matches [label="ranked matches"];
+    attach_matches -> smallest_cover [label="per match span"];
+}

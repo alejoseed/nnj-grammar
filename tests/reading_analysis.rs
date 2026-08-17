@@ -129,7 +129,7 @@ fn analyzer_covers_negative_contrast_topic_and_shortened_kamo() {
 
 #[test]
 fn lexicalized_compound_renders_as_one_word_leaf() {
-    // Demo anchor (docs/GRAPH_ISSUE_BANK.md, Demo wins): six UniDic short
+    // Demo anchor: six UniDic short
     // units, one JMdict entry, one 単語 node.
     let document = analyzer()
         .analyze("国際連合安全保障理事会")
