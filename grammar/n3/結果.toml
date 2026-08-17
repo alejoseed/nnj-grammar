@@ -1,8 +1,0 @@
-[[patterns]]
-id         = "結果"
-name       = "結果"
-jlpt       = "N3"
-
-[[patterns.steps]]
-surface    = "結果"
-

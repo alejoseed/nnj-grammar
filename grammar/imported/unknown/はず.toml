@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "はず"
-name       = "はず"
-jlpt       = ""
-meaning_en = "I expect that ~; it is expected that ~; ~ is expected to; I am fairly certain that ~; should; ought to; it is natural that ~; no wonder ~"
-
-[[patterns.steps]]
-surface    = "はず"
-

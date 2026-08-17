@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "次第"
-name       = "次第"
-jlpt       = "N2"
-meaning_en = "As soon as; depend on"
-
-[[patterns.steps]]
-surface    = "次第"
-

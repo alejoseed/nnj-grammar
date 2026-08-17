@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "より"
-name       = "より"
-jlpt       = "N1"
-
-[[patterns.steps]]
-surface    = "より"
-pos1       = "副詞"
-

@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "分"
-name       = "分"
-jlpt       = ""
-meaning_en = "For ~; ~ worth; amount equivalent to ~; portion"
-
-[[patterns.steps]]
-surface    = "分"
-

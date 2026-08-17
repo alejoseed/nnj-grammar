@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "以来"
-name       = "以来"
-jlpt       = "N3"
-meaning_en = "Since"
-
-[[patterns.steps]]
-surface    = "以来"
-

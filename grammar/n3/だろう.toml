@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "だろう"
-name       = "だろう"
-jlpt       = "N3"
-
-[[patterns.steps]]
-pos1       = "助動詞"
-base_form  = "だ"
-

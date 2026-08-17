@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "ところ"
-name       = "ところ"
-jlpt       = "N2"
-meaning_en = "When; then"
-
-[[patterns.steps]]
-surface    = "ところ"
-

@@ -593,10 +593,6 @@ than reading the entire module first.
   complete documents. The web UI consumes the analyzer live through the loopback
   API (`nnj-grammar-server`). CLI migration remains a separate decision, and the
   API does not touch the CLI path.
-- `src/graph/` is dormant unfinished code and is not compiled. Current graph
-  output lives in `src/display.rs`; the active D3 graph lives under `web/`.
-- Older `grammar/n1` through `grammar/n5` directories are not the embedded
-  Hanabira catalog.
 - UniDic index comments and the selected base/reading fields in `tokenizer.rs`
   need a documentation consistency pass.
 

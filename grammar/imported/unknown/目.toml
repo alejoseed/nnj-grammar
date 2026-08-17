@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "目"
-name       = "目"
-jlpt       = ""
-meaning_en = "-th; -th one"
-
-[[patterns.steps]]
-surface    = "目"
-

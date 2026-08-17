@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "かねる"
-name       = "かねる"
-jlpt       = "N2"
-
-[[patterns.steps]]
-surface    = "かねる"
-pos1       = "接尾辞"
-

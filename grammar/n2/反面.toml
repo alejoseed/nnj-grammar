@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "反面"
-name       = "反面"
-jlpt       = "N2"
-meaning_en = "While; on the other hand"
-
-[[patterns.steps]]
-surface    = "反面"
-

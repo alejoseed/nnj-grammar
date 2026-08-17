@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "限り"
-name       = "限り"
-jlpt       = "N2"
-meaning_en = "The last; only until; from ~ on; limited to; only"
-
-[[patterns.steps]]
-surface    = "限り"
-

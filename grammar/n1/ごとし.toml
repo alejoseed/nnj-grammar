@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "ごとし"
-name       = "ごとし"
-jlpt       = "N1"
-
-[[patterns.steps]]
-pos1       = "助動詞"
-base_form  = "ごとし"
-

@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "以上"
-name       = "以上"
-jlpt       = "N3"
-meaning_en = "Since; now that; once; if ~ at all; as long as; so long as"
-
-[[patterns.steps]]
-surface    = "以上"
-

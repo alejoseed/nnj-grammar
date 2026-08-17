@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "通り"
-name       = "通り"
-jlpt       = "N3"
-meaning_en = "(in) the same way as; (in) the way; as"
-
-[[patterns.steps]]
-surface    = "通り"
-

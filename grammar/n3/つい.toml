@@ -1,9 +1,0 @@
-[[patterns]]
-id         = "つい"
-name       = "つい"
-jlpt       = "N3"
-
-[[patterns.steps]]
-surface    = "つい"
-pos1       = "副詞"
-
