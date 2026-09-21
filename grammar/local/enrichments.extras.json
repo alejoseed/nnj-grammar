@@ -1,0 +1,11 @@
+{
+  "schema": "nnj.grammar-enrichments.v1",
+  "rules": [
+    {
+      "title": "かもしれない",
+      "forms": [
+        { "id": "casual-short", "text": "Phrase + かも" }
+      ]
+    }
+  ]
+}

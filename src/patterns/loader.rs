@@ -277,7 +277,7 @@ mod tests {
     fn combined_catalog_adds_local_rules_with_provenance() {
         let local = tempdir().expect("temporary local catalog");
         fs::write(
-            local.path().join("local-catalog.toml"),
+            local.path().join("extras.toml"),
             r#"
                 [[patterns]]
                 id = "local-test"
@@ -309,7 +309,7 @@ mod tests {
         let duplicate_id = &embedded[0].id;
         let local = tempdir().expect("temporary local catalog");
         fs::write(
-            local.path().join("local-catalog.toml"),
+            local.path().join("extras.toml"),
             format!(
                 r#"
                     [[patterns]]

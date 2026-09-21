@@ -7,7 +7,7 @@ use tempfile::tempdir;
 fn combined_catalog_prioritizes_soshite_and_nani_yori() {
     let local = tempdir().expect("temporary local catalog");
     fs::write(
-        local.path().join("local-catalog.toml"),
+        local.path().join("extras.toml"),
         r#"
             [[patterns]]
             id = "local-nani-yori"

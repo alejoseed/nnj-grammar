@@ -1,6 +1,4 @@
 /target
-/grammar/local/
-*.local-catalog.json
 tools/__pycache__/
 /.superpowers/
 /sessions.json

@@ -355,7 +355,7 @@ def main() -> None:
 
     raw = args.snapshot.read_bytes()
     output.mkdir(parents=True, exist_ok=True)
-    destination = output / "local-catalog.toml"
+    destination = output / "extras.toml"
     rendered, rejected = render(snapshot, compiler, hashlib.sha256(raw).hexdigest())
     destination.write_text(rendered, encoding="utf-8")
     print(f"Compiled {len(snapshot['grammar_points'])} local grammar points -> {destination}")
