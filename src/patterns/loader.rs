@@ -13,26 +13,50 @@ use super::rule::{CatalogSource, GrammarFile, PatternRule, Step};
 #[include = "*.toml"]
 struct EmbeddedGrammar;
 
-/// Load grammar rules from the embedded files baked into the binary.
-/// Use this on iOS or when distributing a standalone binary.
-pub fn load_embedded() -> Result<Vec<PatternRule>> {
+#[derive(RustEmbed)]
+#[folder = "grammar/local/"]
+#[include = "*.toml"]
+struct EmbeddedLocal;
+
+fn hanabira_source() -> CatalogSource {
+    CatalogSource::new("hanabira", "Hanabira")
+}
+
+fn local_source() -> CatalogSource {
+    CatalogSource::new("local", "Local catalog")
+}
+
+fn load_embedded_folder<E: RustEmbed>(source: &CatalogSource) -> Result<Vec<PatternRule>> {
     let mut rules = Vec::new();
-    let mut filenames: Vec<_> = EmbeddedGrammar::iter().collect();
+    let mut filenames: Vec<_> = E::iter().collect();
     filenames.sort();
 
     for filename in filenames {
-        let file = EmbeddedGrammar::get(&filename)
+        let file = E::get(&filename)
             .with_context(|| format!("failed to read embedded file: {}", filename))?;
 
         let src = std::str::from_utf8(file.data.as_ref())
             .with_context(|| format!("embedded file is not valid UTF-8: {}", filename))?;
 
-        let mut file_rules =
-            parse_toml_with_source(src, &filename, &CatalogSource::new("hanabira", "Hanabira"))?;
+        let mut file_rules = parse_toml_with_source(src, &filename, source)?;
         rules.append(&mut file_rules);
     }
 
+    Ok(rules)
+}
+
+/// Load the embedded Hanabira catalog on its own.
+/// Use this on iOS or when distributing a standalone binary.
+pub fn load_embedded() -> Result<Vec<PatternRule>> {
+    let rules = load_embedded_folder::<EmbeddedGrammar>(&hanabira_source())?;
     validate_unique_rule_ids(&rules, "embedded grammar catalog")?;
+    Ok(rules)
+}
+
+/// Load the embedded local catalog on its own.
+pub fn load_embedded_local() -> Result<Vec<PatternRule>> {
+    let rules = load_embedded_folder::<EmbeddedLocal>(&local_source())?;
+    validate_unique_rule_ids(&rules, "embedded local catalog")?;
     Ok(rules)
 }
 
@@ -70,14 +94,14 @@ fn load_grammar_dir_with_source(dir: &Path, source: &CatalogSource) -> Result<Ve
     Ok(rules)
 }
 
-/// Load embedded Hanabira together with an optional personal local catalog.
+/// Load embedded Hanabira together with the local catalog. The local layer comes
+/// from `local_dir` when that directory exists, and from the embedded copy
+/// otherwise; the two are alternatives, never both.
 pub fn load_combined(local_dir: Option<&Path>) -> Result<Vec<PatternRule>> {
-    let mut rules = load_embedded()?;
-    if let Some(dir) = local_dir.filter(|dir| dir.exists()) {
-        rules.extend(load_grammar_dir_with_source(
-            dir,
-            &CatalogSource::new("local", "Local catalog"),
-        )?);
+    let mut rules = load_embedded_folder::<EmbeddedGrammar>(&hanabira_source())?;
+    match local_dir.filter(|dir| dir.exists()) {
+        Some(dir) => rules.extend(load_grammar_dir_with_source(dir, &local_source())?),
+        None => rules.extend(load_embedded_folder::<EmbeddedLocal>(&local_source())?),
     }
     validate_unique_rule_ids(&rules, "combined grammar catalog")?;
     Ok(rules)
@@ -202,7 +226,7 @@ fn validate_steps(steps: &[Step], rule_id: &str, name: &str) -> Result<()> {
 
 #[cfg(test)]
 mod tests {
-    use super::{load_combined, load_embedded, parse_toml};
+    use super::{load_combined, load_embedded, load_embedded_local, parse_toml};
     use std::collections::HashSet;
     use std::fs;
     use tempfile::tempdir;
@@ -301,6 +325,58 @@ mod tests {
         assert!(rules
             .iter()
             .any(|rule| { rule.id == "local-test" && rule.source.id == "local" }));
+    }
+
+    #[test]
+    fn embedded_local_catalog_carries_local_provenance() {
+        let rules = load_embedded_local().expect("embedded local rules should parse");
+
+        assert!(
+            !rules.is_empty(),
+            "grammar/local should embed at least one rule"
+        );
+        assert!(rules.iter().all(|rule| rule.source.id == "local"));
+    }
+
+    #[test]
+    fn combined_catalog_defaults_to_the_embedded_local_layer() {
+        let rules = load_combined(None).expect("embedded-only combined catalog should load");
+        let local = load_embedded_local().expect("embedded local rules");
+
+        assert_eq!(rules.len(), 828 + local.len());
+        assert!(rules
+            .iter()
+            .any(|rule| rule.source.id == "local" && rule.id == local[0].id));
+    }
+
+    #[test]
+    fn local_directory_replaces_the_embedded_local_layer() {
+        // Reusing an embedded local id must not be a conflict: the directory
+        // stands in for that layer rather than adding to it.
+        let embedded_local = load_embedded_local().expect("embedded local rules");
+        let local = tempdir().expect("temporary local catalog");
+        fs::write(
+            local.path().join("extras.toml"),
+            format!(
+                r#"
+                    [[patterns]]
+                    id = "{}"
+                    name = "override"
+                    jlpt = "N5"
+                    [[patterns.steps]]
+                    surface = "上書き"
+                "#,
+                embedded_local[0].id
+            ),
+        )
+        .expect("write override fixture");
+
+        let rules = load_combined(Some(local.path())).expect("directory should replace embedded");
+
+        assert_eq!(rules.len(), 828 + 1);
+        assert!(rules
+            .iter()
+            .any(|rule| rule.id == embedded_local[0].id && rule.name == "override"));
     }
 
     #[test]

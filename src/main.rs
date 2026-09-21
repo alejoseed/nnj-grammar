@@ -79,12 +79,11 @@ fn main() -> Result<()> {
         }
 
         output_fmt => {
-            // Load rules: embedded by default, filesystem if --grammar-db was set
             let default_db = std::path::PathBuf::from("grammar");
             let rules = if cli.grammar_db != default_db {
                 patterns::load_grammar_dir(&cli.grammar_db)?
             } else {
-                patterns::load_embedded()?
+                patterns::load_combined(None)?
             };
 
             let matches = matcher::match_all(&tokens, &rules);

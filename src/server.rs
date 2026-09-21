@@ -255,6 +255,8 @@ async fn shutdown_signal() {
     let _ = tokio::signal::ctrl_c().await;
 }
 
+/// Which local catalog the analyzer ended up with: the copy embedded in the
+/// binary, or a `grammar/local` directory on disk that stands in for it.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum LocalCatalogMode {
     EmbeddedOnly,
@@ -266,6 +268,7 @@ pub fn build_analyzer(base: &Path) -> anyhow::Result<(Analyzer, LocalCatalogMode
     crate::dictionary::Dictionary::shared();
     let candidate = base.join("grammar/local");
     if !candidate.exists() {
+        // Still a full catalog: the local rules are embedded in the binary.
         let analyzer = Analyzer::new(AnalyzerConfig::default())
             .context("failed to initialize embedded-only analyzer")?;
         return Ok((analyzer, LocalCatalogMode::EmbeddedOnly));

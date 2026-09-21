@@ -96,3 +96,16 @@ Sentences where our deterministic output beats the LLM-backed reference
 > regression**, not just cosmetic — it makes distinct grammar points (`ておく` vs `ている` vs
 > `ちゃう`) mutually match. The bulk fix likely needs per-lemma widening (conjugation only) or a
 > much finer family granularity, NOT whole-family `one_of`. Revisit `docs/PIPELINE.md` §10.
+
+
+悪いことをしちゃった感じだな
+
+This sentences returns 
+～くせに
+N3
+
+Used to express criticism or disapproval; 'even though', 'despite', 'in spite of'.
+
+Formation: Formation: Verb-casual + くせに, い-Adjective + くせに, な-Adjective + な/のくせに, Noun + のくせに
+
+And Idk why

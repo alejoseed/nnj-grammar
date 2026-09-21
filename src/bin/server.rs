@@ -25,10 +25,10 @@ async fn main() -> anyhow::Result<()> {
 
     match mode {
         LocalCatalogMode::EmbeddedOnly => {
-            info!(logger, "loaded embedded-only grammar catalog");
+            info!(logger, "loaded embedded grammar catalog"; "local" => "embedded");
         }
         LocalCatalogMode::Combined(path) => {
-            info!(logger, "loaded combined grammar catalog";
+            info!(logger, "loaded grammar catalog with an on-disk local override";
                 "local" => %path.display());
         }
     }

@@ -102,7 +102,10 @@ python3 tools/import_hanabira.py \
   grammar/hanabira
 ```
 
-Local catalogs belong in the ignored `grammar/local/` directory and can be
+Local catalogs live in `grammar/local/` and are compiled into the binary
+alongside the Hanabira catalog, so both layers ship together. A `grammar/local`
+directory on disk *replaces* the embedded copy rather than adding to it — that
+is how you swap in a different catalog without recompiling. It can also be
 selected explicitly:
 
 ```sh
@@ -112,7 +115,7 @@ cargo run -- --grammar-db grammar/local "東京しか行かない"
 `tools/import_local_catalog.py` can convert a user-saved grammar index payload
 into a local catalog. It does not fetch data or accept account credentials.
 Whether the result may be redistributed depends on the terms of whatever the
-snapshot came from, so it is written to the ignored `grammar/local/`.
+snapshot came from — check them before publishing a build.
 
 ## Development
 

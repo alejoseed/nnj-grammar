@@ -20,8 +20,6 @@ ENV NNJ_GRAMMAR_BIND=0.0.0.0:7878
 # One log file per day under /logs, in addition to stdout.
 ENV NNJ_GRAMMAR_LOG_DIR=/logs
 
-# The server auto-loads grammar/local/ from the working directory if a
-# volume is mounted at /app/grammar/local.
 WORKDIR /app
 
 EXPOSE 7878
