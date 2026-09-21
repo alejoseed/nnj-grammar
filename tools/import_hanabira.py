@@ -543,7 +543,55 @@ class Compiler:
                 variant = self.compile_branch(branch, f"title-{index:02d}")
                 if variant:
                     variants.append(variant)
-        return deduplicate_variants(variants)
+        return drop_degenerate_variants(
+            deduplicate_variants(variants), grammar_title(entry["title"])
+        )
+
+
+def required_core_literal(variant: Variant) -> str | None:
+    """Concatenated surface of the core's required literal steps.
+
+    None when any required step is a wildcard, a one_of set, or a bare
+    predicate — those carry their own specificity and are never degenerate.
+    """
+    parts: list[str] = []
+    for step in variant.core:
+        if step.get("optional"):
+            continue
+        if "wildcard" in step or "one_of" in step:
+            return None
+        literal = step.get("surface") or step.get("base_form")
+        if not literal:
+            return None
+        parts.append(literal)
+    return "".join(parts)
+
+
+def drop_degenerate_variants(variants: list[Variant], title: str) -> list[Variant]:
+    """Drop variants whose core collapsed to a single bare particle.
+
+    `expand_slashes` splits a branch at `/`, so a formation like
+    "な-Adjective + な/のくせに" yields the branch "な-Adjective + な" with the
+    くせに lost. The resulting variant has a one-kana core and fires on every
+    な after a 形状詞 — ～くせに matching 好きな. Until the slash expansion is
+    made local to the component, reject the wreckage: a rule whose title needs
+    two or more Japanese characters cannot be anchored on one kana alone.
+
+    Only ever drops when a real variant survives. When *every* variant is
+    degenerate the rule is unsalvageable by filtering, and dropping them all
+    would leave a pattern with no steps, which the Rust loader rejects; those
+    rules are left intact and must be fixed at the expansion site.
+    """
+    runs = JAPANESE.findall(title)
+    anchor = max(runs, key=len) if runs else ""
+    if len(anchor) < 2:
+        return variants
+    kept = [
+        variant
+        for variant in variants
+        if (literal := required_core_literal(variant)) is None or len(literal) != 1
+    ]
+    return kept if kept else variants
 
 
 def deduplicate_variants(variants: list[Variant]) -> list[Variant]:
@@ -612,7 +660,7 @@ def render_file(
                 f"name       = {toml_string(grammar_title(entry['title']))}",
                 f"jlpt       = {toml_string(level)}",
                 f"meaning_en = {toml_string(entry.get('short_explanation', ''))}",
-                f"hint       = {toml_string('Formation: ' + entry.get('formation', ''))}",
+                f"hint       = {toml_string(entry.get('formation', ''))}",
                 f"sense_id   = {toml_string(pattern_id)}",
                 "",
             ]

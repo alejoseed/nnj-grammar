@@ -333,8 +333,10 @@ pub fn print_graph(tokens: &[Token], matches: &[PatternMatch]) {
         // Content lines for the box
         let title = format!("{} · {}", m.rule_name, m.jlpt);
         let mut lines: Vec<&str> = vec![&title, &m.meaning_en];
+        let formation;
         if let Some(ref hint) = m.hint {
-            lines.push(hint);
+            formation = format!("Formation: {hint}");
+            lines.push(&formation);
         }
 
         let inner = lines.iter().map(|l| cols(l)).max().unwrap_or(10);

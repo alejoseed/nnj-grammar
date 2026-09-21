@@ -5,9 +5,7 @@ tools/__pycache__/
 /.superpowers/
 /sessions.json
 /claude-output.md
-/web/node_modules/
-/web/dist/
-/web/test-results/
-/web/playwright-report/
+# The frontend lives in its own repo; dev.sh symlinks it in as ./web
+/web
 /data/
 /docs/

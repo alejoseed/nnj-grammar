@@ -10,7 +10,7 @@ id         = "hanabira-n3-001"
 name       = "A その上 B"
 jlpt       = "N3"
 meaning_en = "Used to express 'in addition to', 'besides', or 'furthermore' when adding information or making a suggestion."
-hint       = "Formation: A [sentence/clause] + その上 + B [sentence/clause]"
+hint       = "A [sentence/clause] + その上 + B [sentence/clause]"
 sense_id   = "hanabira-n3-001"
 
 [[patterns.variants]]
@@ -35,7 +35,7 @@ id         = "hanabira-n3-002"
 name       = "～うちに"
 jlpt       = "N3"
 meaning_en = "Express 'while', 'before', or 'during' a certain condition or situation."
-hint       = "Formation: Verb-てform + いる + うちに, い-Adjective + い + うちに, な-Adjective + な + うちに"
+hint       = "Verb-てform + いる + うちに, い-Adjective + い + うちに, な-Adjective + な + うちに"
 sense_id   = "hanabira-n3-002"
 
 [[patterns.variants]]
@@ -94,7 +94,7 @@ id         = "hanabira-n3-003"
 name       = "～うとした"
 jlpt       = "N3"
 meaning_en = "Express an action someone tried to do but couldn't; 'tried to', 'attempted to'."
-hint       = "Formation: Verb-う stem + とした"
+hint       = "Verb-う stem + とした"
 sense_id   = "hanabira-n3-003"
 
 [[patterns.variants]]
@@ -119,7 +119,7 @@ id         = "hanabira-n3-004"
 name       = "～おかげで"
 jlpt       = "N3"
 meaning_en = "Expresses gratitude or shows a positive result due to a certain factor; 'thanks to', 'because of'."
-hint       = "Formation: Verb-casual + おかげで, い-Adjective + おかげで, な-Adjective + だおかげで, Noun + のおかげで"
+hint       = "Verb-casual + おかげで, い-Adjective + おかげで, な-Adjective + だおかげで, Noun + のおかげで"
 sense_id   = "hanabira-n3-004"
 
 [[patterns.variants]]
@@ -189,7 +189,7 @@ id         = "hanabira-n3-005"
 name       = "～かけ"
 jlpt       = "N3"
 meaning_en = "Expresses the meaning of being in the middle of doing something or of something being partway done."
-hint       = "Formation: Verb-ますstem + かけ"
+hint       = "Verb-ますstem + かけ"
 sense_id   = "hanabira-n3-005"
 
 [[patterns.variants]]
@@ -208,7 +208,7 @@ id         = "hanabira-n3-006"
 name       = "～かなあ"
 jlpt       = "N3"
 meaning_en = "Expressing uncertainty or a mild wish; 'I wonder', 'maybe'."
-hint       = "Formation: Verb-casual + かなあ, い-Adjective + かなあ, な-Adjective + だかなあ, Noun + だかなあ"
+hint       = "Verb-casual + かなあ, い-Adjective + かなあ, な-Adjective + だかなあ, Noun + だかなあ"
 sense_id   = "hanabira-n3-006"
 
 [[patterns.variants]]
@@ -278,7 +278,7 @@ id         = "hanabira-n3-007"
 name       = "～ないで"
 jlpt       = "N3"
 meaning_en = "Express 'without doing ~' or 'without ~ing'."
-hint       = "Formation: Verb-ない-form + で"
+hint       = "Verb-ない-form + で"
 sense_id   = "hanabira-n3-007"
 
 [[patterns.variants]]
@@ -297,7 +297,7 @@ id         = "hanabira-n3-008"
 name       = "～から～にかけて"
 jlpt       = "N3"
 meaning_en = "Expresses a range of something, such as time or space; 'from...to', 'between'."
-hint       = "Formation: Noun (time, place, or measure) + から + Noun (time, place or measure) + にかけて"
+hint       = "Noun (time, place, or measure) + から + Noun (time, place or measure) + にかけて"
 sense_id   = "hanabira-n3-008"
 
 [[patterns.variants]]
@@ -329,7 +329,7 @@ id         = "hanabira-n3-009"
 name       = "～かわりに"
 jlpt       = "N3"
 meaning_en = "In place of; instead of; as a substitute for."
-hint       = "Formation: Verb-casual + かわりに, い-Adjective + かわりに, な-Adjective + だかわりに, Noun + だかわりに"
+hint       = "Verb-casual + かわりに, い-Adjective + かわりに, な-Adjective + だかわりに, Noun + だかわりに"
 sense_id   = "hanabira-n3-009"
 
 [[patterns.variants]]
@@ -399,7 +399,7 @@ id         = "hanabira-n3-010"
 name       = "～きり"
 jlpt       = "N3"
 meaning_en = "Expresses the idea of 'only', 'since', or 'after'."
-hint       = "Formation: Verb-past + きり, Verb-てform + きり (less common), Noun + きり"
+hint       = "Verb-past + きり, Verb-てform + きり (less common), Noun + きり"
 sense_id   = "hanabira-n3-010"
 
 [[patterns.variants]]
@@ -429,7 +429,7 @@ id         = "hanabira-n3-011"
 name       = "～くせに"
 jlpt       = "N3"
 meaning_en = "Used to express criticism or disapproval; 'even though', 'despite', 'in spite of'."
-hint       = "Formation: Verb-casual + くせに, い-Adjective + くせに, な-Adjective + な/のくせに, Noun + のくせに"
+hint       = "Verb-casual + くせに, い-Adjective + くせに, な-Adjective + な/のくせに, Noun + のくせに"
 sense_id   = "hanabira-n3-011"
 
 [[patterns.variants]]
@@ -459,17 +459,6 @@ surface      = "くせ"
 
 [[patterns.variants.core]]
 surface      = "に"
-
-[[patterns.variants]]
-id              = "formation-03"
-priority        = 0
-sense_id        = "hanabira-n3-011"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "形状詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "な"
 
 [[patterns.variants]]
 id              = "formation-04"
@@ -510,7 +499,7 @@ id         = "hanabira-n3-012"
 name       = "～くらい"
 jlpt       = "N3"
 meaning_en = "Expresses an approximate quantity or degree; 'about', 'approximately', or 'to the extent of'."
-hint       = "Formation: Verb-casual + くらい, い-Adjective + くらい, な-Adjective + くらい, Noun + くらい"
+hint       = "Verb-casual + くらい, い-Adjective + くらい, な-Adjective + くらい, Noun + くらい"
 sense_id   = "hanabira-n3-012"
 
 [[patterns.variants]]
@@ -562,7 +551,7 @@ id         = "hanabira-n3-013"
 name       = "～くらい～は～ない"
 jlpt       = "N3"
 meaning_en = "Express the least one can do; 'at least', 'the least', 'no less than'."
-hint       = "Formation: Verb-casual (non-past) + くらい + は + Verb-casual (negative), Adjective (non-past) + くらい + は + Adjective (negative)"
+hint       = "Verb-casual (non-past) + くらい + は + Verb-casual (negative), Adjective (non-past) + くらい + は + Adjective (negative)"
 sense_id   = "hanabira-n3-013"
 
 [[patterns.variants]]
@@ -604,7 +593,7 @@ id         = "hanabira-n3-014"
 name       = "～こそ"
 jlpt       = "N3"
 meaning_en = "Emphasizes the importance or uniqueness of something or someone; 'precisely', 'exactly', 'it is...', 'of all...'."
-hint       = "Formation: Noun + こそ, (Verb-て + こそ)"
+hint       = "Noun + こそ, (Verb-て + こそ)"
 sense_id   = "hanabira-n3-014"
 
 [[patterns.variants]]
@@ -623,7 +612,7 @@ id         = "hanabira-n3-015"
 name       = "～こと"
 jlpt       = "N3"
 meaning_en = "Express an action in a nominal (noun-like) form or state fact or experience."
-hint       = "Formation: Verb-plain form + こと, Verb-phrase in plain form + こと"
+hint       = "Verb-plain form + こと, Verb-phrase in plain form + こと"
 sense_id   = "hanabira-n3-015"
 
 [[patterns.variants]]
@@ -642,7 +631,7 @@ id         = "hanabira-n3-016"
 name       = "～ことだ"
 jlpt       = "N3"
 meaning_en = "Expresses advice or recommendation; 'should', 'it is important', 'it is necessary'."
-hint       = "Formation: Verb-ますstem + ことだ, い-Adjective + ことだ, な-Adjective + なことだ, Noun + のことだ"
+hint       = "Verb-ますstem + ことだ, い-Adjective + ことだ, な-Adjective + なことだ, Noun + のことだ"
 sense_id   = "hanabira-n3-016"
 
 [[patterns.variants]]
@@ -712,7 +701,7 @@ id         = "hanabira-n3-017"
 name       = "～ことにしている"
 jlpt       = "N3"
 meaning_en = "Express a personal rule or habit; 'I make it a rule to', 'I always make sure to'."
-hint       = "Formation: Verb-casual + ことにしている"
+hint       = "Verb-casual + ことにしている"
 sense_id   = "hanabira-n3-017"
 
 [[patterns.variants]]
@@ -743,7 +732,7 @@ id         = "hanabira-n3-018"
 name       = "～ことになっている"
 jlpt       = "N3"
 meaning_en = "Describes something that is decided, arranged, or expected."
-hint       = "Formation: Verb-dictionary form + ことになっている"
+hint       = "Verb-dictionary form + ことになっている"
 sense_id   = "hanabira-n3-018"
 
 [[patterns.variants]]
@@ -774,7 +763,7 @@ id         = "hanabira-n3-019"
 name       = "～ことは…が"
 jlpt       = "N3"
 meaning_en = "Indicates that while something may be true or valid, there is another contrasting point."
-hint       = "Formation: Verb-casual + ことは + が, い-Adjective + ことは + が, な-Adjective + だ + ことは + が, Noun + だ + ことは + が"
+hint       = "Verb-casual + ことは + が, い-Adjective + ことは + が, な-Adjective + だ + ことは + が, Noun + だ + ことは + が"
 sense_id   = "hanabira-n3-019"
 
 [[patterns.variants]]
@@ -856,7 +845,7 @@ id         = "hanabira-n3-020"
 name       = "～ことはない"
 jlpt       = "N3"
 meaning_en = "Expresses that something doesn't need to be done or there's no occasion to do it; 'don't have to', 'not necessary'."
-hint       = "Formation: Verb-dictionary form + ことはない, い-Adjective + ことはない, な-Adjective + であることはない, Noun + であることはない"
+hint       = "Verb-dictionary form + ことはない, い-Adjective + ことはない, な-Adjective + であることはない, Noun + であることはない"
 sense_id   = "hanabira-n3-020"
 
 [[patterns.variants]]
@@ -944,7 +933,7 @@ id         = "hanabira-n3-021"
 name       = "～さ"
 jlpt       = "N3"
 meaning_en = "Express the degree or extent of a quality; '-ness', 'degree of'."
-hint       = "Formation: い-Adjective (drop い) + さ, な-Adjective + さ"
+hint       = "い-Adjective (drop い) + さ, な-Adjective + さ"
 sense_id   = "hanabira-n3-021"
 
 [[patterns.variants]]
@@ -974,7 +963,7 @@ id         = "hanabira-n3-022"
 name       = "～さえ"
 jlpt       = "N3"
 meaning_en = "Emphasizes a specific item or action; 'even', 'if only', 'as long as'."
-hint       = "Formation: Noun + さえ, Verb-casual + さえ, い-Adjective + さえ, な-Adjective + でさえ"
+hint       = "Noun + さえ, Verb-casual + さえ, い-Adjective + さえ, な-Adjective + でさえ"
 sense_id   = "hanabira-n3-022"
 
 [[patterns.variants]]
@@ -1029,7 +1018,7 @@ id         = "hanabira-n3-023"
 name       = "～しかない"
 jlpt       = "N3"
 meaning_en = "Express the idea of 'only', 'no other option but', 'nothing else but'."
-hint       = "Formation: Verb-casual + しかない, い-Adjective + しかない, な-Adjective + しかない, Noun + しかない"
+hint       = "Verb-casual + しかない, い-Adjective + しかない, な-Adjective + しかない, Noun + しかない"
 sense_id   = "hanabira-n3-023"
 
 [[patterns.variants]]
@@ -1093,7 +1082,7 @@ id         = "hanabira-n3-024"
 name       = "すこしも〜ない"
 jlpt       = "N3"
 meaning_en = "Express a negative state or action; 'not at all', 'none whatsoever'."
-hint       = "Formation: すこしも + Verb-negative"
+hint       = "すこしも + Verb-negative"
 sense_id   = "hanabira-n3-024"
 
 [[patterns.variants]]
@@ -1115,7 +1104,7 @@ id         = "hanabira-n3-025"
 name       = "～ずに"
 jlpt       = "N3"
 meaning_en = "Express 'without doing' something or 'not doing' something."
-hint       = "Formation: Verb-ない form (Remove ない) + ずに"
+hint       = "Verb-ない form (Remove ない) + ずに"
 sense_id   = "hanabira-n3-025"
 
 [[patterns.variants]]
@@ -1137,7 +1126,7 @@ id         = "hanabira-n3-026"
 name       = "～せいで"
 jlpt       = "N3"
 meaning_en = "Indicates that something or someone caused an unfortunate result."
-hint       = "Formation: Verb-casual + せいで, い-Adjective + せいで, な-Adjective + なせいで, Noun + のせいで"
+hint       = "Verb-casual + せいで, い-Adjective + せいで, な-Adjective + なせいで, Noun + のせいで"
 sense_id   = "hanabira-n3-026"
 
 [[patterns.variants]]
@@ -1207,7 +1196,7 @@ id         = "hanabira-n3-027"
 name       = "～せてください"
 jlpt       = "N3"
 meaning_en = "Requesting someone to allow or let you do something (causative request)."
-hint       = "Formation: Verb-causative (させ) + て + ください"
+hint       = "Verb-causative (させ) + て + ください"
 sense_id   = "hanabira-n3-027"
 
 [[patterns.variants]]
@@ -1229,7 +1218,7 @@ id         = "hanabira-n3-028"
 name       = "～そのために"
 jlpt       = "N3"
 meaning_en = "For the purpose of; because of; in order to."
-hint       = "Formation: Sentence/phrase 1 + そのために + Sentence/phrase 2"
+hint       = "Sentence/phrase 1 + そのために + Sentence/phrase 2"
 sense_id   = "hanabira-n3-028"
 
 [[patterns.variants]]
@@ -1257,7 +1246,7 @@ id         = "hanabira-n3-029"
 name       = "～その結果"
 jlpt       = "N3"
 meaning_en = "Shows the result or consequence of a previous action or situation; 'as a result', 'in consequence'."
-hint       = "Formation: Situation/ACTION 1 + その結果 + RESULT"
+hint       = "Situation/ACTION 1 + その結果 + RESULT"
 sense_id   = "hanabira-n3-029"
 
 [[patterns.variants]]
@@ -1282,7 +1271,7 @@ id         = "hanabira-n3-030"
 name       = "～それと～"
 jlpt       = "N3"
 meaning_en = "Used to link two or more items; 'and', 'also'."
-hint       = "Formation: Item1 + それと + Item2"
+hint       = "Item1 + それと + Item2"
 sense_id   = "hanabira-n3-030"
 
 [[patterns.variants]]
@@ -1307,7 +1296,7 @@ id         = "hanabira-n3-031"
 name       = "～？それとも～？"
 jlpt       = "N3"
 meaning_en = "Presents two alternatives or choices; 'or', 'either...or'."
-hint       = "Formation: Verb-casual + ？それとも + Verb-casual + ？, etc."
+hint       = "Verb-casual + ？それとも + Verb-casual + ？, etc."
 sense_id   = "hanabira-n3-031"
 
 [[patterns.variants]]
@@ -1345,7 +1334,7 @@ id         = "hanabira-n3-032"
 name       = "～だけしか"
 jlpt       = "N3"
 meaning_en = "Emphasizes the scarcity or insufficiency of something; 'only', 'nothing but'."
-hint       = "Formation: Noun/Quantity + だけ + しか + Negative Verb"
+hint       = "Noun/Quantity + だけ + しか + Negative Verb"
 sense_id   = "hanabira-n3-032"
 
 [[patterns.variants]]
@@ -1370,7 +1359,7 @@ id         = "hanabira-n3-033"
 name       = "だけど"
 jlpt       = "N3"
 meaning_en = "Expresses a contrast or contradiction; 'but', 'however', 'even though'."
-hint       = "Formation: Sentence 1 + だけど + Sentence 2, or Sentence 1 + 。だけど、Sentence 2"
+hint       = "Sentence 1 + だけど + Sentence 2, or Sentence 1 + 。だけど、Sentence 2"
 sense_id   = "hanabira-n3-033"
 
 [[patterns.variants]]
@@ -1415,7 +1404,7 @@ id         = "hanabira-n3-034"
 name       = "～たて"
 jlpt       = "N3"
 meaning_en = "Indicates an action that has just been completed; 'freshly', 'just'."
-hint       = "Formation: Verb-stem + たて"
+hint       = "Verb-stem + たて"
 sense_id   = "hanabira-n3-034"
 
 [[patterns.variants]]
@@ -1434,7 +1423,7 @@ id         = "hanabira-n3-035"
 name       = "～たとえ～ても"
 jlpt       = "N3"
 meaning_en = "Express a condition with 'even if'; 'no matter how'."
-hint       = "Formation: たとえ + Verb-casual + ても, たとえ + い-Adjective + くても, たとえ + な-Adjective + であっても, たとえ + Noun + であっても"
+hint       = "たとえ + Verb-casual + ても, たとえ + い-Adjective + くても, たとえ + な-Adjective + であっても, たとえ + Noun + であっても"
 sense_id   = "hanabira-n3-035"
 
 [[patterns.variants]]
@@ -1505,7 +1494,7 @@ id         = "hanabira-n3-036"
 name       = "～たところ"
 jlpt       = "N3"
 meaning_en = "Expresses the result or outcome of an action; 'after', 'just when', 'upon'."
-hint       = "Formation: Verb-た form + ところ"
+hint       = "Verb-た form + ところ"
 sense_id   = "hanabira-n3-036"
 
 [[patterns.variants]]
@@ -1524,7 +1513,7 @@ id         = "hanabira-n3-037"
 name       = "～たとたん"
 jlpt       = "N3"
 meaning_en = "Express the moment something happens; 'as soon as', 'the moment', 'the instant'."
-hint       = "Formation: Verb-た form + とたん"
+hint       = "Verb-た form + とたん"
 sense_id   = "hanabira-n3-037"
 
 [[patterns.variants]]
@@ -1543,7 +1532,7 @@ id         = "hanabira-n3-038"
 name       = "～たびに"
 jlpt       = "N3"
 meaning_en = "Express 'every time' or 'whenever'."
-hint       = "Formation: Verb-dictionary form + たびに, Noun + のたびに"
+hint       = "Verb-dictionary form + たびに, Noun + のたびに"
 sense_id   = "hanabira-n3-038"
 
 [[patterns.variants]]
@@ -1582,7 +1571,7 @@ id         = "hanabira-n3-039"
 name       = "～だものだ"
 jlpt       = "N3"
 meaning_en = "Express the reason or cause, often used to justify something."
-hint       = "Formation: Verb-casual + んだものだ, い-Adjective + んだものだ, な-Adjective + なんだものだ, Noun + なんだものだ (often with から as んだものだから)"
+hint       = "Verb-casual + んだものだ, い-Adjective + んだものだ, な-Adjective + なんだものだ, Noun + なんだものだ (often with から as んだものだから)"
 sense_id   = "hanabira-n3-039"
 
 [[patterns.variants]]
@@ -1670,7 +1659,7 @@ id         = "hanabira-n3-040"
 name       = "～ちゃった"
 jlpt       = "N3"
 meaning_en = "Express an unintentional action or a regretful action; 'ended up doing', 'did accidentally'."
-hint       = "Formation: Verb-て/で form → ちゃった/じゃった (e.g. 食べてしまった → 食べちゃった)"
+hint       = "Verb-て/で form → ちゃった/じゃった (e.g. 食べてしまった → 食べちゃった)"
 sense_id   = "hanabira-n3-040"
 
 [[patterns.variants]]
@@ -1706,7 +1695,7 @@ id         = "hanabira-n3-041"
 name       = "～ついでに"
 jlpt       = "N3"
 meaning_en = "Do something while or after completing another action; 'while', 'by the way'."
-hint       = "Formation: Verb (dictionary or た-form) + ついでに, Noun + の + ついでに, or Verb-て form + いる + ついでに"
+hint       = "Verb (dictionary or た-form) + ついでに, Noun + の + ついでに, or Verb-て form + いる + ついでに"
 sense_id   = "hanabira-n3-041"
 
 [[patterns.variants]]
@@ -1762,7 +1751,7 @@ id         = "hanabira-n3-042"
 name       = "～っけ？"
 jlpt       = "N3"
 meaning_en = "Used to express that one is trying to recall some information."
-hint       = "Formation: Verb-casual + っけ?, い-Adjective + かったっけ?, な-Adjective/Noun + だっけ?"
+hint       = "Verb-casual + っけ?, い-Adjective + かったっけ?, な-Adjective/Noun + だっけ?"
 sense_id   = "hanabira-n3-042"
 
 [[patterns.variants]]
@@ -1812,7 +1801,7 @@ id         = "hanabira-n3-043"
 name       = "～っぱい"
 jlpt       = "N3"
 meaning_en = "Expresses fullness or completeness; 'full', 'full of', 'filled with'."
-hint       = "Formation: Noun + で + いっぱい (Note: written as いっぱい, read as 'ippai')"
+hint       = "Noun + で + いっぱい (Note: written as いっぱい, read as 'ippai')"
 sense_id   = "hanabira-n3-043"
 
 [[patterns.variants]]
@@ -1834,7 +1823,7 @@ id         = "hanabira-n3-044"
 name       = "～っぱなし"
 jlpt       = "N3"
 meaning_en = "Indicate a state where an action is left as is (unchanged or unfinished)."
-hint       = "Formation: Verb-ますstem + っぱなし"
+hint       = "Verb-ますstem + っぱなし"
 sense_id   = "hanabira-n3-044"
 
 [[patterns.variants]]
@@ -1853,7 +1842,7 @@ id         = "hanabira-n3-045"
 name       = "～つまり"
 jlpt       = "N3"
 meaning_en = "Summarizing, restating, or clarifying a point: 'in other words', 'that is to say'."
-hint       = "Formation: Sentence A + つまり + Sentence B (rephrasing)"
+hint       = "Sentence A + つまり + Sentence B (rephrasing)"
 sense_id   = "hanabira-n3-045"
 
 [[patterns.variants]]
@@ -1875,7 +1864,7 @@ id         = "hanabira-n3-046"
 name       = "～つもりでした"
 jlpt       = "N3"
 meaning_en = "Expressing a past intention or plan; 'was planning to', 'meant to'."
-hint       = "Formation: Verb-casual (dictionary form) + つもりでした"
+hint       = "Verb-casual (dictionary form) + つもりでした"
 sense_id   = "hanabira-n3-046"
 
 [[patterns.variants]]
@@ -1900,7 +1889,7 @@ id         = "hanabira-n3-047"
 name       = "～てくれと"
 jlpt       = "N3"
 meaning_en = "Quote someone's request (telling someone to do something)."
-hint       = "Formation: Verb-て form + くれと (言う / 頼む / 伝える, etc.)"
+hint       = "Verb-て form + くれと (言う / 頼む / 伝える, etc.)"
 sense_id   = "hanabira-n3-047"
 
 [[patterns.variants]]
@@ -1922,7 +1911,7 @@ id         = "hanabira-n3-048"
 name       = "～てごらん"
 jlpt       = "N3"
 meaning_en = "Suggest or invite someone to try doing something; 'Why don't you try...'."
-hint       = "Formation: Verb-て form + ごらん"
+hint       = "Verb-て form + ごらん"
 sense_id   = "hanabira-n3-048"
 
 [[patterns.variants]]
@@ -1941,7 +1930,7 @@ id         = "hanabira-n3-049"
 name       = "ですから～"
 jlpt       = "N3"
 meaning_en = "Expresses reason or cause; 'because', 'since', 'so'."
-hint       = "Formation: Sentence A + ですから + Sentence B"
+hint       = "Sentence A + ですから + Sentence B"
 sense_id   = "hanabira-n3-049"
 
 [[patterns.variants]]
@@ -1966,7 +1955,7 @@ id         = "hanabira-n3-050"
 name       = "～てはじめて"
 jlpt       = "N3"
 meaning_en = "Realization or action done for the first time; 'only after', 'not until'."
-hint       = "Formation: Verb-て form + はじめて"
+hint       = "Verb-て form + はじめて"
 sense_id   = "hanabira-n3-050"
 
 [[patterns.variants]]
@@ -1985,7 +1974,7 @@ id         = "hanabira-n3-051"
 name       = "～てほしい"
 jlpt       = "N3"
 meaning_en = "Express a desire for someone else to do something; 'I want you to do...'."
-hint       = "Formation: Verb-て form + ほしい"
+hint       = "Verb-て form + ほしい"
 sense_id   = "hanabira-n3-051"
 
 [[patterns.variants]]
@@ -2004,19 +1993,8 @@ id         = "hanabira-n3-052"
 name       = "～ても"
 jlpt       = "N3"
 meaning_en = "'Even if', 'even though', or 'although'."
-hint       = "Formation: Verb-て form + も, い-Adjective (～く) + ても, な-Adjective/Noun (～で) + も"
+hint       = "Verb-て form + も, い-Adjective (～く) + ても, な-Adjective/Noun (～で) + も"
 sense_id   = "hanabira-n3-052"
-
-[[patterns.variants]]
-id              = "formation-01"
-priority        = 0
-sense_id        = "hanabira-n3-052"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "動詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "も"
 
 [[patterns.variants]]
 id              = "formation-02"
@@ -2032,23 +2010,12 @@ surface      = "て"
 [[patterns.variants.core]]
 surface      = "も"
 
-[[patterns.variants]]
-id              = "formation-03"
-priority        = 0
-sense_id        = "hanabira-n3-052"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "形状詞" }, { pos1 = "助動詞" }, { pos1 = "名詞" }, { pos1 = "代名詞" }]
-
-[[patterns.variants.core]]
-surface      = "も"
-
 [[patterns]]
 id         = "hanabira-n3-053"
 name       = "～といいなあ"
 jlpt       = "N3"
 meaning_en = "Express a wish or hope; 'it would be nice if', 'I hope that'."
-hint       = "Formation: Verb-casual + といいなあ, い-Adjective + といいなあ, な-Adjective + だといいなあ, Noun + だといいなあ"
+hint       = "Verb-casual + といいなあ, い-Adjective + といいなあ, な-Adjective + だといいなあ, Noun + だといいなあ"
 sense_id   = "hanabira-n3-053"
 
 [[patterns.variants]]
@@ -2130,7 +2097,7 @@ id         = "hanabira-n3-054"
 name       = "～という"
 jlpt       = "N3"
 meaning_en = "Used for quoting, defining, or giving an example; 'called', 'that is to say', 'like'."
-hint       = "Formation: Noun + という + Noun, Verb-casual + という + Noun, い-Adjective + という + Noun, な-Adjective + という + Noun"
+hint       = "Noun + という + Noun, Verb-casual + という + Noun, い-Adjective + という + Noun, な-Adjective + という + Noun"
 sense_id   = "hanabira-n3-054"
 
 [[patterns.variants]]
@@ -2206,7 +2173,7 @@ id         = "hanabira-n3-055"
 name       = "～ということだ"
 jlpt       = "N3"
 meaning_en = "Express a conclusion or hearsay; 'I heard', 'it means', 'it can be said'."
-hint       = "Formation: Verb-casual + ということだ, い-Adjective + ということだ, な-Adjective + だということだ, Noun + だということだ"
+hint       = "Verb-casual + ということだ, い-Adjective + ということだ, な-Adjective + だということだ, Noun + だということだ"
 sense_id   = "hanabira-n3-055"
 
 [[patterns.variants]]
@@ -2300,7 +2267,7 @@ id         = "hanabira-n3-056"
 name       = "～というと"
 jlpt       = "N3"
 meaning_en = "Used to provide an example or characteristic related to the topic; 'when it comes to', 'speaking of'."
-hint       = "Formation: Noun + というと"
+hint       = "Noun + というと"
 sense_id   = "hanabira-n3-056"
 
 [[patterns.variants]]
@@ -2325,7 +2292,7 @@ id         = "hanabira-n3-057"
 name       = "～というの～"
 jlpt       = "N3"
 meaning_en = "Explain or emphasize the reason for a situation or action."
-hint       = "Formation: Verb-casual + というの, い-Adjective + というの, な-Adjective + だというの, Noun + だというの"
+hint       = "Verb-casual + というの, い-Adjective + というの, な-Adjective + だというの, Noun + だというの"
 sense_id   = "hanabira-n3-057"
 
 [[patterns.variants]]
@@ -2407,7 +2374,7 @@ id         = "hanabira-n3-058"
 name       = "～というのは"
 jlpt       = "N3"
 meaning_en = "Used to provide an explanation or definition; 'that is to say...', 'by that, I mean...'."
-hint       = "Formation: Phrase/sentence + というのは + explanation/definition"
+hint       = "Phrase/sentence + というのは + explanation/definition"
 sense_id   = "hanabira-n3-058"
 
 [[patterns.variants]]
@@ -2438,7 +2405,7 @@ id         = "hanabira-n3-059"
 name       = "～というより"
 jlpt       = "N3"
 meaning_en = "Express a comparison with preference; 'rather than', 'more like', 'instead of'."
-hint       = "Formation: Verb-casual + というより, い-Adjective + というより, な-Adjective + だというより, Noun + だというより"
+hint       = "Verb-casual + というより, い-Adjective + というより, な-Adjective + だというより, Noun + だというより"
 sense_id   = "hanabira-n3-059"
 
 [[patterns.variants]]
@@ -2520,7 +2487,7 @@ id         = "hanabira-n3-060"
 name       = "～といっても"
 jlpt       = "N3"
 meaning_en = "Express the meaning 'even though', 'although', 'but'."
-hint       = "Formation: Verb-casual + といっても, い-Adjective + といっても, な-Adjective + だといっても, Noun + だといっても"
+hint       = "Verb-casual + といっても, い-Adjective + といっても, な-Adjective + だといっても, Noun + だといっても"
 sense_id   = "hanabira-n3-060"
 
 [[patterns.variants]]
@@ -2614,7 +2581,7 @@ id         = "hanabira-n3-061"
 name       = "～とおり"
 jlpt       = "N3"
 meaning_en = "Expresses that something is done 'as is', 'as stated', or 'as instructed'."
-hint       = "Formation: Verb-て form + とおり, Noun + のとおり"
+hint       = "Verb-て form + とおり, Noun + のとおり"
 sense_id   = "hanabira-n3-061"
 
 [[patterns.variants]]
@@ -2647,7 +2614,7 @@ id         = "hanabira-n3-062"
 name       = "～とく"
 jlpt       = "N3"
 meaning_en = "Express doing something in advance or for future convenience (casual form of ～ておく)."
-hint       = "Formation: Verb-て form + とく (e.g., 食べておく→食べとく, 読んでおく→読んどく)"
+hint       = "Verb-て form + とく (e.g., 食べておく→食べとく, 読んでおく→読んどく)"
 sense_id   = "hanabira-n3-062"
 
 [[patterns.variants]]
@@ -2666,7 +2633,7 @@ id         = "hanabira-n3-063"
 name       = "～ところが"
 jlpt       = "N3"
 meaning_en = "Expresses a contrast or unexpected outcome; 'however', 'but', 'even though'."
-hint       = "Formation: Phrase 1 (expected situation) + ところが + Phrase 2 (unexpected result)"
+hint       = "Phrase 1 (expected situation) + ところが + Phrase 2 (unexpected result)"
 sense_id   = "hanabira-n3-063"
 
 [[patterns.variants]]
@@ -2691,7 +2658,7 @@ id         = "hanabira-n3-064"
 name       = "～ところだった"
 jlpt       = "N3"
 meaning_en = "Expresses a near miss or a situation that almost happened; 'was just about to', 'almost', 'nearly'."
-hint       = "Formation: Verb (dictionary form or ている form) + ところだった"
+hint       = "Verb (dictionary form or ている form) + ところだった"
 sense_id   = "hanabira-n3-064"
 
 [[patterns.variants]]
@@ -2716,7 +2683,7 @@ id         = "hanabira-n3-065"
 name       = "ところで"
 jlpt       = "N3"
 meaning_en = "Used for changing the topic or bringing up a new topic; 'by the way', 'speaking of'."
-hint       = "Formation: ところで + new topic or question"
+hint       = "ところで + new topic or question"
 sense_id   = "hanabira-n3-065"
 
 [[patterns.variants]]
@@ -2738,7 +2705,7 @@ id         = "hanabira-n3-066"
 name       = "～としたら"
 jlpt       = "N3"
 meaning_en = "Express a hypothetical situation; 'if', 'suppose', 'assuming'."
-hint       = "Formation: Verb-casual + としたら, い-Adjective + としたら, な-Adjective + だとしたら, Noun + だとしたら"
+hint       = "Verb-casual + としたら, い-Adjective + としたら, な-Adjective + だとしたら, Noun + だとしたら"
 sense_id   = "hanabira-n3-066"
 
 [[patterns.variants]]
@@ -2820,7 +2787,7 @@ id         = "hanabira-n3-067"
 name       = "～として"
 jlpt       = "N3"
 meaning_en = "Indicates a role, capacity, or identity; 'as', 'in the capacity of'."
-hint       = "Formation: Verb-casual + として, い-Adjective + として, な-Adjective + だとして, Noun + だとして"
+hint       = "Verb-casual + として, い-Adjective + として, な-Adjective + だとして, Noun + だとして"
 sense_id   = "hanabira-n3-067"
 
 [[patterns.variants]]
@@ -2902,7 +2869,7 @@ id         = "hanabira-n3-068"
 name       = "～どんなに～ことか"
 jlpt       = "N3"
 meaning_en = "Expresses the extent of something or emphasizes the degree of a condition or situation."
-hint       = "Formation: どんなに + Adjective + ことか, どんなに + Verb + ことか"
+hint       = "どんなに + Adjective + ことか, どんなに + Verb + ことか"
 sense_id   = "hanabira-n3-068"
 
 [[patterns.variants]]
@@ -2931,7 +2898,7 @@ id         = "hanabira-n3-069"
 name       = "どんなに～ても"
 jlpt       = "N3"
 meaning_en = "Expresses 'no matter how much' or 'even if'; emphasizes the degree of a situation."
-hint       = "Formation: どんなに + Verb-てform + も, どんなに + い-Adjective-てform + も, どんなに + な-Adjective + でも"
+hint       = "どんなに + Verb-てform + も, どんなに + い-Adjective-てform + も, どんなに + な-Adjective + でも"
 sense_id   = "hanabira-n3-069"
 
 [[patterns.variants]]
@@ -2978,7 +2945,7 @@ id         = "hanabira-n3-070"
 name       = "～ないことはない"
 jlpt       = "N3"
 meaning_en = "Express the idea that 'it's not that it's impossible' or 'it's not that it cannot be done'."
-hint       = "Formation: Verb-ない form + ことはない"
+hint       = "Verb-ない form + ことはない"
 sense_id   = "hanabira-n3-070"
 
 [[patterns.variants]]
@@ -3003,7 +2970,7 @@ id         = "hanabira-n3-071"
 name       = "～ないと"
 jlpt       = "N3"
 meaning_en = "Express a condition; 'if... not', 'unless', 'must'."
-hint       = "Formation: Verb-negative form + ないと"
+hint       = "Verb-negative form + ないと"
 sense_id   = "hanabira-n3-071"
 
 [[patterns.variants]]
@@ -3022,7 +2989,7 @@ id         = "hanabira-n3-072"
 name       = "～なぜなら"
 jlpt       = "N3"
 meaning_en = "Express a reason or explanation; 'because', 'the reason is'."
-hint       = "Formation: Sentence/Statement + なぜなら + Reason + から/だから"
+hint       = "Sentence/Statement + なぜなら + Reason + から/だから"
 sense_id   = "hanabira-n3-072"
 
 [[patterns.variants]]
@@ -3075,7 +3042,7 @@ id         = "hanabira-n3-073"
 name       = "～など"
 jlpt       = "N3"
 meaning_en = "Indicates a non-exhaustive list of examples; 'such as', 'things like', 'among others'."
-hint       = "Formation: Noun + など"
+hint       = "Noun + など"
 sense_id   = "hanabira-n3-073"
 
 [[patterns.variants]]
@@ -3094,7 +3061,7 @@ id         = "hanabira-n3-074"
 name       = "～なんか"
 jlpt       = "N3"
 meaning_en = "Expresses the idea of 'things like' or 'something like', used for listing examples or downplaying something."
-hint       = "Formation: Noun + なんか, Verb-casual + なんか, い-Adjective + なんか, な-Adjective + なんか"
+hint       = "Noun + なんか, Verb-casual + なんか, い-Adjective + なんか, な-Adjective + なんか"
 sense_id   = "hanabira-n3-074"
 
 [[patterns.variants]]
@@ -3158,7 +3125,7 @@ id         = "hanabira-n3-075"
 name       = "～において"
 jlpt       = "N3"
 meaning_en = "Indicates the place, time, or context where an action or situation takes place."
-hint       = "Formation: Noun (Place/Time/Context) + において"
+hint       = "Noun (Place/Time/Context) + において"
 sense_id   = "hanabira-n3-075"
 
 [[patterns.variants]]
@@ -3183,7 +3150,7 @@ id         = "hanabira-n3-076"
 name       = "～にかわって"
 jlpt       = "N3"
 meaning_en = "Expresses 'in place of', 'on behalf of', or 'instead of'."
-hint       = "Formation: Noun + にかわって"
+hint       = "Noun + にかわって"
 sense_id   = "hanabira-n3-076"
 
 [[patterns.variants]]
@@ -3208,7 +3175,7 @@ id         = "hanabira-n3-077"
 name       = "～にしては"
 jlpt       = "N3"
 meaning_en = "Express 'for' or 'considering' in the sense of being unusual or unexpected."
-hint       = "Formation: Verb-casual + にしては, い-Adjective + にしては, な-Adjective + にしては, Noun + にしては"
+hint       = "Verb-casual + にしては, い-Adjective + にしては, な-Adjective + にしては, Noun + にしては"
 sense_id   = "hanabira-n3-077"
 
 [[patterns.variants]]
@@ -3296,7 +3263,7 @@ id         = "hanabira-n3-078"
 name       = "～にしても"
 jlpt       = "N3"
 meaning_en = "Expresses 'even if', 'no matter', 'regardless of'."
-hint       = "Formation: Verb-casual + にしても, い-Adjective + にしても, な-Adjective + だにしても, Noun + だにしても"
+hint       = "Verb-casual + にしても, い-Adjective + にしても, な-Adjective + だにしても, Noun + だにしても"
 sense_id   = "hanabira-n3-078"
 
 [[patterns.variants]]
@@ -3390,7 +3357,7 @@ id         = "hanabira-n3-079"
 name       = "～について"
 jlpt       = "N3"
 meaning_en = "Expressing 'about', 'concerning', or 'regarding'."
-hint       = "Formation: Noun + について"
+hint       = "Noun + について"
 sense_id   = "hanabira-n3-079"
 
 [[patterns.variants]]
@@ -3415,7 +3382,7 @@ id         = "hanabira-n3-080"
 name       = "～にとって"
 jlpt       = "N3"
 meaning_en = "Express the meaning 'for', 'to', 'from the perspective of'."
-hint       = "Formation: Noun (person or thing) + にとって + Verb/Adjective/Noun"
+hint       = "Noun (person or thing) + にとって + Verb/Adjective/Noun"
 sense_id   = "hanabira-n3-080"
 
 [[patterns.variants]]
@@ -3443,7 +3410,7 @@ id         = "hanabira-n3-081"
 name       = "～によって"
 jlpt       = "N3"
 meaning_en = "Indicates the reason or cause, difference depending on a factor, or methods used."
-hint       = "Formation: Verb-casual + によって, い-Adjective + によって, な-Adjective + によって, Noun + によって"
+hint       = "Verb-casual + によって, い-Adjective + によって, な-Adjective + によって, Noun + によって"
 sense_id   = "hanabira-n3-081"
 
 [[patterns.variants]]
@@ -3519,7 +3486,7 @@ id         = "hanabira-n3-082"
 name       = "～によれば"
 jlpt       = "N3"
 meaning_en = "Means 'according to', 'based on' or 'by'."
-hint       = "Formation: Noun + によれば"
+hint       = "Noun + によれば"
 sense_id   = "hanabira-n3-082"
 
 [[patterns.variants]]
@@ -3544,7 +3511,7 @@ id         = "hanabira-n3-083"
 name       = "～に対して"
 jlpt       = "N3"
 meaning_en = "Indicates a target or contrast; 'toward', 'against', 'in contrast to', 'in response to'."
-hint       = "Formation: Verb-casual + に対して, い-Adjective + に対して, な-Adjective + に対して, Noun + に対して"
+hint       = "Verb-casual + に対して, い-Adjective + に対して, な-Adjective + に対して, Noun + に対して"
 sense_id   = "hanabira-n3-083"
 
 [[patterns.variants]]
@@ -3620,7 +3587,7 @@ id         = "hanabira-n3-084"
 name       = "～に比べて"
 jlpt       = "N3"
 meaning_en = "Comparing to; in comparison with; as opposed to."
-hint       = "Formation: Verb-casual + に比べて, い-Adjective + に比べて, な-Adjective + だ/である + に比べて, Noun + だ/である + に比べて"
+hint       = "Verb-casual + に比べて, い-Adjective + に比べて, な-Adjective + だ/である + に比べて, Noun + だ/である + に比べて"
 sense_id   = "hanabira-n3-084"
 
 [[patterns.variants]]
@@ -3748,7 +3715,7 @@ id         = "hanabira-n3-085"
 name       = "～に関して"
 jlpt       = "N3"
 meaning_en = "Regarding, concerning, about, with respect to."
-hint       = "Formation: Noun + に関して"
+hint       = "Noun + に関して"
 sense_id   = "hanabira-n3-085"
 
 [[patterns.variants]]
@@ -3773,7 +3740,7 @@ id         = "hanabira-n3-086"
 name       = "～の～"
 jlpt       = "N3"
 meaning_en = "Indicates possession, attribution, or connection between two nouns."
-hint       = "Formation: Noun1 + の + Noun2"
+hint       = "Noun1 + の + Noun2"
 sense_id   = "hanabira-n3-086"
 
 [[patterns.variants]]
@@ -3795,7 +3762,7 @@ id         = "hanabira-n3-087"
 name       = "～ばかり"
 jlpt       = "N3"
 meaning_en = "Expresses 'only', 'nothing but', 'always', 'just'."
-hint       = "Formation: Verb-ますstem + ばかり, い-Adjective + ばかり, な-Adjective + ばかり, Noun + ばかり"
+hint       = "Verb-ますstem + ばかり, い-Adjective + ばかり, な-Adjective + ばかり, Noun + ばかり"
 sense_id   = "hanabira-n3-087"
 
 [[patterns.variants]]
@@ -3847,7 +3814,7 @@ id         = "hanabira-n3-088"
 name       = "～ばかりか (〜bakarika) ～も"
 jlpt       = "N3"
 meaning_en = "Not only... but also; more than just; not just"
-hint       = "Formation: Verb-casual + ばかりか/も, い-Adjective + ばかりか/も, な-Adjective + だ + ばかりか/も, Noun + だ + ばかりか/も"
+hint       = "Verb-casual + ばかりか/も, い-Adjective + ばかりか/も, な-Adjective + だ + ばかりか/も, Noun + だ + ばかりか/も"
 sense_id   = "hanabira-n3-088"
 
 [[patterns.variants]]
@@ -3865,17 +3832,6 @@ surface      = "ばかり"
 surface      = "か"
 
 [[patterns.variants]]
-id              = "formation-02"
-priority        = 0
-sense_id        = "hanabira-n3-088"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "動詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "も"
-
-[[patterns.variants]]
 id              = "formation-03"
 priority        = 0
 sense_id        = "hanabira-n3-088"
@@ -3888,17 +3844,6 @@ surface      = "ばかり"
 
 [[patterns.variants.core]]
 surface      = "か"
-
-[[patterns.variants]]
-id              = "formation-04"
-priority        = 0
-sense_id        = "hanabira-n3-088"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "形容詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "も"
 
 [[patterns.variants]]
 id              = "formation-05"
@@ -3967,7 +3912,7 @@ id         = "hanabira-n3-089"
 name       = "～はずだ"
 jlpt       = "N3"
 meaning_en = "Expresses an expectation, 'should' or 'it is supposed to'."
-hint       = "Formation: Verb-casual + はずだ, い-Adjective + はずだ, な-Adjective + なはずだ, Noun + のはずだ"
+hint       = "Verb-casual + はずだ, い-Adjective + はずだ, な-Adjective + なはずだ, Noun + のはずだ"
 sense_id   = "hanabira-n3-089"
 
 [[patterns.variants]]
@@ -4037,7 +3982,7 @@ id         = "hanabira-n3-090"
 name       = "～ば～のに"
 jlpt       = "N3"
 meaning_en = "Expresses regret or dissatisfaction; 'if only', 'wish'."
-hint       = "Formation: Verb-ば form + ～のに, い-Adjective-ば form + ～のに, な-Adjective + であれば + ～のに, Noun + であれば + ～のに"
+hint       = "Verb-ば form + ～のに, い-Adjective-ば form + ～のに, な-Adjective + であれば + ～のに, Noun + であれば + ～のに"
 sense_id   = "hanabira-n3-090"
 
 [[patterns.variants]]
@@ -4133,7 +4078,7 @@ id         = "hanabira-n3-091"
 name       = "～ば～ほど"
 jlpt       = "N3"
 meaning_en = "Expresses 'the more ~, the more ~'; a proportional relationship between two phrases."
-hint       = "Formation: Verb-casual + ば + Verb-casual + ほど, い-Adjective + ば + い-Adjective + ほど, な-Adjective + であれば + な-Adjective + ほど"
+hint       = "Verb-casual + ば + Verb-casual + ほど, い-Adjective + ば + い-Adjective + ほど, な-Adjective + であれば + な-Adjective + ほど"
 sense_id   = "hanabira-n3-091"
 
 [[patterns.variants]]
@@ -4201,7 +4146,7 @@ id         = "hanabira-n3-092"
 name       = "～はもちろん～も"
 jlpt       = "N3"
 meaning_en = "Used for emphasizing that not only one thing but also another thing is included. It means 'not only... but also' or 'of course... and...'."
-hint       = "Formation: Noun1 + はもちろん + Noun2 + も"
+hint       = "Noun1 + はもちろん + Noun2 + も"
 sense_id   = "hanabira-n3-092"
 
 [[patterns.variants]]
@@ -4230,7 +4175,7 @@ id         = "hanabira-n3-093"
 name       = "～ばよかった"
 jlpt       = "N3"
 meaning_en = "Express a sense of regret; 'I wish', 'it would have been better if'."
-hint       = "Formation: Verb-ば-form + よかった, い-Adjective-く + ばよかった, な-Adjective + ならよかった"
+hint       = "Verb-ば-form + よかった, い-Adjective-く + ばよかった, な-Adjective + ならよかった"
 sense_id   = "hanabira-n3-093"
 
 [[patterns.variants]]
@@ -4286,7 +4231,7 @@ id         = "hanabira-n3-094"
 name       = "～ふりをする"
 jlpt       = "N3"
 meaning_en = "Pretending or acting as if; 'pretend', 'act like'."
-hint       = "Formation: Verb (dictionary form) + ふりをする, い-Adjective + ふりをする, な-Adjective + ふりをする, Noun + ふりをする"
+hint       = "Verb (dictionary form) + ふりをする, い-Adjective + ふりをする, な-Adjective + ふりをする, Noun + ふりをする"
 sense_id   = "hanabira-n3-094"
 
 [[patterns.variants]]
@@ -4362,7 +4307,7 @@ id         = "hanabira-n3-095"
 name       = "～べきだ"
 jlpt       = "N3"
 meaning_en = "Express an obligation or something that should be done (mainly with verbs)."
-hint       = "Formation: Verb-dictionary form + べきだ"
+hint       = "Verb-dictionary form + べきだ"
 sense_id   = "hanabira-n3-095"
 
 [[patterns.variants]]
@@ -4384,7 +4329,7 @@ id         = "hanabira-n3-096"
 name       = "～ほど～"
 jlpt       = "N3"
 meaning_en = "Expresses the degree or extent; 'about', 'to the extent', 'as much as'."
-hint       = "Formation: Verb-casual + ほど, い-Adjective + ほど, な-Adjective + ほど, Noun + ほど"
+hint       = "Verb-casual + ほど, い-Adjective + ほど, な-Adjective + ほど, Noun + ほど"
 sense_id   = "hanabira-n3-096"
 
 [[patterns.variants]]
@@ -4436,7 +4381,7 @@ id         = "hanabira-n3-097"
 name       = "～ますように"
 jlpt       = "N3"
 meaning_en = "Used to express a wish or hope for oneself or someone else."
-hint       = "Formation: Verb-ます form, remove final る + ように"
+hint       = "Verb-ます form, remove final る + ように"
 sense_id   = "hanabira-n3-097"
 
 [[patterns.variants]]
@@ -4461,7 +4406,7 @@ id         = "hanabira-n3-098"
 name       = "まったく～ない"
 jlpt       = "N3"
 meaning_en = "Completely not; not at all."
-hint       = "Formation: まったく + Verb-negative, まったく + い-Adjective-negative, まったく + な-Adjective-negative"
+hint       = "まったく + Verb-negative, まったく + い-Adjective-negative, まったく + な-Adjective-negative"
 sense_id   = "hanabira-n3-098"
 
 [[patterns.variants]]
@@ -4502,7 +4447,7 @@ id         = "hanabira-n3-099"
 name       = "～まで"
 jlpt       = "N3"
 meaning_en = "Express 'until', 'up to', or 'as far as' to indicate the end point of an action or range."
-hint       = "Formation: Verb-casual + まで, い-Adjective + まで, な-Adjective + まで, Noun + まで"
+hint       = "Verb-casual + まで, い-Adjective + まで, な-Adjective + まで, Noun + まで"
 sense_id   = "hanabira-n3-099"
 
 [[patterns.variants]]
@@ -4566,7 +4511,7 @@ id         = "hanabira-n3-100"
 name       = "～まま"
 jlpt       = "N3"
 meaning_en = "Expresses the state or condition remaining unchanged."
-hint       = "Formation: Verb-ます stem + まま, い-Adjective + まま, な-Adjective + なまま, Noun + のまま"
+hint       = "Verb-ます stem + まま, い-Adjective + まま, な-Adjective + なまま, Noun + のまま"
 sense_id   = "hanabira-n3-100"
 
 [[patterns.variants]]
@@ -4624,7 +4569,7 @@ id         = "hanabira-n3-101"
 name       = "まるで～よう"
 jlpt       = "N3"
 meaning_en = "Used to express a strong resemblance or similarity; 'as if', 'just like', 'as though'."
-hint       = "Formation: まるで + phrase/sentence + よう"
+hint       = "まるで + phrase/sentence + よう"
 sense_id   = "hanabira-n3-101"
 
 [[patterns.variants]]
@@ -4647,7 +4592,7 @@ id         = "hanabira-n3-102"
 name       = "～てみる"
 jlpt       = "N3"
 meaning_en = "A grammar structure used to express the action of trying or attempting something to see what happens."
-hint       = "Formation: Verb-て form + みる"
+hint       = "Verb-て form + みる"
 sense_id   = "hanabira-n3-102"
 
 [[patterns.variants]]
@@ -4666,7 +4611,7 @@ id         = "hanabira-n3-103"
 name       = "～みたいだ"
 jlpt       = "N3"
 meaning_en = "Express similarity or appearance; 'like', 'seems', 'looks'."
-hint       = "Formation: Verb-casual + みたいだ, い-Adjective + みたいだ, な-Adjective + みたいだ, Noun + みたいだ"
+hint       = "Verb-casual + みたいだ, い-Adjective + みたいだ, な-Adjective + みたいだ, Noun + みたいだ"
 sense_id   = "hanabira-n3-103"
 
 [[patterns.variants]]
@@ -4730,7 +4675,7 @@ id         = "hanabira-n3-104"
 name       = "～めったに～ない"
 jlpt       = "N3"
 meaning_en = "Used to express that something rarely, hardly ever or seldom happens."
-hint       = "Formation: めったに + Verb[ない-form] / めったに + い-Adjective[ない-form] / めったに + な-Adjective[じゃない/ではない-form]"
+hint       = "めったに + Verb[ない-form] / めったに + い-Adjective[ない-form] / めったに + な-Adjective[じゃない/ではない-form]"
 sense_id   = "hanabira-n3-104"
 
 [[patterns.variants]]
@@ -4780,7 +4725,7 @@ id         = "hanabira-n3-105"
 name       = "～めったにない"
 jlpt       = "N3"
 meaning_en = "Expresses the rarity of an action, event or state; 'hardly', 'rarely', 'seldom'."
-hint       = "Formation: Verb-negative + めったにない, い-Adjective-negative + めったにない, な-Adjective-negative + めったにない, Noun-negative + めったにない"
+hint       = "Verb-negative + めったにない, い-Adjective-negative + めったにない, な-Adjective-negative + めったにない, Noun-negative + めったにない"
 sense_id   = "hanabira-n3-105"
 
 [[patterns.variants]]
@@ -4856,7 +4801,7 @@ id         = "hanabira-n3-106"
 name       = "もしかすると〜かもしれない"
 jlpt       = "N3"
 meaning_en = "Express the possibility of something; 'maybe', 'perhaps', 'might'."
-hint       = "Formation: もしかすると + Sentence + かもしれない"
+hint       = "もしかすると + Sentence + かもしれない"
 sense_id   = "hanabira-n3-106"
 
 [[patterns.variants]]
@@ -4897,7 +4842,7 @@ id         = "hanabira-n3-107"
 name       = "もし～たなら"
 jlpt       = "N3"
 meaning_en = "Express a hypothetical condition, 'if' or 'in case'."
-hint       = "Formation: もし + Verb-casual past + なら, もし + い-Adjective-casual past + なら, もし + な-Adjective + だったなら, もし + Noun + だったなら"
+hint       = "もし + Verb-casual past + なら, もし + い-Adjective-casual past + なら, もし + な-Adjective + だったなら, もし + Noun + だったなら"
 sense_id   = "hanabira-n3-107"
 
 [[patterns.variants]]
@@ -4941,7 +4886,7 @@ id         = "hanabira-n3-108"
 name       = "もし～ても"
 jlpt       = "N3"
 meaning_en = "Express a hypothetical situation or assumption with the nuance of 'even if'."
-hint       = "Formation: もし + Verb-て form + も / もし + い-Adjective(く) + ても / もし + な-Adjective/Noun + でも"
+hint       = "もし + Verb-て form + も / もし + い-Adjective(く) + ても / もし + な-Adjective/Noun + でも"
 sense_id   = "hanabira-n3-108"
 
 [[patterns.variants]]
@@ -5083,7 +5028,7 @@ id         = "hanabira-n3-109"
 name       = "もしも～なら"
 jlpt       = "N3"
 meaning_en = "Express a hypothetical condition or situation; 'if', 'in case', 'suppose'."
-hint       = "Formation: Verb-casual + なら, い-Adjective + なら, な-Adjective + なら, Noun + なら"
+hint       = "Verb-casual + なら, い-Adjective + なら, な-Adjective + なら, Noun + なら"
 sense_id   = "hanabira-n3-109"
 
 [[patterns.variants]]
@@ -5135,7 +5080,7 @@ id         = "hanabira-n3-110"
 name       = "～ようとしない"
 jlpt       = "N3"
 meaning_en = "Not showing any sign or intention to do something."
-hint       = "Formation: Verb-volitional form + としない"
+hint       = "Verb-volitional form + としない"
 sense_id   = "hanabira-n3-110"
 
 [[patterns.variants]]
@@ -5160,7 +5105,7 @@ id         = "hanabira-n3-111"
 name       = "～ようと思う"
 jlpt       = "N3"
 meaning_en = "Expresses the speaker's intention or plan to do something."
-hint       = "Formation: Verb-volitional + と思う"
+hint       = "Verb-volitional + と思う"
 sense_id   = "hanabira-n3-111"
 
 [[patterns.variants]]
@@ -5182,7 +5127,7 @@ id         = "hanabira-n3-112"
 name       = "～ように"
 jlpt       = "N3"
 meaning_en = "Expressing a purpose, a goal or a way of doing something; 'in order to', 'so that', 'like', 'as'"
-hint       = "Formation: Verb-casual + ように, い-Adjective + ように, な-Adjective + に, Noun + のように"
+hint       = "Verb-casual + ように, い-Adjective + ように, な-Adjective + に, Noun + のように"
 sense_id   = "hanabira-n3-112"
 
 [[patterns.variants]]
@@ -5214,17 +5159,6 @@ surface      = "よう"
 surface      = "に"
 
 [[patterns.variants]]
-id              = "formation-03"
-priority        = 0
-sense_id        = "hanabira-n3-112"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "形状詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "に"
-
-[[patterns.variants]]
 id              = "formation-04"
 priority        = 0
 sense_id        = "hanabira-n3-112"
@@ -5246,7 +5180,7 @@ id         = "hanabira-n3-113"
 name       = "～ように"
 jlpt       = "N3"
 meaning_en = "Used to express a purpose, a way, or a natural tendency."
-hint       = "Formation: Verb-casual + ように, い-Adjective + ように, な-Adjective + だように, Noun + のように"
+hint       = "Verb-casual + ように, い-Adjective + ように, な-Adjective + だように, Noun + のように"
 sense_id   = "hanabira-n3-113"
 
 [[patterns.variants]]
@@ -5316,7 +5250,7 @@ id         = "hanabira-n3-114"
 name       = "～ように"
 jlpt       = "N3"
 meaning_en = "Used to express purpose or how something is done; 'like', 'as if', 'in order to'."
-hint       = "Formation: Verb-casual + ように, い-Adjective + ように, な-Adjective + に, Noun + のように"
+hint       = "Verb-casual + ように, い-Adjective + ように, な-Adjective + に, Noun + のように"
 sense_id   = "hanabira-n3-114"
 
 [[patterns.variants]]
@@ -5348,17 +5282,6 @@ surface      = "よう"
 surface      = "に"
 
 [[patterns.variants]]
-id              = "formation-03"
-priority        = 0
-sense_id        = "hanabira-n3-114"
-
-[[patterns.variants.left_context]]
-one_of      = [{ pos1 = "形状詞" }, { pos1 = "助動詞" }]
-
-[[patterns.variants.core]]
-surface      = "に"
-
-[[patterns.variants]]
 id              = "formation-04"
 priority        = 0
 sense_id        = "hanabira-n3-114"
@@ -5380,7 +5303,7 @@ id         = "hanabira-n3-115"
 name       = "～ようにしましょう"
 jlpt       = "N3"
 meaning_en = "A suggestion to make an effort or try to do something; 'let's try to', 'let's make sure to'."
-hint       = "Formation: Verb-dictionary form + ようにしましょう / Verb-negative form + ようにしましょう"
+hint       = "Verb-dictionary form + ようにしましょう / Verb-negative form + ようにしましょう"
 sense_id   = "hanabira-n3-115"
 
 [[patterns.variants]]
@@ -5408,7 +5331,7 @@ id         = "hanabira-n3-116"
 name       = "～ようになった"
 jlpt       = "N3"
 meaning_en = "Express an event or state that became possible; 'became able to', 'started to', 'now can'."
-hint       = "Formation: Verb-casual + ようになった"
+hint       = "Verb-casual + ようになった"
 sense_id   = "hanabira-n3-116"
 
 [[patterns.variants]]
@@ -5436,7 +5359,7 @@ id         = "hanabira-n3-117"
 name       = "～ように言う"
 jlpt       = "N3"
 meaning_en = "To convey a message, instruction or request to someone; 'to tell (someone) to', 'to say to (someone)'."
-hint       = "Formation: Verb-dictionary form + ように言う / Verb-nai form + ように言う"
+hint       = "Verb-dictionary form + ように言う / Verb-nai form + ように言う"
 sense_id   = "hanabira-n3-117"
 
 [[patterns.variants]]
@@ -5461,7 +5384,7 @@ id         = "hanabira-n3-118"
 name       = "～らしい"
 jlpt       = "N3"
 meaning_en = "Expresses hearsay; 'I heard', 'it seems', 'apparently'."
-hint       = "Formation: Verb-casual + らしい, い-Adjective + らしい, な-Adjective + だらしい, Noun + だらしい"
+hint       = "Verb-casual + らしい, い-Adjective + らしい, な-Adjective + だらしい, Noun + だらしい"
 sense_id   = "hanabira-n3-118"
 
 [[patterns.variants]]
@@ -5519,7 +5442,7 @@ id         = "hanabira-n3-119"
 name       = "～られた"
 jlpt       = "N3"
 meaning_en = "Express a passive action, 'was/were', 'has/have been'."
-hint       = "Formation: Verb (passive form, past tense) + られた"
+hint       = "Verb (passive form, past tense) + られた"
 sense_id   = "hanabira-n3-119"
 
 [[patterns.variants]]
@@ -5541,7 +5464,7 @@ id         = "hanabira-n3-120"
 name       = "～ている"
 jlpt       = "N3"
 meaning_en = "Expresses a continuing action or a resulting state; 'is ~ing', 'has been', 'has'."
-hint       = "Formation: Verb-て form + いる"
+hint       = "Verb-て form + いる"
 sense_id   = "hanabira-n3-120"
 
 [[patterns.variants]]
@@ -5560,7 +5483,7 @@ id         = "hanabira-n3-121"
 name       = "～わけがない"
 jlpt       = "N3"
 meaning_en = "Expresses that something is impossible or unreasonable; 'there's no way', 'can't be'."
-hint       = "Formation: Verb-casual + わけがない, い-Adjective + わけがない, な-Adjective + なわけがない, Noun + のわけがない"
+hint       = "Verb-casual + わけがない, い-Adjective + わけがない, な-Adjective + なわけがない, Noun + のわけがない"
 sense_id   = "hanabira-n3-121"
 
 [[patterns.variants]]
@@ -5642,7 +5565,7 @@ id         = "hanabira-n3-122"
 name       = "～わけだ"
 jlpt       = "N3"
 meaning_en = "Expresses a logical conclusion or reason based on information; 'that's why', 'no wonder', 'it means'."
-hint       = "Formation: Verb-casual + わけだ, い-Adjective + わけだ, な-Adjective + なわけだ, Noun + のわけだ"
+hint       = "Verb-casual + わけだ, い-Adjective + わけだ, な-Adjective + なわけだ, Noun + のわけだ"
 sense_id   = "hanabira-n3-122"
 
 [[patterns.variants]]
@@ -5712,7 +5635,7 @@ id         = "hanabira-n3-123"
 name       = "～わけではない"
 jlpt       = "N3"
 meaning_en = "Denies a general assumption; 'it does not mean that', 'it's not the case'."
-hint       = "Formation: Verb-casual + わけではない, い-Adjective + わけではない, な-Adjective + だわけではない, Noun + だわけではない"
+hint       = "Verb-casual + わけではない, い-Adjective + わけではない, な-Adjective + だわけではない, Noun + だわけではない"
 sense_id   = "hanabira-n3-123"
 
 [[patterns.variants]]
@@ -5806,7 +5729,7 @@ id         = "hanabira-n3-124"
 name       = "～わけにはいかない"
 jlpt       = "N3"
 meaning_en = "Expresses that something cannot be allowed or permitted due to social/moral obligations."
-hint       = "Formation: Verb-casual + わけにはいかない"
+hint       = "Verb-casual + わけにはいかない"
 sense_id   = "hanabira-n3-124"
 
 [[patterns.variants]]
@@ -5837,7 +5760,7 @@ id         = "hanabira-n3-125"
 name       = "～わりには"
 jlpt       = "N3"
 meaning_en = "Expresses contrast between expectation and reality; 'despite', 'considering', 'even though'."
-hint       = "Formation: Verb-casual + わりには, い-Adjective + わりには, な-Adjective + だわりには, Noun + だわりには"
+hint       = "Verb-casual + わりには, い-Adjective + わりには, な-Adjective + だわりには, Noun + だわりには"
 sense_id   = "hanabira-n3-125"
 
 [[patterns.variants]]
@@ -5919,7 +5842,7 @@ id         = "hanabira-n3-126"
 name       = "～んだって"
 jlpt       = "N3"
 meaning_en = "Conveys information heard from someone else; 'I heard', 'They said'."
-hint       = "Formation: Verb-casual + んだって, い-Adjective + んだって, な-Adjective + なんだって, Noun + なんだって"
+hint       = "Verb-casual + んだって, い-Adjective + んだって, な-Adjective + なんだって, Noun + なんだって"
 sense_id   = "hanabira-n3-126"
 
 [[patterns.variants]]
@@ -5995,7 +5918,7 @@ id         = "hanabira-n3-127"
 name       = "～んだもん"
 jlpt       = "N3"
 meaning_en = "Used to convey a sense of justification; 'because', 'that's why', 'it's just that'."
-hint       = "Formation: Verb-casual + んだもん, い-Adjective + んだもん, な-Adjective + なんだもん, Noun + なんだもん"
+hint       = "Verb-casual + んだもん, い-Adjective + んだもん, な-Adjective + なんだもん, Noun + なんだもん"
 sense_id   = "hanabira-n3-127"
 
 [[patterns.variants]]
@@ -6071,7 +5994,7 @@ id         = "hanabira-n3-128"
 name       = "～上げる"
 jlpt       = "N3"
 meaning_en = "Indicates to finish doing something completely."
-hint       = "Formation: Verb-ますstem + 上げる"
+hint       = "Verb-ますstem + 上げる"
 sense_id   = "hanabira-n3-128"
 
 [[patterns.variants]]
@@ -6090,7 +6013,7 @@ id         = "hanabira-n3-129"
 name       = "～切れない"
 jlpt       = "N3"
 meaning_en = "Expresses inability to completely finish or do something."
-hint       = "Formation: Verb-stem + 切れない"
+hint       = "Verb-stem + 切れない"
 sense_id   = "hanabira-n3-129"
 
 [[patterns.variants]]
@@ -6112,7 +6035,7 @@ id         = "hanabira-n3-130"
 name       = "必ずしも～とは限らない"
 jlpt       = "N3"
 meaning_en = "Not necessarily; not always."
-hint       = "Formation: 必ずしも + Statement + とは限らない"
+hint       = "必ずしも + Statement + とは限らない"
 sense_id   = "hanabira-n3-130"
 
 [[patterns.variants]]
@@ -6147,7 +6070,7 @@ id         = "hanabira-n3-131"
 name       = "～最中に"
 jlpt       = "N3"
 meaning_en = "In the middle of / while doing something."
-hint       = "Formation: Verb-て form + いる + 最中に, Noun + の + 最中に"
+hint       = "Verb-て form + いる + 最中に, Noun + の + 最中に"
 sense_id   = "hanabira-n3-131"
 
 [[patterns.variants]]
@@ -6189,7 +6112,7 @@ id         = "hanabira-n3-132"
 name       = "決して～ない"
 jlpt       = "N3"
 meaning_en = "Express 'never', 'by no means', or 'not at all' when negating a statement."
-hint       = "Formation: 決して + Verb (negative form)"
+hint       = "決して + Verb (negative form)"
 sense_id   = "hanabira-n3-132"
 
 [[patterns.variants]]

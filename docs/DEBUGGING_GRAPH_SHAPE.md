@@ -58,7 +58,7 @@ Step 2 output:
 
 ```json
 "matches": [{ "rule_id": "hanabira-n5-040", "rule_name": "Noun は～",
-              "hint": "Formation: Noun + は",
+              "hint": "Noun + は",
               "token_start": 1, "token_end": 1 }]
 ```
 

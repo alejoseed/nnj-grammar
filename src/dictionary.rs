@@ -111,12 +111,28 @@ impl Dictionary {
     }
 
     /// Look up English glosses for one token. Punctuation is skipped; particles
-    /// and auxiliaries get a restricted lookup (surface only, particle/auxiliary
-    /// senses only) so しか glosses to "only" without は pulling in 歯/葉.
+    /// and auxiliaries get a restricted lookup (surface and lemma, but
+    /// particle/auxiliary senses only) so しか glosses to "only" without は
+    /// pulling in 歯/葉.
     pub fn lookup_token(&self, token: &Token) -> Vec<DictionaryGloss> {
         if is_function_word(&token.pos1) {
-            let entries = self.collect_entries(&[token.surface.as_str()]);
-            return function_word_glosses(&entries, MAX_GLOSSES_PER_TOKEN);
+            let keys = function_word_keys(token);
+            let mut entries = self.collect_entries(&keys);
+            entries.sort_by_key(|entry| !is_headword_match(entry, &keys));
+            let glosses = function_word_glosses(&entries, token, MAX_GLOSSES_PER_TOKEN);
+
+            let head_entries: Vec<i64> = entries
+                .iter()
+                .filter(|entry| is_headword_match(entry, &keys))
+                .map(|entry| i64::from(entry.number))
+                .collect();
+            if glosses.iter().any(|g| head_entries.contains(&g.entry_seq)) {
+                return glosses
+                    .into_iter()
+                    .filter(|g| head_entries.contains(&g.entry_seq))
+                    .collect();
+            }
+            return glosses;
         }
         if !is_content_word(&token.pos1) {
             return Vec::new();
@@ -198,10 +214,16 @@ fn entries_to_glosses(entries: &[jmdict::Entry], limit: usize) -> Vec<Dictionary
 
 /// Glosses for a function word: only senses JMdict itself marks as a particle
 /// or auxiliary. Homophone content senses (歯 for は) never qualify.
-fn function_word_glosses(entries: &[jmdict::Entry], limit: usize) -> Vec<DictionaryGloss> {
+fn function_word_glosses(
+    entries: &[jmdict::Entry],
+    token: &Token,
+    limit: usize,
+) -> Vec<DictionaryGloss> {
     use jmdict::PartOfSpeech;
-    let mut glosses = Vec::new();
+    let conjunctive_ok = token.pos2 == "接続助詞";
+    let mut glosses: Vec<DictionaryGloss> = Vec::new();
     for entry in entries {
+        let mut ranked: Vec<(u8, DictionaryGloss)> = Vec::new();
         for sense in entry.senses() {
             let is_function_sense = sense.parts_of_speech().any(|pos| {
                 matches!(
@@ -210,7 +232,9 @@ fn function_word_glosses(entries: &[jmdict::Entry], limit: usize) -> Vec<Diction
                         | PartOfSpeech::Auxiliary
                         | PartOfSpeech::AuxiliaryVerb
                         | PartOfSpeech::AuxiliaryAdjective
-                )
+                        | PartOfSpeech::Copula
+                        | PartOfSpeech::Expression
+                ) || (conjunctive_ok && pos == PartOfSpeech::Conjunction)
             });
             if !is_function_sense {
                 continue;
@@ -219,18 +243,80 @@ fn function_word_glosses(entries: &[jmdict::Entry], limit: usize) -> Vec<Diction
             if text.is_empty() {
                 continue;
             }
+            let gloss = text.join("; ");
+            let rank = sense_rank(&sense, token, &gloss);
             let pos: Vec<String> = sense.parts_of_speech().map(|p| format!("{p:?}")).collect();
-            glosses.push(DictionaryGloss {
-                entry_seq: i64::from(entry.number),
-                gloss: text.join("; "),
-                pos,
-            });
-            if glosses.len() >= limit {
-                return glosses;
-            }
+            ranked.push((
+                rank,
+                DictionaryGloss {
+                    entry_seq: i64::from(entry.number),
+                    gloss,
+                    pos,
+                },
+            ));
+        }
+        ranked.sort_by_key(|(rank, _)| *rank);
+        glosses.extend(ranked.into_iter().map(|(_, gloss)| gloss));
+        if glosses.len() >= limit {
+            break;
         }
     }
+    glosses.truncate(limit);
     glosses
+}
+
+/// Rank one sense against UniDic's particle class. Lower is better, and 1 is
+/// neutral — a class we have no opinion about leaves JMdict's order untouched.
+///
+/// JMdict lumps every use of a particle into one entry, so 格助詞 の (genitive)
+/// and 準体助詞 の (nominalizer) both land on entry 1469800 and the genitive
+/// sense wins purely by being listed first. UniDic already drew the
+/// distinction; this is where that information gets used.
+fn sense_rank(sense: &jmdict::Sense, token: &Token, gloss: &str) -> u8 {
+    if let Some(marker) = preferred_gloss_marker(token) {
+        return if gloss.contains(marker) { 0 } else { 1 };
+    }
+    let conjunctive = sense
+        .parts_of_speech()
+        .any(|pos| pos == jmdict::PartOfSpeech::Conjunction);
+    match token.pos2.as_str() {
+        // 接続助詞 joins clauses, and JMdict tags exactly those senses
+        // Conjunction: が "but; however" over が "indicates subject".
+        "接続助詞" if conjunctive => 0,
+        // 格助詞 marks a case role and is never a conjunction, so a
+        // Conjunction sense is the wrong reading: と "with", not と "if; when".
+        "格助詞" if conjunctive => 2,
+        _ => 1,
+    }
+}
+
+/// Senses that UniDic's particle class picks out but JMdict's part-of-speech
+/// tags cannot express, so they have to be named. Matched against the joined
+/// gloss text; surface is tried before lemma so a contraction can override
+/// its lemma's entry where the two genuinely differ.
+fn preferred_gloss_marker(token: &Token) -> Option<&'static str> {
+    let by_key = |key: &str| match (key, token.pos2.as_str()) {
+        // 準体助詞 *is* the nominalizing particle, so the tag maps straight
+        // onto the sense — for ん (< の) in んだ/んです just as much as for
+        // の in 泳ぐのが. The genitive reading is 格助詞.
+        ("の" | "ん", "準体助詞") => Some("nominalizes"),
+        // 接続助詞 から is causal (寒いから); 格助詞 から is ablative.
+        ("から", "接続助詞") => Some("because"),
+        _ => None,
+    };
+    by_key(&token.surface).or_else(|| by_key(&token.base_form))
+}
+
+/// Is one of `keys` this entry's headword — its first kanji element, or its
+/// first reading element? JMdict orders both most-standard first, so anything
+/// later is a variant spelling of a word the entry is not primarily about.
+fn is_headword_match(entry: &jmdict::Entry, keys: &[&str]) -> bool {
+    let head_kanji = entry.kanji_elements().next().map(|k| k.text);
+    let head_reading = entry.reading_elements().next().map(|r| r.text);
+    [head_kanji, head_reading]
+        .into_iter()
+        .flatten()
+        .any(|head| keys.contains(&head))
 }
 
 fn reading_matches(entry: jmdict::Entry, reading: &str) -> bool {
@@ -241,6 +327,22 @@ fn reading_matches(entry: jmdict::Entry, reading: &str) -> bool {
 /// real senses for them (しか "only", ない "not").
 fn is_function_word(pos1: &str) -> bool {
     matches!(pos1, "助詞" | "助動詞")
+}
+
+/// Lookup keys for a function word, strongest first; always search lemma and surface.
+/// Prefer the UniDic lemma to avoid homograph traps, except for 融合, 意志推量形,
+/// and 仮定形, where the JMdict-lexicalized surface takes priority.
+fn function_word_keys(token: &Token) -> [&str; 2] {
+    let surface = token.surface.as_str();
+    let lemma = token.base_form.as_str();
+    let lexicalized = token.conj_form.contains("融合")
+        || token.conj_form.starts_with("仮定形")
+        || token.conj_form == "意志推量形";
+    if lexicalized {
+        [surface, lemma]
+    } else {
+        [lemma, surface]
+    }
 }
 
 /// True for words that carry lexical meaning worth a dictionary lookup.
