@@ -76,7 +76,7 @@ pub fn load_combined(local_dir: Option<&Path>) -> Result<Vec<PatternRule>> {
     if let Some(dir) = local_dir.filter(|dir| dir.exists()) {
         rules.extend(load_grammar_dir_with_source(
             dir,
-            &CatalogSource::new("bunpro-local", "Bunpro local"),
+            &CatalogSource::new("local", "Local catalog"),
         )?);
     }
     validate_unique_rule_ids(&rules, "combined grammar catalog")?;
@@ -277,10 +277,10 @@ mod tests {
     fn combined_catalog_adds_local_rules_with_provenance() {
         let local = tempdir().expect("temporary local catalog");
         fs::write(
-            local.path().join("bunpro-local.toml"),
+            local.path().join("local-catalog.toml"),
             r#"
                 [[patterns]]
-                id = "bunpro-local-test"
+                id = "local-test"
                 name = "test"
                 jlpt = "N5"
                 [[patterns.steps]]
@@ -300,7 +300,7 @@ mod tests {
         );
         assert!(rules
             .iter()
-            .any(|rule| { rule.id == "bunpro-local-test" && rule.source.id == "bunpro-local" }));
+            .any(|rule| { rule.id == "local-test" && rule.source.id == "local" }));
     }
 
     #[test]
@@ -309,7 +309,7 @@ mod tests {
         let duplicate_id = &embedded[0].id;
         let local = tempdir().expect("temporary local catalog");
         fs::write(
-            local.path().join("bunpro-local.toml"),
+            local.path().join("local-catalog.toml"),
             format!(
                 r#"
                     [[patterns]]

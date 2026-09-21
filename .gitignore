@@ -1,6 +1,6 @@
 /target
 /grammar/local/
-*.bunpro-local.json
+*.local-catalog.json
 tools/__pycache__/
 /.superpowers/
 /sessions.json

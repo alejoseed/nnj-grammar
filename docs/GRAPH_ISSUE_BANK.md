@@ -73,7 +73,7 @@ Sentences where our deterministic output beats the LLM-backed reference
 ### 3. うん、知ってる……んんっ。だって、わたしの中、ドロドロだもん。本当に、火傷しちゃいそう……ぅぁっ、はぁー……はぁー……
 - `[over-widen]` `[fragment]` — `知ってる` splits: `てる` is eaten by a `ておく` rule (its core
   is widened to the whole aspect family `one_of{てる,ちゃう,ちまう,とく,てく,り}`), stranding `知っ`.
-  Same bug hits `しちゃいそう` (`ちゃい` → `ておく` too). ROOT CAUSE confirmed in bunpro-local.toml.
+  Same bug hits `しちゃいそう` (`ちゃい` → `ておく` too). ROOT CAUSE confirmed in local-catalog.toml.
 - `[clause]` `[noise]` — heavy punctuation: `……` becomes many dot leaves and `ぅぁっ` splits into
   3 `補助記号` tokens; ~1/3 of nodes are symbol/interjection noise floating in gap-segments.
 
@@ -86,7 +86,7 @@ Sentences where our deterministic output beats the LLM-backed reference
   the span were `0..1`. See `docs/DEBUGGING_GRAPH_SHAPE.md` for the three fix sites.
 
 ### 5. 自動販売機に飲み物を買います
-- `[over-widen]` — bunpro-local-70 ましょう matches bare ます (core widened to the ます
+- `[over-widen]` — local-70 ましょう matches bare ます (core widened to the ます
   family), so 買います is labeled "Let's, Shall we (Polite volitional)" and the correct
   ます "Polite Verb Endings" match is demoted to secondary (blocked_by match-7-7).
 - Same root cause as entry 3's ておく/てる; JLPT tie-break doesn't help because

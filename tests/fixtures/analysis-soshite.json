@@ -224,8 +224,8 @@
       "provenance": [
         {
           "source": {
-            "id": "bunpro-local",
-            "label": "Bunpro local"
+            "id": "local",
+            "label": "Local catalog"
           },
           "rule_id": "test-local-nani-yori",
           "variant_id": "kana"
@@ -259,8 +259,8 @@
         "provenance": [
           {
             "source": {
-              "id": "bunpro-local",
-              "label": "Bunpro local"
+              "id": "local",
+              "label": "Local catalog"
             },
             "rule_id": "test-local-nani-yori",
             "variant_id": "kana"
@@ -295,8 +295,8 @@
         "provenance": [
           {
             "source": {
-              "id": "bunpro-local",
-              "label": "Bunpro local"
+              "id": "local",
+              "label": "Local catalog"
             },
             "rule_id": "test-local-broad-mo",
             "variant_id": "particle-mo"

@@ -143,7 +143,7 @@ Key types:
 - `PatternVariant`: one concrete realization of a rule.
 - `Step`: one token predicate or bounded wildcard.
 - `Boundary`: clause or sentence boundary assertion.
-- `CatalogSource`: provenance such as Hanabira or local Bunpro.
+- `CatalogSource`: provenance such as Hanabira or the local catalog.
 
 A variant has three regions:
 
@@ -166,7 +166,7 @@ The loader has three important entry points:
 |---|---|
 | `load_embedded()` | Loads generated Hanabira rules compiled into the binary |
 | `load_grammar_dir()` | Loads only TOML files under a filesystem directory |
-| `load_combined()` | Loads Hanabira plus an optional local Bunpro directory |
+| `load_combined()` | Loads Hanabira plus an optional local catalog directory |
 
 Every loaded file is validated. Invalid wildcard bounds, unconstrained steps,
 duplicate variants, and duplicate rule IDs fail early.
@@ -314,7 +314,7 @@ consumer does not rebuild expensive state for every sentence.
 
 `AnalyzerConfig` currently accepts:
 
-- `local_grammar_dir`: optional personal Bunpro TOML directory.
+- `local_grammar_dir`: optional personal catalog TOML directory.
 - `dictionary_path`: reserved for a future external/file-based dictionary.
 
 Omitting `local_grammar_dir` loads only the embedded catalog. Supplying it is
@@ -534,7 +534,7 @@ importer widening never silently misses an auxiliary.
   negative `ぬ`/`ん` actually lemmatize to `ず`).
 
 The importer (`Compiler.literal_steps` in `tools/import_hanabira.py`, shared by
-the Bunpro importer) uses these: a conjugating verb/adjective literal becomes a
+the local importer) uses these: a conjugating verb/adjective literal becomes a
 `base_form` predicate, and a closed-class auxiliary becomes the `one_of` of its
 family's standard-register members. This is why one `わけにはいかない` rule now
 matches casual `いかない`, polite `いきません`, and past `いかなかった`, instead of the
@@ -546,8 +546,8 @@ fails loudly.
 
 Gitignored personal data:
 
-- Saved Bunpro index.
-- Compiled Bunpro TOML.
+- Saved grammar index snapshot.
+- Compiled local catalog TOML.
 - Personal enrichment forms.
 
 This directory must be recreated or transferred separately on each machine.
@@ -559,7 +559,7 @@ dictionary file remains reserved and unimplemented.
 
 - `import_hanabira.py`: compiles Hanabira formation text into deterministic
   TOML and regression examples.
-- `import_bunpro_local.py`: normalizes a personal Bunpro snapshot, merges local
+- `import_local_catalog.py`: normalizes a personal grammar snapshot, merges local
   enrichments, and writes gitignored TOML.
 - Python tests protect HTML cleanup, enrichments, furigana alternatives, and
   deterministic import behavior.

@@ -109,8 +109,10 @@ selected explicitly:
 cargo run -- --grammar-db grammar/local "東京しか行かない"
 ```
 
-`tools/import_bunpro_local.py` can convert a user-saved Bunpro index payload
+`tools/import_local_catalog.py` can convert a user-saved grammar index payload
 into a local catalog. It does not fetch data or accept account credentials.
+Whether the result may be redistributed depends on the terms of whatever the
+snapshot came from, so it is written to the ignored `grammar/local/`.
 
 ## Development
 

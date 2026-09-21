@@ -7,14 +7,14 @@ use tempfile::tempdir;
 fn combined_catalog_prioritizes_soshite_and_nani_yori() {
     let local = tempdir().expect("temporary local catalog");
     fs::write(
-        local.path().join("bunpro-local.toml"),
+        local.path().join("local-catalog.toml"),
         r#"
             [[patterns]]
-            id = "bunpro-local-nani-yori"
+            id = "local-nani-yori"
             name = "何より"
             jlpt = "N2"
             meaning_en = "Above all else, More than anything"
-            sense_id = "bunpro-local-nani-yori"
+            sense_id = "local-nani-yori"
 
             [[patterns.variants]]
             id = "casual"
@@ -27,11 +27,11 @@ fn combined_catalog_prioritizes_soshite_and_nani_yori() {
             optional = true
 
             [[patterns]]
-            id = "bunpro-local-broad-mo"
+            id = "local-broad-mo"
             name = "誰か・どこか・誰も・どこも"
             jlpt = "N5"
             meaning_en = "Someone, Somewhere, Not anyone, Not anywhere"
-            sense_id = "bunpro-local-broad-mo"
+            sense_id = "local-broad-mo"
 
             [[patterns.variants]]
             id = "casual"

@@ -63,7 +63,7 @@ fn longer_specific_match_contains_broad_match_as_secondary() {
     let ranked = rank_candidates(vec![
         candidate(
             "broad-mo",
-            "bunpro-local",
+            "local",
             "誰か・どこか・誰も・どこも",
             "indefinite pronoun",
             (3, 3),
@@ -71,7 +71,7 @@ fn longer_specific_match_contains_broad_match_as_secondary() {
         ),
         candidate(
             "nani-yori",
-            "bunpro-local",
+            "local",
             "何より",
             "Above all",
             (1, 3),
@@ -139,7 +139,7 @@ fn exact_display_duplicates_group_provenance() {
         ),
         candidate(
             "local-rule",
-            "bunpro-local",
+            "local",
             "そして",
             "And then",
             (0, 0),

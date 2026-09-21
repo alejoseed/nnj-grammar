@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Compile a user-supplied Bunpro snapshot into a local grammar database.
-
-This tool never connects to Bunpro and never accepts credentials or cookies.
-Its input is a minimized personal-use snapshot using the
-`nnj.bunpro-local.v1` schema documented in README.md.
+"""Compile a user-supplied grammar snapshot into a local grammar database.
 """
 
 import argparse
@@ -24,7 +20,7 @@ from import_hanabira import (
 )
 
 
-SCHEMA = "nnj.bunpro-local.v1"
+SCHEMA = "nnj.local-catalog.v1"
 ENRICHMENT_SCHEMA = "nnj.grammar-enrichments.v1"
 
 
@@ -32,7 +28,7 @@ def stable_id(value: Any) -> str:
     normalized = re.sub(r"[^a-zA-Z0-9_-]+", "-", str(value)).strip("-").lower()
     if not normalized:
         raise ValueError("each grammar point needs a non-empty source_id")
-    return f"bunpro-local-{normalized}"
+    return f"local-{normalized}"
 
 
 def normalize_level(value: Any) -> str:
@@ -104,7 +100,7 @@ def find_catalog_arrays(value: Any) -> list[list[dict[str, Any]]]:
 def normalize_raw_index(payload: Any) -> dict[str, Any]:
     candidates = find_catalog_arrays(payload)
     if not candidates:
-        raise ValueError("could not locate a Bunpro grammar-point array in the snapshot")
+        raise ValueError("could not locate a grammar-point array in the snapshot")
     records = max(candidates, key=len)
     points = []
     for record in records:
@@ -133,7 +129,7 @@ def normalize_raw_index(payload: Any) -> dict[str, Any]:
             }
         )
     if not points:
-        raise ValueError("Bunpro snapshot contained no tokenizable grammar points")
+        raise ValueError("snapshot contained no tokenizable grammar points")
     return {"schema": SCHEMA, "grammar_points": points}
 
 
@@ -234,8 +230,9 @@ def collect_fragments(points: list[dict[str, Any]], hosts: HostCatalog) -> set[s
 
 def render(snapshot: dict[str, Any], compiler: Compiler, source_hash: str) -> tuple[str, int]:
     lines = [
-        "# LOCAL-ONLY grammar data compiled from a user-supplied Bunpro snapshot.",
-        "# Bunpro grants no catalog redistribution license. Do not commit this file.",
+        "# LOCAL-ONLY grammar data compiled from a user-supplied snapshot.",
+        "# The snapshot source grants no catalog redistribution license.",
+        "# Do not commit this file.",
         f"# Input SHA-256: {source_hash}",
         "",
     ]
@@ -257,7 +254,7 @@ def render(snapshot: dict[str, Any], compiler: Compiler, source_hash: str) -> tu
                 try:
                     variant = compiler.compile_branch(
                         branch,
-                        f"{stable_id(form_id).removeprefix('bunpro-local-')}-{branch_index:02d}",
+                        f"{stable_id(form_id).removeprefix('local-')}-{branch_index:02d}",
                     )
                 except ValueError as error:
                     if form.get("_enrichment"):
@@ -317,7 +314,7 @@ def render(snapshot: dict[str, Any], compiler: Compiler, source_hash: str) -> tu
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("snapshot", type=Path, help="minimized local Bunpro JSON snapshot")
+    parser.add_argument("snapshot", type=Path, help="minimized local JSON grammar snapshot")
     parser.add_argument("output", type=Path, help="output directory (should remain gitignored)")
     parser.add_argument(
         "--binary",
@@ -347,7 +344,7 @@ def main() -> None:
     local_root = (project_root / "grammar" / "local").resolve()
     if output.is_relative_to(project_root) and not output.is_relative_to(local_root):
         parser.error(
-            f"local Bunpro output inside this repository must be under {local_root}"
+            f"local catalog output inside this repository must be under {local_root}"
         )
     snapshot = load_snapshot(args.snapshot)
     if args.enrichments:
@@ -358,7 +355,7 @@ def main() -> None:
 
     raw = args.snapshot.read_bytes()
     output.mkdir(parents=True, exist_ok=True)
-    destination = output / "bunpro-local.toml"
+    destination = output / "local-catalog.toml"
     rendered, rejected = render(snapshot, compiler, hashlib.sha256(raw).hexdigest())
     destination.write_text(rendered, encoding="utf-8")
     print(f"Compiled {len(snapshot['grammar_points'])} local grammar points -> {destination}")

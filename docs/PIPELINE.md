@@ -145,8 +145,8 @@ merges **two sources** into one pool:
 
 - **Hanabira** — the default catalog, compiled into the binary from
   `grammar/hanabira/` (`RustEmbed`). Generated from the Hanabira content repo.
-- **Local Bunpro** — `grammar/local/bunpro-local.toml`, the user's personal,
-  gitignored catalog, generated from a saved Bunpro snapshot.
+- **Local catalog** — `grammar/local/local-catalog.toml`, the user's personal,
+  gitignored catalog, generated from a snapshot they export themselves.
 
 A rule (`PatternRule`, `src/patterns/rule.rs`) is **not** an example sentence; it
 is an executable **pattern** over tokens: metadata plus one or more `variant`s,
@@ -213,7 +213,7 @@ reason (`contained_by_stronger_match`, `overlaps_stronger_match`) and stay
 inspectable rather than being deleted.
 
 **Provenance:** each match records which catalog(s) it came from. If the *same*
-grammar point exists in both Hanabira and Bunpro, the two are **merged into one**
+grammar point exists in both Hanabira and the local catalog, the two are **merged into one**
 match citing both sources.
 
 **Limitations / change candidates:**
@@ -360,14 +360,14 @@ This is where most architectural leverage lives. Rules are **generated** by
 Python importers, then compiled into the binary; the runtime engine never sees
 the source content.
 
-### Importers — `tools/import_hanabira.py`, `tools/import_bunpro_local.py`
-Both share `Compiler` (the Bunpro importer imports it from the Hanabira one).
+### Importers — `tools/import_hanabira.py`, `tools/import_local_catalog.py`
+Both share `Compiler` (the local importer imports it from the Hanabira one).
 They parse human-readable "formations" into `PatternRule` TOML:
 - **Host slots** ("Verb", "Noun") → predicates via `hosts.json` (`Compiler.host_step`).
 - **Literals** (fixed markers like `わけ に は`) → `Compiler.literal_steps`.
 - **Fail-closed:** an entry that can't compile aborts the whole import; an
   unknown host label aborts and names it. Points are never silently dropped.
-  (Individual *forms* can be rejected — the Bunpro importer prints a count.)
+  (Individual *forms* can be rejected — the local importer prints a count.)
 
 ### `literal_steps` widening (the conjugation fix)
 Instead of freezing each literal token's surface, `literal_steps` now:
@@ -422,7 +422,7 @@ the human owns the *labels*; every exclusion is a recorded decision.
 - `ambiguity_group` / `fallback` are not populated by the importers (blocks the
   §5 secondary-noise filter).
 - Regenerating `grammar/hanabira/` requires the external Hanabira source; the
-  `literal_steps` upgrade applies to Bunpro today and to Hanabira on next regen.
+  `literal_steps` upgrade applies to the local catalog today and to Hanabira on next regen.
 - Inventory re-derivation on a dictionary bump is intentionally **manual**.
 
 ---

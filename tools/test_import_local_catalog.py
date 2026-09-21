@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from import_bunpro_local import merge_enrichments, structure_lines
+from import_local_catalog import merge_enrichments, structure_lines
 from import_hanabira import HostCatalog, formation_branches
 
 
