@@ -273,7 +273,7 @@ pub fn print_dot(tokens: &[Token], matches: &[PatternMatch]) {
 fn cols(s: &str) -> usize {
     s.chars()
         .map(|c| {
-            let n = c as u32;
+            let n = u32::from(c);
             match n {
                 0x3000..=0x9FFF   // Hiragana, Katakana, CJK unified ideographs
                 | 0xAC00..=0xD7AF // Korean (just in case)

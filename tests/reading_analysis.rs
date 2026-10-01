@@ -1,3 +1,10 @@
+#![allow(
+    clippy::unwrap_used,
+    clippy::expect_used,
+    clippy::panic,
+    reason = "test helpers fail loudly by design"
+)]
+
 use std::path::PathBuf;
 
 use nnj_grammar::analysis::ANALYSIS_SCHEMA_VERSION;

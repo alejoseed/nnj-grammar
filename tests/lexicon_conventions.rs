@@ -6,6 +6,13 @@
 //! family widening in the importer would silently stop matching. These tests are
 //! the tripwire: they fail loudly and point at the exact convention that drifted.
 
+#![allow(
+    clippy::unwrap_used,
+    clippy::expect_used,
+    clippy::panic,
+    reason = "test helpers fail loudly by design"
+)]
+
 use nnj_grammar::tokenizer::{Token, Tokenizer};
 
 fn find<'a>(tokens: &'a [Token], surface: &str) -> &'a Token {

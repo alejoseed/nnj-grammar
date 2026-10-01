@@ -67,9 +67,7 @@ impl Dictionary {
         let mut bunsetsu_end = vec![0usize; tokens.len()];
         for sentence in sentences {
             for chunk in &sentence.bunsetsu {
-                for position in chunk.token_start..=chunk.token_end {
-                    bunsetsu_end[position] = chunk.token_end;
-                }
+                bunsetsu_end[chunk.token_start..=chunk.token_end].fill(chunk.token_end);
             }
         }
 

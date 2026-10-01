@@ -43,6 +43,15 @@ fn rule_ids() -> &'static HashMap<String, usize> {
     })
 }
 
+#[expect(
+    clippy::as_conversions,
+    clippy::cast_precision_loss,
+    reason = "example and rule counts are far below 2^52"
+)]
+fn ratio(numerator: usize, denominator: usize) -> f64 {
+    numerator as f64 / denominator as f64
+}
+
 #[test]
 fn owning_examples_meet_hanabira_regression_baseline() {
     const MIN_OWNING_EXAMPLE_RECALL: f64 = 0.66;
@@ -61,7 +70,7 @@ fn owning_examples_meet_hanabira_regression_baseline() {
         });
     }
 
-    let mut recalled_examples = 0;
+    let mut recalled_examples = 0usize;
     let mut covered_rules = HashSet::new();
     for example in &manifest.examples {
         let rule_index = *rule_ids()
@@ -76,8 +85,8 @@ fn owning_examples_meet_hanabira_regression_baseline() {
         }
     }
 
-    let recall = recalled_examples as f64 / manifest.examples.len() as f64;
-    let coverage = covered_rules.len() as f64 / manifest.logical_rules as f64;
+    let recall = ratio(recalled_examples, manifest.examples.len());
+    let coverage = ratio(covered_rules.len(), manifest.logical_rules);
     println!(
         "Hanabira regression: examples={}/{} ({:.2}%), rules={}/{} ({:.2}%), unique_sources={}",
         recalled_examples,

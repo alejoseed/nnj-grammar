@@ -108,8 +108,8 @@ impl Tokenizer {
 /// Each katakana character (U+30A1–U+30F6) maps to hiragana by subtracting 0x60.
 fn katakana_to_hiragana(s: &str) -> String {
     s.chars()
-        .map(|c| match c as u32 {
-            0x30A1..=0x30F6 => char::from_u32(c as u32 - 0x60).unwrap_or(c),
+        .map(|c| match u32::from(c) {
+            n @ 0x30A1..=0x30F6 => char::from_u32(n - 0x60).unwrap_or(c),
             _ => c,
         })
         .collect()

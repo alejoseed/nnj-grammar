@@ -1,3 +1,11 @@
+#![allow(
+    clippy::unwrap_used,
+    clippy::expect_used,
+    clippy::panic,
+    clippy::disallowed_types,
+    reason = "test helpers fail loudly and inspect raw JSON responses"
+)]
+
 use std::sync::Arc;
 
 use axum::body::Body;

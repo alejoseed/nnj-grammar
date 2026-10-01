@@ -200,7 +200,7 @@ async fn log_request(
         "method" => %method,
         "path" => path,
         "status" => response.status().as_u16(),
-        "ms" => started.elapsed().as_millis() as u64,
+        "ms" => u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX),
     );
     response
 }

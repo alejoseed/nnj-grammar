@@ -69,6 +69,36 @@ http-body-util = "0.1"
 # traits and timeouts; union these features in for test builds only.
 tokio = { version = "1", features = ["io-util", "time"] }
 
+# Anti-slop policy, adapted from https://github.com/dmmulroy/anti-slop for Rust.
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+as_conversions = "deny"
+cast_lossless = "deny"
+cast_possible_truncation = "deny"
+cast_possible_wrap = "deny"
+cast_precision_loss = "deny"
+cast_sign_loss = "deny"
+ptr_as_ptr = "deny"
+undocumented_unsafe_blocks = "deny"
+multiple_unsafe_ops_per_block = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+allow_attributes_without_reason = "deny"
+disallowed_types = "deny"
+needless_collect = "deny"
+redundant_clone = "deny"
+implicit_clone = "deny"
+iter_overeager_cloned = "deny"
+unnecessary_to_owned = "deny"
+manual_filter_map = "deny"
+manual_find_map = "deny"
+
 [profile.release]
 lto = true
 strip = true

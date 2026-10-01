@@ -90,6 +90,15 @@ fn predicted_boundaries(tokenizer: &Tokenizer, text: &str) -> Result<BTreeSet<us
     Ok(boundaries)
 }
 
+#[expect(
+    clippy::as_conversions,
+    clippy::cast_precision_loss,
+    reason = "boundary counts are far below 2^52"
+)]
+fn ratio(numerator: usize, denominator: usize) -> f64 {
+    numerator as f64 / denominator as f64
+}
+
 struct Scored {
     text: String,
     f1: f64,
@@ -139,8 +148,8 @@ fn main() -> Result<()> {
                 let f1 = if predicted.is_empty() && gold.boundaries.is_empty() {
                     1.0
                 } else {
-                    let precision = hits as f64 / predicted.len().max(1) as f64;
-                    let recall = hits as f64 / gold.boundaries.len().max(1) as f64;
+                    let precision = ratio(hits, predicted.len().max(1));
+                    let recall = ratio(hits, gold.boundaries.len().max(1));
                     if precision + recall == 0.0 {
                         0.0
                     } else {
@@ -156,8 +165,8 @@ fn main() -> Result<()> {
             }
         }
 
-        let precision = true_positive as f64 / predicted_total.max(1) as f64;
-        let recall = true_positive as f64 / gold_total.max(1) as f64;
+        let precision = ratio(true_positive, predicted_total.max(1));
+        let recall = ratio(true_positive, gold_total.max(1));
         let f1 = if precision + recall == 0.0 {
             0.0
         } else {
@@ -173,7 +182,7 @@ fn main() -> Result<()> {
     }
 
     if worst_count > 0 {
-        scored.sort_by(|a, b| a.f1.partial_cmp(&b.f1).unwrap());
+        scored.sort_by(|a, b| a.f1.total_cmp(&b.f1));
         println!("\nworst {} sentences:", worst_count.min(scored.len()));
         for item in scored.iter().take(worst_count) {
             println!("\nF1={:.3} {}", item.f1, item.text);
