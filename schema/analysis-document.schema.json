@@ -1,0 +1,477 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalysisDocument",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0,
+      "const": 3
+    },
+    "input": {
+      "type": "string"
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AnalyzedToken"
+      }
+    },
+    "primary_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DisplayMatch"
+      }
+    },
+    "secondary_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SecondaryMatch"
+      }
+    },
+    "tree": {
+      "$ref": "#/$defs/AnalysisTree"
+    }
+  },
+  "required": [
+    "schema_version",
+    "input",
+    "tokens",
+    "primary_matches",
+    "secondary_matches",
+    "tree"
+  ],
+  "$defs": {
+    "AnalyzedToken": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "surface": {
+          "type": "string"
+        },
+        "pos1": {
+          "type": "string"
+        },
+        "pos2": {
+          "type": "string"
+        },
+        "pos3": {
+          "type": "string"
+        },
+        "pos4": {
+          "type": "string"
+        },
+        "conj_type": {
+          "type": "string"
+        },
+        "conj_form": {
+          "type": "string"
+        },
+        "base_form": {
+          "type": "string"
+        },
+        "reading": {
+          "type": "string"
+        },
+        "byte_start": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "byte_end": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "position": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "glosses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DictionaryGloss"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "surface",
+        "pos1",
+        "pos2",
+        "pos3",
+        "pos4",
+        "conj_type",
+        "conj_form",
+        "base_form",
+        "reading",
+        "byte_start",
+        "byte_end",
+        "position",
+        "glosses"
+      ]
+    },
+    "DictionaryGloss": {
+      "type": "object",
+      "properties": {
+        "entry_seq": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "gloss": {
+          "type": "string"
+        },
+        "pos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "entry_seq",
+        "gloss",
+        "pos"
+      ]
+    },
+    "DisplayMatch": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "rule_name": {
+          "type": "string"
+        },
+        "jlpt": {
+          "type": "string"
+        },
+        "meaning_en": {
+          "type": "string"
+        },
+        "hint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sense_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ambiguity_group": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PatternCapture"
+          }
+        },
+        "token_start": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "token_end": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "score": {
+          "$ref": "#/$defs/MatchScore"
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MatchProvenance"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "rule_name",
+        "jlpt",
+        "meaning_en",
+        "captures",
+        "token_start",
+        "token_end",
+        "score",
+        "provenance"
+      ]
+    },
+    "PatternCapture": {
+      "description": "One named token range captured while matching a rule.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "token_start": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "token_end": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "name",
+        "token_start",
+        "token_end"
+      ]
+    },
+    "MatchScore": {
+      "type": "object",
+      "properties": {
+        "fallback": {
+          "type": "boolean"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "span_length": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "core_specificity": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "context_specificity": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "wildcard_steps": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "optional_steps": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "fallback",
+        "priority",
+        "span_length",
+        "core_specificity",
+        "context_specificity",
+        "wildcard_steps",
+        "optional_steps"
+      ]
+    },
+    "MatchProvenance": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/CatalogSource"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "variant_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "rule_id",
+        "variant_id"
+      ]
+    },
+    "CatalogSource": {
+      "description": "Catalog metadata assigned by the loader rather than grammar TOML.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ]
+    },
+    "SecondaryMatch": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "matched": {
+          "$ref": "#/$defs/DisplayMatch"
+        },
+        "reason": {
+          "$ref": "#/$defs/SecondaryReason"
+        },
+        "blocked_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "matched",
+        "reason"
+      ]
+    },
+    "SecondaryReason": {
+      "type": "string",
+      "enum": [
+        "contained_by_stronger_match",
+        "overlaps_stronger_match"
+      ]
+    },
+    "AnalysisTree": {
+      "type": "object",
+      "properties": {
+        "root_id": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnalysisTreeNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnalysisTreeEdge"
+          }
+        }
+      },
+      "required": [
+        "root_id",
+        "nodes",
+        "edges"
+      ]
+    },
+    "AnalysisTreeNode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/TreeNodeKind"
+        },
+        "token_start": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0
+        },
+        "token_end": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0
+        },
+        "token_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "match_ids": {
+          "description": "Primary grammar matches whose span this node is the smallest cover of.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "secondary_match_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "match_ids",
+        "secondary_match_ids"
+      ]
+    },
+    "TreeNodeKind": {
+      "oneOf": [
+        {
+          "description": "文章 — the whole pasted input; always the root.",
+          "type": "string",
+          "const": "document"
+        },
+        {
+          "description": "文 — one sentence, split at 句点 runs by the chunker.",
+          "type": "string",
+          "const": "sentence"
+        },
+        {
+          "description": "文節 — one content word plus its trailing function words.",
+          "type": "string",
+          "const": "bunsetsu"
+        },
+        {
+          "description": "単語 — one dictionary word spanning several short-unit tokens\n(自動+販売+機 → 自動販売機); always a leaf.",
+          "type": "string",
+          "const": "word"
+        },
+        {
+          "description": "One UniDic short-unit token; always a leaf.",
+          "type": "string",
+          "const": "token"
+        }
+      ]
+    },
+    "AnalysisTreeEdge": {
+      "type": "object",
+      "properties": {
+        "parent_id": {
+          "type": "string"
+        },
+        "child_id": {
+          "type": "string"
+        },
+        "order": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "parent_id",
+        "child_id",
+        "order"
+      ]
+    }
+  }
+}

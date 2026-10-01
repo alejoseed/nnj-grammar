@@ -1,13 +1,14 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
 
+use schemars::JsonSchema;
 use serde::Serialize;
 
 use crate::chunker::SentenceChunk;
 use crate::matcher::{MatchCandidate, PatternCapture};
 use crate::patterns::CatalogSource;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct MatchScore {
     pub fallback: bool,
     pub priority: i32,
@@ -18,14 +19,14 @@ pub struct MatchScore {
     pub optional_steps: usize,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct MatchProvenance {
     pub source: CatalogSource,
     pub rule_id: String,
     pub variant_id: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, JsonSchema)]
 pub struct DisplayMatch {
     pub id: String,
     pub rule_name: String,
@@ -41,14 +42,14 @@ pub struct DisplayMatch {
     pub provenance: Vec<MatchProvenance>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum SecondaryReason {
     ContainedByStrongerMatch,
     OverlapsStrongerMatch,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, JsonSchema)]
 pub struct SecondaryMatch {
     pub id: String,
     pub matched: DisplayMatch,

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Catalog metadata assigned by the loader rather than grammar TOML.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 pub struct CatalogSource {
     pub id: String,
     pub label: String,

@@ -5,7 +5,7 @@ use crate::patterns::{Boundary, CatalogSource, PatternRule, PatternVariant, Step
 use crate::tokenizer::Token;
 
 /// One named token range captured while matching a rule.
-#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize, schemars::JsonSchema)]
 pub struct PatternCapture {
     pub name: String,
     pub token_start: usize,

@@ -27,6 +27,8 @@ path = "src/bin/chunker_eval.rs"
 # The official Sudachi Rust library is not published to crates.io as a library crate.
 lindera = { version = "=3.0.7", features = ["embed-unidic"] }
 
+schemars = { version = "1.2", features = ["preserve_order"] }
+
 # Graph data structure
 petgraph = { version = "0.8", features = ["serde-1"] }
 

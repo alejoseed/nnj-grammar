@@ -4,7 +4,6 @@ allow-panic-in-tests = true
 
 disallowed-types = [
     { path = "serde_json::Value", reason = "deserialize into a typed struct" },
-    { path = "serde_json::Map", reason = "deserialize into a typed struct" },
     { path = "toml::Value", reason = "deserialize into a typed struct" },
     { path = "toml::Table", reason = "deserialize into a typed struct" },
     { path = "std::any::Any", reason = "use an enum or a generic instead of downcasting" },

@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Serialize;
 
 use crate::ranking::{DisplayMatch, SecondaryMatch};
@@ -9,8 +10,9 @@ use crate::tokenizer::Token;
 /// 単語 node instead of its pieces.
 pub const ANALYSIS_SCHEMA_VERSION: u32 = 3;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, JsonSchema)]
 pub struct AnalysisDocument {
+    #[schemars(extend("const" = ANALYSIS_SCHEMA_VERSION))]
     pub schema_version: u32,
     pub input: String,
     pub tokens: Vec<AnalyzedToken>,
@@ -19,7 +21,7 @@ pub struct AnalysisDocument {
     pub tree: AnalysisTree,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, JsonSchema)]
 pub struct AnalyzedToken {
     pub id: String,
     pub surface: String,
@@ -58,14 +60,14 @@ impl From<&Token> for AnalyzedToken {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct DictionaryGloss {
     pub entry_seq: i64,
     pub gloss: String,
     pub pos: Vec<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct AnalysisTree {
     pub root_id: String,
     pub nodes: Vec<TreeNode>,
@@ -91,7 +93,7 @@ impl AnalysisTree {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeNodeKind {
     /// 文章 — the whole pasted input; always the root.
@@ -107,7 +109,8 @@ pub enum TreeNodeKind {
     Token,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
+#[schemars(rename = "AnalysisTreeNode")]
 pub struct TreeNode {
     pub id: String,
     pub kind: TreeNodeKind,
@@ -119,7 +122,8 @@ pub struct TreeNode {
     pub secondary_match_ids: Vec<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
+#[schemars(rename = "AnalysisTreeEdge")]
 pub struct TreeEdge {
     pub parent_id: String,
     pub child_id: String,
