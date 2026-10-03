@@ -18,7 +18,7 @@ fi
 
 if [ ! -d "$frontend_dir/node_modules" ]; then
     echo "Installing frontend dependencies..."
-    mise exec node@26 -- npm --prefix web ci
+    npm --prefix "$frontend_dir" ci
 fi
 
 trap 'kill ${backend:-} ${frontend:-} 2>/dev/null || true' EXIT INT TERM
@@ -26,7 +26,7 @@ trap 'kill ${backend:-} ${frontend:-} 2>/dev/null || true' EXIT INT TERM
 cargo run --bin nnj-grammar-server &
 backend=$!
 
-mise exec node@26 -- npm --prefix web run dev &
+npm --prefix "$frontend_dir" run dev &
 frontend=$!
 
 echo "Backend:  http://127.0.0.1:7878"

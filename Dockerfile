@@ -1,15 +1,33 @@
-FROM docker.io/library/rust:1-alpine AS builder
+# syntax=docker/dockerfile:1
 
+FROM docker.io/lukemathwalker/cargo-chef:latest-rust-1-alpine3.22 AS chef
+# build-base: C toolchain for aws-lc-sys and other -sys crates.
+# curl: jmdict's build script shells out to it to fetch the dictionary.
 RUN apk add --no-cache build-base curl
-
 WORKDIR /build
+
+FROM chef AS planner
+COPY Cargo.toml Cargo.lock ./
+COPY src ./src
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM chef AS builder
+
+#Fetching it up front (with the checksum the crate verifies) 
+# keeps jmdict fresh after cook.
+RUN mkdir -p /root/.cache/rust-jmdict \
+    && curl --fail --silent --output /root/.cache/rust-jmdict/entrypack-v1-2021-07-19.json.gz \
+        https://dl.xyrillian.de/jmdict/entrypack-v1-2021-07-19.json.gz \
+    && echo "6d539f6b1841c213815ec9daa89bf9e5c1046e627f96db50ce800e995c1ca9ca  /root/.cache/rust-jmdict/entrypack-v1-2021-07-19.json.gz" \
+        | sha256sum -c - >/dev/null
+COPY --from=planner /build/recipe.json recipe.json
+
+# expensive layer that CI cache stores.
+RUN cargo chef cook --release --bin nnj-grammar-server --recipe-path recipe.json
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY grammar ./grammar
-
-RUN --mount=type=cache,target=/usr/local/cargo/registry \
-    --mount=type=cache,target=/build/target \
-    cargo build --release --bin nnj-grammar-server \
+RUN cargo build --release --bin nnj-grammar-server \
     && cp target/release/nnj-grammar-server /nnj-grammar-server
 
 FROM docker.io/library/alpine:3.22
