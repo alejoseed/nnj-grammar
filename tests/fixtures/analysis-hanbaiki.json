@@ -13,6 +13,12 @@
       "conj_form": "",
       "base_form": "自動",
       "reading": "じどう",
+      "furigana": [
+        {
+          "text": "自動",
+          "reading": "じどう"
+        }
+      ],
       "byte_start": 0,
       "byte_end": 6,
       "position": 0,
@@ -52,6 +58,12 @@
       "conj_form": "",
       "base_form": "販売",
       "reading": "はんばい",
+      "furigana": [
+        {
+          "text": "販売",
+          "reading": "はんばい"
+        }
+      ],
       "byte_start": 6,
       "byte_end": 12,
       "position": 1,
@@ -84,6 +96,12 @@
       "conj_form": "",
       "base_form": "機",
       "reading": "き",
+      "furigana": [
+        {
+          "text": "機",
+          "reading": "き"
+        }
+      ],
       "byte_start": 12,
       "byte_end": 15,
       "position": 2,
@@ -145,6 +163,12 @@
       "conj_form": "",
       "base_form": "で",
       "reading": "で",
+      "furigana": [
+        {
+          "text": "で",
+          "reading": null
+        }
+      ],
       "byte_start": 15,
       "byte_end": 18,
       "position": 3,
@@ -197,6 +221,12 @@
       "conj_form": "",
       "base_form": "水",
       "reading": "みず",
+      "furigana": [
+        {
+          "text": "水",
+          "reading": "みず"
+        }
+      ],
       "byte_start": 18,
       "byte_end": 21,
       "position": 4,
@@ -256,6 +286,12 @@
       "conj_form": "",
       "base_form": "を",
       "reading": "を",
+      "furigana": [
+        {
+          "text": "を",
+          "reading": null
+        }
+      ],
       "byte_start": 21,
       "byte_end": 24,
       "position": 5,
@@ -315,6 +351,16 @@
       "conj_form": "連用形-促音便",
       "base_form": "買う",
       "reading": "かう",
+      "furigana": [
+        {
+          "text": "買",
+          "reading": "か"
+        },
+        {
+          "text": "っ",
+          "reading": null
+        }
+      ],
       "byte_start": 24,
       "byte_end": 30,
       "position": 6,
@@ -356,6 +402,12 @@
       "conj_form": "終止形-一般",
       "base_form": "た",
       "reading": "た",
+      "furigana": [
+        {
+          "text": "た",
+          "reading": null
+        }
+      ],
       "byte_start": 30,
       "byte_end": 33,
       "position": 7,

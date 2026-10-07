@@ -76,6 +76,14 @@
         "reading": {
           "type": "string"
         },
+        "furigana": {
+          "description": "The surface as furigana. Joined `text`s spell `surface`. Unlike `reading`\n(the lemma's), this follows the inflected surface: 行か → 行(い)か.\nOptional within schema version 3 because backends before furigana omit it.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FuriganaSegment"
+          },
+          "default": []
+        },
         "byte_start": {
           "type": "integer",
           "format": "uint",
@@ -113,6 +121,24 @@
         "byte_end",
         "position",
         "glosses"
+      ]
+    },
+    "FuriganaSegment": {
+      "description": "One piece of a token's surface. A kanji run carries the hiragana read over it;\nkana, digits, Latin, and symbols carry null. A token whose reading cannot be\nplaced over its kanji is one segment with a null reading.",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "text"
       ]
     },
     "DictionaryGloss": {
