@@ -3,6 +3,9 @@ use serde::Serialize;
 
 use crate::tokenizer::{hiragana_of, katakana_to_hiragana, Token};
 
+/// One piece of a token's surface. A kanji run carries the hiragana read over it;
+/// kana, digits, Latin, and symbols carry null. A token whose reading cannot be
+/// placed over its kanji in exactly one way is one segment with a null reading.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct FuriganaSegment {
     pub text: String,
@@ -21,7 +24,12 @@ pub fn furigana(token: &Token) -> Vec<FuriganaSegment> {
     }
     let surface: Vec<char> = token.surface.chars().collect();
     let reading: Vec<char> = surface_reading(token).chars().collect();
-    align(&surface, &reading).unwrap_or_else(plain)
+    // A second alignment means the kana do not show where a run's reading ends:
+    // 物の怪 (もののけ) fits both 物[もの]の怪[け] and 物[も]の怪[のけ].
+    match <[_; 1]>::try_from(alignments(&surface, &reading)) {
+        Ok([segments]) => segments,
+        Err(_) => plain(),
+    }
 }
 
 fn is_kanji(c: char) -> bool {
@@ -155,44 +163,56 @@ fn vowel(c: char) -> Option<Vowel> {
     }
 }
 
-fn align(surface: &[char], reading: &[char]) -> Option<Vec<FuriganaSegment>> {
+/// Stops at two, which is enough to tell a unique alignment from an ambiguous one.
+fn alignments(surface: &[char], reading: &[char]) -> Vec<Vec<FuriganaSegment>> {
     let Some((&head, after)) = surface.split_first() else {
-        return reading.is_empty().then(Vec::new);
+        return if reading.is_empty() {
+            vec![Vec::new()]
+        } else {
+            Vec::new()
+        };
     };
     if !is_kanji(head) {
-        let (&said, tail) = reading.split_first()?;
-        if said != hiragana_of(head) {
-            return None;
-        }
-        let mut segments = align(after, tail)?;
-        match segments.first_mut() {
-            Some(FuriganaSegment {
-                text,
-                reading: None,
-            }) => text.insert(0, head),
-            _ => segments.insert(
-                0,
-                FuriganaSegment {
-                    text: head.to_string(),
-                    reading: None,
-                },
-            ),
-        }
-        return Some(segments);
+        return match reading.split_first() {
+            Some((&said, tail)) if said == hiragana_of(head) => alignments(after, tail)
+                .into_iter()
+                .map(|mut segments| {
+                    match segments.first_mut() {
+                        Some(FuriganaSegment {
+                            text,
+                            reading: None,
+                        }) => text.insert(0, head),
+                        _ => segments.insert(
+                            0,
+                            FuriganaSegment {
+                                text: head.to_string(),
+                                reading: None,
+                            },
+                        ),
+                    }
+                    segments
+                })
+                .collect(),
+            _ => Vec::new(),
+        };
     }
     let (run, rest) = surface.split_at(surface.iter().take_while(|&&c| is_kanji(c)).count());
-    (1..=reading.len()).find_map(|length| {
-        let (said, tail) = reading.split_at(length);
-        let mut segments = align(rest, tail)?;
-        segments.insert(
-            0,
-            FuriganaSegment {
-                text: run.iter().collect(),
-                reading: Some(said.iter().collect()),
-            },
-        );
-        Some(segments)
-    })
+    (1..=reading.len())
+        .flat_map(|length| {
+            let (said, tail) = reading.split_at(length);
+            alignments(rest, tail).into_iter().map(move |mut segments| {
+                segments.insert(
+                    0,
+                    FuriganaSegment {
+                        text: run.iter().collect(),
+                        reading: Some(said.iter().collect()),
+                    },
+                );
+                segments
+            })
+        })
+        .take(2)
+        .collect()
 }
 
 #[cfg(test)]
@@ -366,6 +386,33 @@ mod tests {
             "人々[ひとびと]"
         );
         assert_eq!(read("ヶ月", "かげつ", "かげつ", "ヶ月"), "ヶ月[かげつ]");
+    }
+
+    #[test]
+    fn ambiguous_split_yields_no_furigana() {
+        assert_eq!(
+            furigana(&token("物の怪", "もののけ", "もののけ", "物の怪")),
+            [FuriganaSegment {
+                text: "物の怪".to_string(),
+                reading: None
+            }]
+        );
+    }
+
+    #[test]
+    fn unique_split_between_kanji_runs_is_kept() {
+        assert_eq!(
+            read("取り消し", "とりけし", "とりけし", "取り消し"),
+            "取[と]り消[け]し"
+        );
+        assert_eq!(
+            read("話し合い", "はなしあい", "はなしあい", "話し合い"),
+            "話[はな]し合[あ]い"
+        );
+        assert_eq!(
+            read("引き出し", "ひきだし", "ひきだし", "引き出し"),
+            "引[ひ]き出[だ]し"
+        );
     }
 
     #[test]

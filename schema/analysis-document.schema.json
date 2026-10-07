@@ -124,7 +124,7 @@
       ]
     },
     "FuriganaSegment": {
-      "description": "One piece of a token's surface. A kanji run carries the hiragana read over it;\nkana, digits, Latin, and symbols carry null. A token whose reading cannot be\nplaced over its kanji is one segment with a null reading.",
+      "description": "One piece of a token's surface. A kanji run carries the hiragana read over it;\nkana, digits, Latin, and symbols carry null. A token whose reading cannot be\nplaced over its kanji in exactly one way is one segment with a null reading.",
       "type": "object",
       "properties": {
         "text": {

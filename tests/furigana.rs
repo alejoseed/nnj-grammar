@@ -85,6 +85,8 @@ fn furigana_follows_the_surface_form() {
         ("二十", "二十[にじゅう]"),
         ("先生", "先生[せんせい]"),
         ("通れる", "通[とお]れる"),
+        ("物の怪", "物の怪"),
+        ("物の本", "物の本"),
     ];
     for (input, expected) in cases {
         assert_eq!(
