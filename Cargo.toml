@@ -29,9 +29,6 @@ lindera = { version = "=3.0.7", features = ["embed-unidic"] }
 
 schemars = { version = "1.2", features = ["preserve_order"] }
 
-# Graph data structure
-petgraph = { version = "0.8", features = ["serde-1"] }
-
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
