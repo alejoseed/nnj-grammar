@@ -1,0 +1,696 @@
+{
+  "schema_version": 3,
+  "input": "自動販売機で水を買った",
+  "tokens": [
+    {
+      "id": "token-0",
+      "surface": "自動",
+      "pos1": "名詞",
+      "pos2": "普通名詞",
+      "pos3": "一般",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "自動",
+      "reading": "じどう",
+      "furigana": [
+        {
+          "text": "自動",
+          "reading": "じどう"
+        }
+      ],
+      "byte_start": 0,
+      "byte_end": 6,
+      "position": 0,
+      "glosses": [
+        {
+          "entry_seq": 1318480,
+          "gloss": "vending machine",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1318340,
+          "gloss": "automatic",
+          "pos": [
+            "NoAdjective",
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1318340,
+          "gloss": "intransitive verb",
+          "pos": [
+            "CommonNoun"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-1",
+      "surface": "販売",
+      "pos1": "名詞",
+      "pos2": "普通名詞",
+      "pos3": "サ変可能",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "販売",
+      "reading": "はんばい",
+      "furigana": [
+        {
+          "text": "販売",
+          "reading": "はんばい"
+        }
+      ],
+      "byte_start": 6,
+      "byte_end": 12,
+      "position": 1,
+      "glosses": [
+        {
+          "entry_seq": 1318480,
+          "gloss": "vending machine",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1481800,
+          "gloss": "sales; selling; marketing",
+          "pos": [
+            "CommonNoun",
+            "SuruVerb"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-2",
+      "surface": "機",
+      "pos1": "名詞",
+      "pos2": "普通名詞",
+      "pos3": "助数詞可能",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "機",
+      "reading": "き",
+      "furigana": [
+        {
+          "text": "機",
+          "reading": "き"
+        }
+      ],
+      "byte_start": 12,
+      "byte_end": 15,
+      "position": 2,
+      "glosses": [
+        {
+          "entry_seq": 1318480,
+          "gloss": "vending machine",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 2037700,
+          "gloss": "chance; opportunity",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 2037700,
+          "gloss": "machine",
+          "pos": [
+            "CommonNoun",
+            "NounSuffix"
+          ]
+        },
+        {
+          "entry_seq": 2037700,
+          "gloss": "aircraft",
+          "pos": [
+            "CommonNoun",
+            "NounSuffix"
+          ]
+        },
+        {
+          "entry_seq": 2037700,
+          "gloss": "counter for aircraft",
+          "pos": [
+            "Counter"
+          ]
+        },
+        {
+          "entry_seq": 2037700,
+          "gloss": "counter for remaining lives (in video games)",
+          "pos": [
+            "Counter"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-3",
+      "surface": "で",
+      "pos1": "助詞",
+      "pos2": "格助詞",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "で",
+      "reading": "で",
+      "furigana": [
+        {
+          "text": "で",
+          "reading": null
+        }
+      ],
+      "byte_start": 15,
+      "byte_end": 18,
+      "position": 3,
+      "glosses": [
+        {
+          "entry_seq": 2028980,
+          "gloss": "at; in",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028980,
+          "gloss": "at; when",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028980,
+          "gloss": "by; with",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2028980,
+          "gloss": "and; then",
+          "pos": [
+            "Auxiliary"
+          ]
+        },
+        {
+          "entry_seq": 2028980,
+          "gloss": "let me tell you; don't you know",
+          "pos": [
+            "Particle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-4",
+      "surface": "水",
+      "pos1": "名詞",
+      "pos2": "普通名詞",
+      "pos3": "一般",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "水",
+      "reading": "みず",
+      "furigana": [
+        {
+          "text": "水",
+          "reading": "みず"
+        }
+      ],
+      "byte_start": 18,
+      "byte_end": 21,
+      "position": 4,
+      "glosses": [
+        {
+          "entry_seq": 1371260,
+          "gloss": "water (esp. cool, fresh water, e.g. drinking water)",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1371260,
+          "gloss": "fluid (esp. in an animal tissue); liquid",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1371260,
+          "gloss": "flood; floodwaters",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1371260,
+          "gloss": "water offered to wrestlers just prior to a bout",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 1371260,
+          "gloss": "break granted to wrestlers engaged in a prolonged bout",
+          "pos": [
+            "CommonNoun"
+          ]
+        },
+        {
+          "entry_seq": 2153780,
+          "gloss": "Wednesday",
+          "pos": [
+            "CommonNoun"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-5",
+      "surface": "を",
+      "pos1": "助詞",
+      "pos2": "格助詞",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "",
+      "conj_form": "",
+      "base_form": "を",
+      "reading": "を",
+      "furigana": [
+        {
+          "text": "を",
+          "reading": null
+        }
+      ],
+      "byte_start": 21,
+      "byte_end": 24,
+      "position": 5,
+      "glosses": [
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates direct object of action",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates subject of causative expression",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates an area traversed",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates time (period) over which action takes place",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates point of departure or separation of action",
+          "pos": [
+            "Particle"
+          ]
+        },
+        {
+          "entry_seq": 2029010,
+          "gloss": "indicates object of desire, like, hate, etc.",
+          "pos": [
+            "Particle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-6",
+      "surface": "買っ",
+      "pos1": "動詞",
+      "pos2": "一般",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "五段-ワア行",
+      "conj_form": "連用形-促音便",
+      "base_form": "買う",
+      "reading": "かう",
+      "furigana": [
+        {
+          "text": "買",
+          "reading": "か"
+        },
+        {
+          "text": "っ",
+          "reading": null
+        }
+      ],
+      "byte_start": 24,
+      "byte_end": 30,
+      "position": 6,
+      "glosses": [
+        {
+          "entry_seq": 1473740,
+          "gloss": "to buy; to purchase",
+          "pos": [
+            "GodanUVerb",
+            "TransitiveVerb"
+          ]
+        },
+        {
+          "entry_seq": 1473740,
+          "gloss": "to value; to have a high opinion",
+          "pos": [
+            "GodanUVerb",
+            "TransitiveVerb"
+          ]
+        },
+        {
+          "entry_seq": 1473740,
+          "gloss": "to stir; to provoke; to draw upon oneself",
+          "pos": [
+            "GodanUVerb",
+            "TransitiveVerb"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "token-7",
+      "surface": "た",
+      "pos1": "助動詞",
+      "pos2": "",
+      "pos3": "",
+      "pos4": "",
+      "conj_type": "助動詞-タ",
+      "conj_form": "終止形-一般",
+      "base_form": "た",
+      "reading": "た",
+      "furigana": [
+        {
+          "text": "た",
+          "reading": null
+        }
+      ],
+      "byte_start": 30,
+      "byte_end": 33,
+      "position": 7,
+      "glosses": [
+        {
+          "entry_seq": 2654250,
+          "gloss": "did; (have) done",
+          "pos": [
+            "AuxiliaryVerb"
+          ]
+        },
+        {
+          "entry_seq": 2654250,
+          "gloss": "(please) do",
+          "pos": [
+            "AuxiliaryVerb"
+          ]
+        }
+      ]
+    }
+  ],
+  "primary_matches": [
+    {
+      "id": "match-3-3",
+      "rule_name": "Nounで～",
+      "jlpt": "N5",
+      "meaning_en": "Indicate a place or means for an action or situation; 'at, in, on', 'using', or 'by means of'.",
+      "hint": "Noun + で",
+      "sense_id": "hanabira-n5-030",
+      "ambiguity_group": null,
+      "captures": [],
+      "token_start": 3,
+      "token_end": 3,
+      "score": {
+        "fallback": false,
+        "priority": 0,
+        "span_length": 1,
+        "core_specificity": 1,
+        "context_specificity": 1,
+        "wildcard_steps": 0,
+        "optional_steps": 0
+      },
+      "provenance": [
+        {
+          "source": {
+            "id": "hanabira",
+            "label": "Hanabira"
+          },
+          "rule_id": "hanabira-n5-030",
+          "variant_id": "formation-01"
+        }
+      ]
+    },
+    {
+      "id": "match-5-5",
+      "rule_name": "Noun を〜",
+      "jlpt": "N5",
+      "meaning_en": "Indicates the direct object of a verb.",
+      "hint": "Noun + を + Verb",
+      "sense_id": "hanabira-n5-043",
+      "ambiguity_group": null,
+      "captures": [],
+      "token_start": 5,
+      "token_end": 5,
+      "score": {
+        "fallback": false,
+        "priority": 0,
+        "span_length": 1,
+        "core_specificity": 1,
+        "context_specificity": 2,
+        "wildcard_steps": 0,
+        "optional_steps": 0
+      },
+      "provenance": [
+        {
+          "source": {
+            "id": "hanabira",
+            "label": "Hanabira"
+          },
+          "rule_id": "hanabira-n5-043",
+          "variant_id": "formation-01"
+        }
+      ]
+    }
+  ],
+  "secondary_matches": [
+    {
+      "id": "secondary-3-3-0",
+      "matched": {
+        "id": "match-3-3-1",
+        "rule_name": "～で",
+        "jlpt": "N4",
+        "meaning_en": "Indicates the means, method, or place.",
+        "hint": "Noun + ～で",
+        "sense_id": "hanabira-n4-093",
+        "ambiguity_group": null,
+        "captures": [],
+        "token_start": 3,
+        "token_end": 3,
+        "score": {
+          "fallback": false,
+          "priority": 0,
+          "span_length": 1,
+          "core_specificity": 1,
+          "context_specificity": 1,
+          "wildcard_steps": 1,
+          "optional_steps": 0
+        },
+        "provenance": [
+          {
+            "source": {
+              "id": "hanabira",
+              "label": "Hanabira"
+            },
+            "rule_id": "hanabira-n4-093",
+            "variant_id": "formation-01"
+          }
+        ]
+      },
+      "reason": "contained_by_stronger_match",
+      "blocked_by": "match-3-3"
+    }
+  ],
+  "tree": {
+    "root_id": "document-0",
+    "nodes": [
+      {
+        "id": "document-0",
+        "kind": "document",
+        "token_start": 0,
+        "token_end": 7,
+        "token_id": null,
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "sentence-0",
+        "kind": "sentence",
+        "token_start": 0,
+        "token_end": 7,
+        "token_id": null,
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "bunsetsu-0-0",
+        "kind": "bunsetsu",
+        "token_start": 0,
+        "token_end": 3,
+        "token_id": null,
+        "match_ids": [
+          "match-3-3"
+        ],
+        "secondary_match_ids": [
+          "secondary-3-3-0"
+        ]
+      },
+      {
+        "id": "word-0-2",
+        "kind": "word",
+        "token_start": 0,
+        "token_end": 2,
+        "token_id": null,
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-3",
+        "kind": "token",
+        "token_start": 3,
+        "token_end": 3,
+        "token_id": "token-3",
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "bunsetsu-0-1",
+        "kind": "bunsetsu",
+        "token_start": 4,
+        "token_end": 5,
+        "token_id": null,
+        "match_ids": [
+          "match-5-5"
+        ],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-4",
+        "kind": "token",
+        "token_start": 4,
+        "token_end": 4,
+        "token_id": "token-4",
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-5",
+        "kind": "token",
+        "token_start": 5,
+        "token_end": 5,
+        "token_id": "token-5",
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "bunsetsu-0-2",
+        "kind": "bunsetsu",
+        "token_start": 6,
+        "token_end": 7,
+        "token_id": null,
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-6",
+        "kind": "token",
+        "token_start": 6,
+        "token_end": 6,
+        "token_id": "token-6",
+        "match_ids": [],
+        "secondary_match_ids": []
+      },
+      {
+        "id": "token-7",
+        "kind": "token",
+        "token_start": 7,
+        "token_end": 7,
+        "token_id": "token-7",
+        "match_ids": [],
+        "secondary_match_ids": []
+      }
+    ],
+    "edges": [
+      {
+        "parent_id": "document-0",
+        "child_id": "sentence-0",
+        "order": 0
+      },
+      {
+        "parent_id": "sentence-0",
+        "child_id": "bunsetsu-0-0",
+        "order": 0
+      },
+      {
+        "parent_id": "bunsetsu-0-0",
+        "child_id": "word-0-2",
+        "order": 0
+      },
+      {
+        "parent_id": "bunsetsu-0-0",
+        "child_id": "token-3",
+        "order": 1
+      },
+      {
+        "parent_id": "sentence-0",
+        "child_id": "bunsetsu-0-1",
+        "order": 1
+      },
+      {
+        "parent_id": "bunsetsu-0-1",
+        "child_id": "token-4",
+        "order": 0
+      },
+      {
+        "parent_id": "bunsetsu-0-1",
+        "child_id": "token-5",
+        "order": 1
+      },
+      {
+        "parent_id": "sentence-0",
+        "child_id": "bunsetsu-0-2",
+        "order": 2
+      },
+      {
+        "parent_id": "bunsetsu-0-2",
+        "child_id": "token-6",
+        "order": 0
+      },
+      {
+        "parent_id": "bunsetsu-0-2",
+        "child_id": "token-7",
+        "order": 1
+      }
+    ]
+  }
+}

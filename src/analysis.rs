@@ -1,6 +1,7 @@
 use schemars::JsonSchema;
 use serde::Serialize;
 
+use crate::furigana::{furigana, FuriganaSegment};
 use crate::ranking::{DisplayMatch, SecondaryMatch};
 use crate::tokenizer::Token;
 
@@ -33,6 +34,11 @@ pub struct AnalyzedToken {
     pub conj_form: String,
     pub base_form: String,
     pub reading: String,
+    /// The surface as furigana. Joined `text`s spell `surface`. Unlike `reading`
+    /// (the lemma's), this follows the inflected surface: 行か → 行(い)か.
+    /// Optional within schema version 3 because backends before furigana omit it.
+    #[schemars(default)]
+    pub furigana: Vec<FuriganaSegment>,
     pub byte_start: usize,
     pub byte_end: usize,
     pub position: usize,
@@ -52,6 +58,7 @@ impl From<&Token> for AnalyzedToken {
             conj_form: token.conj_form.clone(),
             base_form: token.base_form.clone(),
             reading: token.reading.clone(),
+            furigana: furigana(token),
             byte_start: token.byte_start,
             byte_end: token.byte_end,
             position: token.position,

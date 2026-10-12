@@ -502,6 +502,8 @@ mod tests {
             conj_form: String::new(),
             base_form: surface.to_string(),
             reading: String::new(),
+            pronunciation: String::new(),
+            orth_base: surface.to_string(),
             byte_start: position,
             byte_end: position + 1,
             position,

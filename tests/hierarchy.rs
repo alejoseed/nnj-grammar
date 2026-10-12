@@ -16,6 +16,8 @@ fn token(position: usize, surface: &str, pos1: &str) -> Token {
         conj_form: String::new(),
         base_form: surface.to_string(),
         reading: surface.to_string(),
+        pronunciation: String::new(),
+        orth_base: surface.to_string(),
         byte_start: position,
         byte_end: position + surface.len(),
         position,

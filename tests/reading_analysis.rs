@@ -215,17 +215,32 @@ fn analyzer_is_deterministic_and_handles_long_novel_text() {
     }
 }
 
-#[test]
-fn analyzer_json_matches_the_stable_fixture() {
-    let document = analyzer()
-        .analyze("そしてなによりも")
-        .expect("analysis should succeed");
-    let actual = format!(
-        "{}\n",
-        serde_json::to_string_pretty(&document).expect("serialize analysis")
-    );
+const STABLE_FIXTURES: [(&str, &str); 2] = [
+    ("analysis-soshite.json", "そしてなによりも"),
+    ("analysis-hanbaiki.json", "自動販売機で水を買った"),
+];
 
-    assert_eq!(actual, include_str!("fixtures/analysis-soshite.json"));
+#[test]
+fn analyzer_json_matches_the_stable_fixtures() {
+    let analyzer = analyzer();
+    for (file, input) in STABLE_FIXTURES {
+        let document = analyzer.analyze(input).expect("fixture input analyzes");
+        let generated = format!(
+            "{}\n",
+            serde_json::to_string_pretty(&document).expect("serialize analysis")
+        );
+        let path = fixture_dir().join(file);
+        if std::env::var_os("UPDATE_FIXTURES").is_some() {
+            std::fs::write(&path, &generated).expect("fixture is writable");
+            continue;
+        }
+        let committed = std::fs::read_to_string(&path).unwrap_or_default();
+        assert!(
+            committed == generated,
+            "{} is stale; run `UPDATE_FIXTURES=1 cargo test --test reading_analysis`",
+            path.display()
+        );
+    }
 }
 
 #[test]

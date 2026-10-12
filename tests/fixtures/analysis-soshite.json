@@ -13,6 +13,12 @@
       "conj_form": "",
       "base_form": "そして",
       "reading": "そして",
+      "furigana": [
+        {
+          "text": "そして",
+          "reading": null
+        }
+      ],
       "byte_start": 0,
       "byte_end": 9,
       "position": 0,
@@ -37,6 +43,12 @@
       "conj_form": "",
       "base_form": "何",
       "reading": "なに",
+      "furigana": [
+        {
+          "text": "なに",
+          "reading": null
+        }
+      ],
       "byte_start": 9,
       "byte_end": 15,
       "position": 1,
@@ -96,6 +108,12 @@
       "conj_form": "",
       "base_form": "より",
       "reading": "より",
+      "furigana": [
+        {
+          "text": "より",
+          "reading": null
+        }
+      ],
       "byte_start": 15,
       "byte_end": 21,
       "position": 2,
@@ -134,6 +152,12 @@
       "conj_form": "",
       "base_form": "も",
       "reading": "も",
+      "furigana": [
+        {
+          "text": "も",
+          "reading": null
+        }
+      ],
       "byte_start": 21,
       "byte_end": 24,
       "position": 3,

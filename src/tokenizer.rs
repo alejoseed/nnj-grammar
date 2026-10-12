@@ -7,23 +7,24 @@ use serde::{Deserialize, Serialize};
 
 /// A single morpheme with UniDic fields.
 ///
-/// UniDic part_of_speech layout (indices into details()):
+/// Field layout of the embedded UniDic, as `--output raw` prints it
+/// (indices into details()):
 ///   0  = pos1  major POS (品詞):          名詞, 動詞, 助詞, 助動詞, …
 ///   1  = pos2  subcategory 1 (品詞細分類1): 格助詞, 副助詞, 係助詞, 非自立可能, …
 ///   2  = pos3  subcategory 2
 ///   3  = pos4  subcategory 3
 ///   4  = conj_type  conjugation type (活用型):  五段-カ行, 上一段-ア行, …
 ///   5  = conj_form  conjugation form (活用形):  連用形-一般, 終止形-一般, …
-///   6  = lem_form   lemma form (語彙素読み)
-///   7  = lem        lemma (語彙素)
-///   8  = orth_base  base orthographic form (書字形基本形) — use this as base_form
-///   9  = pron_base  base pronunciation
-///   10 = kana_base  base kana form
-///   11 = form_base  base form — normalized (語形基本形)
-///   (indices 12–28 are prosodic / accent / word-type fields, rarely needed)
-///
-/// These match what the official Sudachi library returns from part_of_speech()[0..6],
-/// dictionary_form(), and normalized_form() — same POS strings, same grammar values.
+///   6  = lemma reading (語彙素読み), katakana:           イク for 行か
+///   7  = lemma (語彙素), may carry a suffix:              行く, 私-代名詞, 箇月 for ヶ月
+///   8  = surface orthography (書字形出現形), the surface:  行か
+///   9  = surface pronunciation (発音形出現形), ー for long vowels: イカ, トーキョー
+///   10 = orthographic base (書字形基本形), spelled like the surface: 行く, ヶ月
+///   11 = base pronunciation (発音形基本形)
+///   12 = word origin (語種): 和, 漢, 外, …
+///   13–16 appear on some tokens only (sound-change type and form: ホ濁, チ促);
+///   Indices past 16, including the kana surface field 20, are absent.
+///   Punctuation and symbols carry no 6, 9, or 11.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Token {
     pub surface: String,
@@ -39,8 +40,10 @@ pub struct Token {
     pub conj_form: String, // 活用形
 
     // Forms
-    pub base_form: String, // orthographic base (書字形基本形, index 8)
-    pub reading: String,   // kana base (index 10)
+    pub base_form: String,
+    pub reading: String,
+    pub pronunciation: String,
+    pub orth_base: String,
 
     // Position in the original text
     pub byte_start: usize,
@@ -93,6 +96,8 @@ impl Tokenizer {
                     conj_form: g(5),
                     base_form: g(7), // 語彙素 — true dictionary/lemma form (行く not 行か, する not し)
                     reading: katakana_to_hiragana(&g(6)), // 語彙素読み — katakana reading converted to hiragana
+                    pronunciation: katakana_to_hiragana(&g(9)),
+                    orth_base: g(10),
                     byte_start: t.byte_start,
                     byte_end: t.byte_end,
                     position,
@@ -105,14 +110,16 @@ impl Tokenizer {
 }
 
 /// Convert a katakana string to hiragana for furigana display.
+pub(crate) fn katakana_to_hiragana(s: &str) -> String {
+    s.chars().map(hiragana_of).collect()
+}
+
 /// Each katakana character (U+30A1–U+30F6) maps to hiragana by subtracting 0x60.
-fn katakana_to_hiragana(s: &str) -> String {
-    s.chars()
-        .map(|c| match u32::from(c) {
-            n @ 0x30A1..=0x30F6 => char::from_u32(n - 0x60).unwrap_or(c),
-            _ => c,
-        })
-        .collect()
+pub(crate) fn hiragana_of(c: char) -> char {
+    match u32::from(c) {
+        n @ 0x30A1..=0x30F6 => char::from_u32(n - 0x60).unwrap_or(c),
+        _ => c,
+    }
 }
 
 /// Dump every raw UniDic field (indices 0–28) for each token.
