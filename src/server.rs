@@ -4,22 +4,24 @@ use std::sync::Arc;
 
 use anyhow::Context;
 use axum::extract::rejection::JsonRejection;
-use axum::extract::{FromRequest, Request, State};
-use axum::http::StatusCode;
+use axum::extract::{ConnectInfo, FromRequest, Request, State};
+use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
-use axum::{Json, Router};
+use axum::{Extension, Json, Router};
 use serde::{Deserialize, Serialize};
 use slog::Logger;
 use tokio::net::TcpListener;
 
 use crate::analysis::ANALYSIS_SCHEMA_VERSION;
 use crate::analyzer::{Analyzer, AnalyzerConfig};
+use crate::layouts::{self, LayoutStore, NewSubmission, Rejection, SubmitLayoutRequest};
 
 #[derive(Clone)]
 pub struct AppState {
     analyzer: Arc<Analyzer>,
     logger: Logger,
+    layouts: Option<LayoutStore>,
 }
 
 #[derive(Debug)]
@@ -140,14 +142,11 @@ fn validate_text(text: &str) -> Result<(), ApiError> {
     Ok(())
 }
 
-async fn analyze(
-    State(state): State<AppState>,
-    ValidatedJson(request): ValidatedJson<AnalyzeRequest>,
-) -> Result<Response, ApiError> {
-    validate_text(&request.text)?;
-    let text = request.text;
-    let analyzer = state.analyzer;
-    let document = tokio::task::spawn_blocking(move || analyzer.analyze(&text))
+async fn analyze_text(
+    analyzer: Arc<Analyzer>,
+    text: String,
+) -> Result<crate::analysis::AnalysisDocument, ApiError> {
+    tokio::task::spawn_blocking(move || analyzer.analyze(&text))
         .await
         .map_err(|_| {
             ApiError::new(
@@ -162,9 +161,125 @@ async fn analyze(
                 "analysis_failed",
                 "Analysis failed.",
             )
-        })?;
+        })
+}
 
+async fn analyze(
+    State(state): State<AppState>,
+    ValidatedJson(request): ValidatedJson<AnalyzeRequest>,
+) -> Result<Response, ApiError> {
+    validate_text(&request.text)?;
+    let document = analyze_text(state.analyzer, request.text).await?;
     Ok(Json(document).into_response())
+}
+
+fn client_address(headers: &HeaderMap, peer: Option<SocketAddr>) -> String {
+    headers
+        .get("x-forwarded-for")
+        .and_then(|value| value.to_str().ok())
+        .and_then(|value| value.rsplit(',').next())
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .map(str::to_owned)
+        .or_else(|| peer.map(|addr| addr.ip().to_string()))
+        .unwrap_or_else(|| "unknown".to_owned())
+}
+
+fn rejected(rejection: Rejection) -> ApiError {
+    match rejection {
+        Rejection::Invalid(message) => {
+            ApiError::new(StatusCode::BAD_REQUEST, "invalid_layout", message)
+        }
+        Rejection::Mismatch(message) => {
+            ApiError::new(StatusCode::UNPROCESSABLE_ENTITY, "layout_mismatch", message)
+        }
+    }
+}
+
+fn storage_failed() -> ApiError {
+    ApiError::new(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "layout_storage_failed",
+        "The arrangement could not be saved.",
+    )
+}
+
+#[derive(Serialize)]
+struct SubmitLayoutResponse {
+    id: i64,
+    status: &'static str,
+}
+
+async fn submit_layout(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    peer: Option<Extension<ConnectInfo<SocketAddr>>>,
+    ValidatedJson(request): ValidatedJson<SubmitLayoutRequest>,
+) -> Result<Response, ApiError> {
+    let Some(store) = state.layouts.as_ref() else {
+        return Err(ApiError::new(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "layouts_unavailable",
+            "This server is not collecting arrangements.",
+        ));
+    };
+    let client = client_address(&headers, peer.map(|Extension(ConnectInfo(addr))| addr));
+    layouts::check_device_id(&request.device_id).map_err(rejected)?;
+    if !store.allow(&client, &request.device_id) {
+        return Err(ApiError::new(
+            StatusCode::TOO_MANY_REQUESTS,
+            "rate_limited",
+            "Too many arrangements sent. Try again in a few minutes.",
+        ));
+    }
+    let class_code = layouts::normalize_class_code(&request.class_code).map_err(rejected)?;
+    let nickname = layouts::normalize_nickname(request.nickname.as_deref()).map_err(rejected)?;
+    let feedback = request.feedback;
+    layouts::check_shape(&feedback).map_err(rejected)?;
+    let open = store.class_code_open(&class_code).await.map_err(|error| {
+        slog::error!(state.logger, "class code lookup failed"; "error" => %error);
+        storage_failed()
+    })?;
+    if !open {
+        store.record_bad_code(&client);
+        return Err(ApiError::new(
+            StatusCode::FORBIDDEN,
+            "invalid_class_code",
+            "That class code is not open. Check the code on the board.",
+        ));
+    }
+    let document =
+        analyze_text(state.analyzer.clone(), feedback.sentence.trim().to_owned()).await?;
+    layouts::check_graph(&feedback, &document).map_err(rejected)?;
+    let flags = layouts::flags(&feedback);
+    let id = store
+        .insert(NewSubmission {
+            class_code: &class_code,
+            nickname: nickname.as_deref(),
+            client: &client,
+            device_id: &request.device_id,
+            feedback: &feedback,
+            flags,
+        })
+        .await
+        .map_err(|error| {
+            slog::error!(state.logger, "layout insert failed"; "error" => %error);
+            storage_failed()
+        })?;
+    slog::info!(state.logger, "layout submitted";
+        "id" => id,
+        "class_code" => class_code,
+        "moved_nodes" => flags.moved_nodes,
+        "order_breaks" => flags.order_breaks,
+    );
+    Ok((
+        StatusCode::CREATED,
+        Json(SubmitLayoutResponse {
+            id,
+            status: "pending",
+        }),
+    )
+        .into_response())
 }
 
 async fn not_found() -> ApiError {
@@ -210,10 +325,25 @@ pub fn router(analyzer: Arc<Analyzer>) -> Router {
 }
 
 pub fn router_with_logger(analyzer: Arc<Analyzer>, logger: Logger) -> Router {
-    let state = AppState { analyzer, logger };
+    router_with_layouts(analyzer, logger, None)
+}
+
+/// [`router_with_logger`] plus `POST /api/layouts`, which answers 503 when
+/// `layouts` is `None`.
+pub fn router_with_layouts(
+    analyzer: Arc<Analyzer>,
+    logger: Logger,
+    layouts: Option<LayoutStore>,
+) -> Router {
+    let state = AppState {
+        analyzer,
+        logger,
+        layouts,
+    };
     Router::new()
         .route("/api/health", get(health))
         .route("/api/analyze", post(analyze))
+        .route("/api/layouts", post(submit_layout))
         .fallback(not_found)
         .layer(axum::extract::DefaultBodyLimit::max(MAX_REQUEST_BODY_BYTES))
         .layer(axum::middleware::map_response(rewrite_method_not_allowed))
@@ -245,10 +375,13 @@ pub async fn serve(listener: TcpListener, router: Router) -> anyhow::Result<()> 
 /// explicitly chosen a non-loopback bind — e.g. inside a container, where
 /// loopback is unreachable and the host's port mapping is the boundary.
 pub async fn serve_unrestricted(listener: TcpListener, router: Router) -> anyhow::Result<()> {
-    axum::serve(listener, router)
-        .with_graceful_shutdown(shutdown_signal())
-        .await
-        .context("server error")
+    axum::serve(
+        listener,
+        router.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .with_graceful_shutdown(shutdown_signal())
+    .await
+    .context("server error")
 }
 
 async fn shutdown_signal() {

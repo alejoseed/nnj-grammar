@@ -3,9 +3,10 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::Context;
+use nnj_grammar::layouts::LayoutStore;
 use nnj_grammar::logging::root_logger;
 use nnj_grammar::server::{
-    build_analyzer, router_with_logger, serve, serve_unrestricted, LocalCatalogMode,
+    build_analyzer, router_with_layouts, serve, serve_unrestricted, LocalCatalogMode,
 };
 use slog::info;
 use tokio::net::TcpListener;
@@ -44,7 +45,21 @@ async fn main() -> anyhow::Result<()> {
         .with_context(|| format!("failed to bind {bind_addr}"))?;
     info!(logger, "listening"; "addr" => format!("http://{bind_addr}"));
 
-    let app = router_with_logger(Arc::new(analyzer), logger.clone());
+    // Without NNJ_GRAMMAR_DATABASE_URL the server still analyzes, and
+    // POST /api/layouts answers that it is not collecting arrangements.
+    let layouts = match env::var("NNJ_GRAMMAR_DATABASE_URL") {
+        Ok(url) => {
+            let salt = env::var("NNJ_GRAMMAR_CLIENT_SALT").unwrap_or_default();
+            let store = LayoutStore::connect(&url, &salt)
+                .await
+                .context("failed to connect to the layouts database")?;
+            info!(logger, "collecting layout arrangements");
+            Some(store)
+        }
+        Err(_) => None,
+    };
+
+    let app = router_with_layouts(Arc::new(analyzer), logger.clone(), layouts);
     let result = if bind_override.is_some() {
         serve_unrestricted(listener, app).await
     } else {
