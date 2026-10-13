@@ -4,6 +4,7 @@ pub mod chunker;
 pub mod dictionary;
 pub mod furigana;
 pub mod hierarchy;
+pub mod layouts;
 pub mod logging;
 pub mod matcher;
 pub mod patterns;
