@@ -193,11 +193,15 @@ fn collect_variant_matches(
         if !has_boundary(tokens, start, variant.left_boundary, true) {
             continue;
         }
+        let cores = match_sequence(tokens, start, variant.core);
+        if cores.is_empty() {
+            continue;
+        }
         let Some(left) = match_left_context(tokens, start, variant.left_context) else {
             continue;
         };
 
-        for core in match_sequence(tokens, start, variant.core) {
+        for core in cores {
             if core.end <= start || !has_boundary(tokens, core.end, variant.right_boundary, false) {
                 continue;
             }
