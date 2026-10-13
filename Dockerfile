@@ -27,6 +27,8 @@ RUN cargo chef cook --release --bin nnj-grammar-server --recipe-path recipe.json
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY grammar ./grammar
+# sqlx::migrate! embeds these into the binary at compile time.
+COPY migrations ./migrations
 RUN cargo build --release --bin nnj-grammar-server \
     && cp target/release/nnj-grammar-server /nnj-grammar-server
 
