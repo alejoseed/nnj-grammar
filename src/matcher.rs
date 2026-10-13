@@ -106,6 +106,10 @@ pub fn match_all(tokens: &[Token], rules: &[PatternRule]) -> Vec<PatternMatch> {
 /// Return every distinct successful parse together with ranking evidence.
 pub fn match_candidates(tokens: &[Token], rules: &[PatternRule]) -> Vec<MatchCandidate> {
     let mut candidates = Vec::new();
+    let mut positions: HashMap<&str, Vec<usize>> = HashMap::new();
+    for (index, token) in tokens.iter().enumerate() {
+        positions.entry(token.surface.as_str()).or_default().push(index);
+    }
 
     for rule in rules {
         if !rule.steps.is_empty() {
@@ -122,12 +126,12 @@ pub fn match_candidates(tokens: &[Token], rules: &[PatternRule]) -> Vec<MatchCan
                 ambiguity_group: rule.ambiguity_group.as_deref(),
                 fallback: rule.fallback,
             };
-            collect_variant_matches(tokens, rule, &variant, &mut candidates);
+            collect_variant_matches(tokens, &positions, rule, &variant, &mut candidates);
         }
 
         for explicit in &rule.variants {
             let variant = effective_variant(rule, explicit);
-            collect_variant_matches(tokens, rule, &variant, &mut candidates);
+            collect_variant_matches(tokens, &positions, rule, &variant, &mut candidates);
         }
     }
 
@@ -177,6 +181,7 @@ fn effective_variant<'a>(
 
 fn collect_variant_matches(
     tokens: &[Token],
+    positions: &HashMap<&str, Vec<usize>>,
     rule: &PatternRule,
     variant: &EffectiveVariant<'_>,
     candidates: &mut Vec<MatchCandidate>,
@@ -189,7 +194,16 @@ fn collect_variant_matches(
     let wildcard_steps = steps.clone().filter(|step| step.wildcard.is_some()).count();
     let optional_steps = steps.filter(|step| step.optional).count();
 
-    for start in 0..tokens.len() {
+    let first_surface = variant
+        .core
+        .first()
+        .filter(|step| step.wildcard.is_none() && !step.optional)
+        .and_then(|step| step.surface.as_deref());
+    let starts: Box<dyn Iterator<Item = usize>> = match first_surface {
+        Some(surface) => Box::new(positions.get(surface).into_iter().flatten().copied()),
+        None => Box::new(0..tokens.len()),
+    };
+    for start in starts {
         if !has_boundary(tokens, start, variant.left_boundary, true) {
             continue;
         }
