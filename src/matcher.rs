@@ -254,8 +254,11 @@ fn match_left_context(
 
     // Prefer stronger evidence, then the nearest viable start. The sequence
     // must end adjacent to core and never changes the annotation span.
+    let max_span = steps.iter().fold(0_usize, |span, step| {
+        span.saturating_add(step.wildcard.as_ref().map_or(1, |wildcard| wildcard.max))
+    });
     let mut best: Option<(usize, SequenceMatch)> = None;
-    for context_start in 0..=core_start {
+    for context_start in core_start.saturating_sub(max_span)..=core_start {
         for matched in match_sequence(tokens, context_start, steps) {
             if matched.end != core_start {
                 continue;
